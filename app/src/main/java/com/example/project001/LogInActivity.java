@@ -23,6 +23,7 @@ public class LogInActivity extends AppCompatActivity {
         passwordField=(TextView) findViewById(R.id.passwordField);
         sendButton=(Button) findViewById(R.id.sendButton);
 
+        System.out.println("yourmom");
 
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -34,5 +35,6 @@ public class LogInActivity extends AppCompatActivity {
             }
         });
     }
+
 
 }
