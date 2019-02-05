@@ -28,7 +28,7 @@ public class HomePageActivity extends AppCompatActivity {
         spec.setIndicator("Tab Two");
         host.addTab(spec);
 
-        Intent startIntent = new Intent(getApplicationContext(), TestActivity.class);
+        Intent startIntent = new Intent(getApplicationContext(), SideBarActivity.class);
         startActivity(startIntent);
 
     }
