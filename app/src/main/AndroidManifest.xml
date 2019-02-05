@@ -12,6 +12,7 @@
         <activity android:name=".CreateActivity"
             android:theme="@style/AppTheme.PopTheme">
         </activity>
+        <activity android:theme="@style/AppTheme.NoActionBar" android:label="@string/title_activity_test" android:name=".testActivity"/>
         <activity android:name=".HomePageActivity"></activity>
         <activity android:name=".LoginActivity">
             <intent-filter>
