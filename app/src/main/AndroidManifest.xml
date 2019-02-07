@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.project001">
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -14,6 +15,7 @@
         </activity>
         <activity android:theme="@style/AppTheme.NoActionBar" android:label="@string/title_activity_test" android:name=".testActivity"/>
         <activity android:name=".HomePageActivity"></activity>
+        <activity android:name=".message.MainActivity"></activity>
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
