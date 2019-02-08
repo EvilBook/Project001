@@ -1,8 +1,11 @@
 package com.example.project001;
 
+import android.content.ClipData;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,10 +15,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TabHost;
 
-public class testActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class testActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+    Button nav_messages, nav_trips, nav_settings, nav_logout;
+    LinearLayout profile;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +52,7 @@ public class testActivity extends AppCompatActivity
 
 
 
+        //Tabs
         TabHost host = (TabHost)findViewById(R.id.tabHost);
         host.setup();
 
@@ -58,6 +67,11 @@ public class testActivity extends AppCompatActivity
         spec.setContent(R.id.tab2);
         spec.setIndicator("Tab Two");
         host.addTab(spec);
+
+
+
+        //Profile clickable
+
 
     }
 
@@ -75,6 +89,20 @@ public class testActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.test, menu);
+
+
+        profile = (LinearLayout) findViewById(R.id.profile);
+
+
+        profile.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                System.out.println("PROFILE CLICKED");
+            }
+        });
+
+
         return true;
     }
 
@@ -86,7 +114,8 @@ public class testActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_info) {
+            System.out.println("info");
             return true;
         }
 
@@ -98,18 +127,20 @@ public class testActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        System.out.println("id: "+id);
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.nav_messages) {
+            System.out.println("messages");
+            startActivity(new Intent(testActivity.this, com.example.project001.message.MainActivity.class));
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_trips) {
+            System.out.println("trips");
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_settings) {
+            System.out.println("settings");
 
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_logout) {
+            System.out.println("logout");
 
         }
 
@@ -117,4 +148,5 @@ public class testActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 }
