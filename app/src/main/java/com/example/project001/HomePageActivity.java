@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.widget.TabHost;
 
 public class HomePageActivity extends AppCompatActivity {
+
     TabHost tabHost;
   
     @Override
