@@ -1,10 +1,20 @@
 package com.example.project001.message;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.example.project001.R;
 import com.example.project001.message.MessageAdapter;
@@ -17,7 +27,9 @@ import com.scaledrone.lib.Room;
 import com.scaledrone.lib.RoomListener;
 import com.scaledrone.lib.Scaledrone;
 
+import java.util.ArrayList;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class MainActivity extends AppCompatActivity implements
         RoomListener {
@@ -28,6 +40,18 @@ public class MainActivity extends AppCompatActivity implements
     private Scaledrone scaledrone;
     private MessageAdapter messageAdapter;
     private ListView messagesView;
+    RelativeLayout textView;
+    ArrayList<String> history=new ArrayList<>();
+    Notification.Builder notification;
+
+
+    private static int idNumber;
+
+
+    Button button1;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +90,27 @@ public class MainActivity extends AppCompatActivity implements
                 System.err.println(reason);
             }
         });
+
+
+        button1=(Button)findViewById(R.id.button1);
+
+
+
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addNotification();
+            }
+        });
+
+
+
+
+
+
+
+
+
 
     }
 
@@ -131,10 +176,78 @@ public class MainActivity extends AppCompatActivity implements
     public void sendMessage(View view) {
         String message = editText.getText().toString();
         if (message.length() > 0) {
-            scaledrone.publish("observable-room", message);
+            scaledrone.publish(roomName, message);
             editText.getText().clear();
         }
     }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+
+        for (int i=0; i<messagesView.getChildCount(); i++){
+
+
+            textView=(RelativeLayout)messagesView.getChildAt(i);
+
+
+            if(textView.getChildCount()==1) {
+
+                history.add(((TextView) textView.getChildAt(0)).getText().toString());
+
+
+            }else if(textView.getChildCount()==3){
+
+
+                history.add(((TextView) textView.getChildAt(1)).getText().toString()+"/"+((TextView) textView.getChildAt(2)).getText().toString());
+
+            }
+
+
+
+
+
+
+
+        }
+
+
+
+        for (String s:history){
+
+
+            Log.e("message 1", s);
+
+        }
+
+
+
+    }
+
+
+    private void addNotification() {
+        // Builds your notification
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.mipmap.ic_launcher_round)
+                .setContentTitle("Ecarte")
+                .setContentText("U got a message ho");
+
+        // Creates the intent needed to show the notification
+        Intent notificationIntent = new Intent(this, MainActivity.class);
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        builder.setContentIntent(contentIntent);
+
+        // Add as notification
+        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.notify(0, builder.build());
+    }
+
+
+
+
+
 
 
 }
