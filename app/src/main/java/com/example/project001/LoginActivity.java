@@ -8,6 +8,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.project001.database.DBConnection;
+
 import org.w3c.dom.Text;
 
 public class LoginActivity extends AppCompatActivity {
@@ -20,11 +22,18 @@ public class LoginActivity extends AppCompatActivity {
     private TextView forgotPassword;
     private TextView createAccount;
 
+    //Objects
+    //DBConnection dbc = new DBConnection();
+
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        System.out.println("hehes");
+        System.out.println("hehe");
+
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
@@ -40,6 +49,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent startIntent = new Intent(getApplicationContext(), testActivity.class);
                 startActivity(startIntent);
+
             }
         });
 
@@ -49,6 +59,15 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(new Intent(LoginActivity.this, CreateActivity.class));
             }
         });
+
+
+        forgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(LoginActivity.this, com.example.project001.message.MainActivity.class));
+            }
+        });
+
 
 
 
