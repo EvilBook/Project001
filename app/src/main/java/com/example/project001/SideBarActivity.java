@@ -1,11 +1,9 @@
 package com.example.project001;
 
-import android.content.ClipData;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -19,7 +17,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
 
-public class testActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class SideBarActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     Button nav_messages, nav_trips, nav_settings, nav_logout;
     LinearLayout profile;
@@ -28,7 +26,7 @@ public class testActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_test);
+        setContentView(R.layout.activity_sidebar);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -131,7 +129,7 @@ public class testActivity extends AppCompatActivity implements NavigationView.On
 
         if (id == R.id.nav_messages) {
             System.out.println("messages");
-            startActivity(new Intent(testActivity.this, com.example.project001.message.MainActivity.class));
+            startActivity(new Intent(SideBarActivity.this, com.example.project001.message.MainActivity.class));
 
         } else if (id == R.id.nav_trips) {
             System.out.println("trips");
