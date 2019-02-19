@@ -23,6 +23,13 @@ import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.drive.Drive;
 import com.google.android.gms.plus.Plus;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import DatabaseConnection.ThisIsForConnecting;
+
 public class LoginActivity extends FragmentActivity implements  ConnectionCallbacks,OnConnectionFailedListener,View.OnClickListener {
 
 
@@ -60,6 +67,12 @@ public class LoginActivity extends FragmentActivity implements  ConnectionCallba
 
 
         mSignInButton.setOnClickListener(this);
+
+
+
+
+        ThisIsForConnecting db = new ThisIsForConnecting();
+        db.ThisIsForConnecting1();
 
     }
     @Override
@@ -159,6 +172,8 @@ public class LoginActivity extends FragmentActivity implements  ConnectionCallba
                         RC_SIGN_IN, null, 0, 0, 0);
 
                 startActivity(new Intent(LoginActivity.this,SideBarActivity.class));
+
+
 
 
             } catch (IntentSender.SendIntentException e) {
