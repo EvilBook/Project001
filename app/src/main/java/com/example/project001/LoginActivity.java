@@ -86,7 +86,11 @@ public class LoginActivity extends AppCompatActivity {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
 
-            Log.i("Message","Working");
+            Log.i("Message",account.getDisplayName());
+            Intent intent = new Intent(this, SideBarActivity.class);
+
+            startActivity(intent);
+
 
 
 
@@ -98,9 +102,7 @@ public class LoginActivity extends AppCompatActivity {
         }
 
 
-        Intent intent = new Intent(this, SideBarActivity.class);
 
-        startActivity(intent);
 
 
 
