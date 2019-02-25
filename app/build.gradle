@@ -44,5 +44,8 @@ dependencies {
     implementation 'com.scaledrone:scaledrone-java:0.3.0'
     implementation project(':mysql-connector-java-5.1.47')
 
+    implementation 'com.google.android.gms:play-services-auth:16.0.1'
+
+
 
 }

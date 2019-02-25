@@ -86,10 +86,14 @@ public class LoginActivity extends AppCompatActivity {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
 
+            Log.i("Message","Working");
+
+
 
         } catch (ApiException e) {
 
             Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
+
 
         }
 
