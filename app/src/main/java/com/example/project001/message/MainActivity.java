@@ -58,10 +58,10 @@ public class MainActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_messsage);
         // This is where we write the mesage
-        editText = (EditText) findViewById(R.id.editText);
+        editText = findViewById(R.id.editText);
 
         messageAdapter = new MessageAdapter(this);
-        messagesView = (ListView) findViewById(R.id.messages_view);
+        messagesView = findViewById(R.id.messages_view);
         messagesView.setAdapter(messageAdapter);
 
         MemberData data = new MemberData(getRandomName(), getRandomColor());
@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements
         });
 
 
-        button1=(Button)findViewById(R.id.button1);
+        button1= findViewById(R.id.button1);
 
 
 

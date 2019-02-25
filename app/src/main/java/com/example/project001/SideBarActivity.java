@@ -1,11 +1,9 @@
 package com.example.project001;
 
-import android.content.ClipData;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -19,7 +17,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
 
-public class testActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class SideBarActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     Button nav_messages, nav_trips, nav_settings, nav_logout;
     LinearLayout profile;
@@ -28,11 +26,11 @@ public class testActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_test);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setContentView(R.layout.activity_sidebar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -41,19 +39,19 @@ public class testActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
 
 
         //Tabs
-        TabHost host = (TabHost)findViewById(R.id.tabHost);
+        TabHost host = findViewById(R.id.tabHost);
         host.setup();
 
         //Tab 1
@@ -77,7 +75,7 @@ public class testActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -91,7 +89,7 @@ public class testActivity extends AppCompatActivity implements NavigationView.On
         getMenuInflater().inflate(R.menu.test, menu);
 
 
-        profile = (LinearLayout) findViewById(R.id.profile);
+        profile = findViewById(R.id.profile);
 
 
         profile.setOnClickListener(new View.OnClickListener() {
@@ -131,7 +129,7 @@ public class testActivity extends AppCompatActivity implements NavigationView.On
 
         if (id == R.id.nav_messages) {
             System.out.println("messages");
-            startActivity(new Intent(testActivity.this, com.example.project001.message.MainActivity.class));
+            startActivity(new Intent(SideBarActivity.this, com.example.project001.message.MainActivity.class));
 
         } else if (id == R.id.nav_trips) {
             System.out.println("trips");
@@ -144,7 +142,7 @@ public class testActivity extends AppCompatActivity implements NavigationView.On
 
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

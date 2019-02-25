@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.project001">
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
 
     <application
         android:allowBackup="true"
@@ -13,7 +15,7 @@
         <activity android:name=".CreateActivity"
             android:theme="@style/AppTheme.PopTheme">
         </activity>
-        <activity android:theme="@style/AppTheme.NoActionBar" android:label="@string/title_activity_test" android:name=".testActivity"/>
+        <activity android:theme="@style/AppTheme.NoActionBar" android:label="@string/title_activity_test" android:name=".SideBarActivity"/>
         <activity android:name=".HomePageActivity"></activity>
         <activity android:name=".message.MainActivity"></activity>
         <activity android:name=".LoginActivity">
