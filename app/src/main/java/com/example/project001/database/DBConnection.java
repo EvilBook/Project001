@@ -1,11 +1,12 @@
 package com.example.project001.database;
 
-import android.database.SQLException;
 import android.util.Log;
 
-import java.sql.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
 
 public class DBConnection {
 
@@ -13,26 +14,27 @@ public class DBConnection {
     private Statement statement;
     private Connection connection;
     private ResultSet resultSet;
-    private String url = "jdbc:mysql://ecarte.mysql.database.azure.com:3306/drive?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
-    private String username = "masm@ecarte";
-    private String password = "Password1";
+    private String url = "jdbc:mysql://194.47.41.87:3306/moviedatabase";
+    private String username = "root";
+    private String password = "root";
 
 
     public DBConnection() {
+        Log.e("SQL", "Before");
         try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection(url, username, password);
             statement = connection.createStatement();
-            System.out.println("Database connected");
+            Log.e("SQL", "Connected!");
 
         }catch(Exception e) {
-            System.out.println("SQL " + e);
+            Log.e("---------------", e.toString());
         }
     }
 
     public void getName() {
         try {
-            String query = "select * from person";
+            String query = "select * from actor";
             resultSet = statement.executeQuery(query);
             System.out.println("Records from database: ");
             while(resultSet.next()) {

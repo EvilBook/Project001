@@ -6,6 +6,7 @@ import android.content.IntentSender;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import com.example.project001.database.DBConnection;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -32,6 +34,9 @@ public class LoginActivity extends FragmentActivity implements  ConnectionCallba
     private Button loginButton;
     private TextView forgotPassword;
     private TextView createAccount;
+
+    //Objects
+    DBConnection dbc;
 
 
 //Implement constant variables
@@ -159,15 +164,16 @@ public class LoginActivity extends FragmentActivity implements  ConnectionCallba
                         RC_SIGN_IN, null, 0, 0, 0);
 
                 startActivity(new Intent(LoginActivity.this,SideBarActivity.class));
+                Log.e("showing", "the query");
+                dbc = new DBConnection();
+                dbc.getName();
 
 
             } catch (IntentSender.SendIntentException e) {
                 mSignInProgress = STATE_SIGNING_IN;
                 mGoogleApiClient.connect();
-
             }
         } else {
-
 
         }
 
