@@ -2,6 +2,7 @@ package com.example.project001;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
@@ -19,18 +20,30 @@ import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.TextView;
 
+import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 public class SideBarActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     Button nav_messages, nav_trips, nav_settings, nav_logout;
     LinearLayout profile;
 
-    GoogleSignInAccount googleSignInAccount ;
 
     String displayName;
     String Email;
+
+    LoginActivity loginActivity = new LoginActivity();
+
+
+    GoogleSignInClient googleApiClient;
 
 
 
@@ -42,6 +55,12 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
         setContentView(R.layout.activity_sidebar);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+        googleApiClient = GoogleSignIn.getClient(this, gso);
 
 
 
@@ -173,6 +192,18 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
             System.out.println("settings");
 
         } else if (id == R.id.nav_logout) {
+
+
+
+               signOut();
+
+
+
+            Intent intent = new Intent(this,LoginActivity.class);
+            startActivity(intent);
+            finish();
+
+
             System.out.println("logout");
 
         }
@@ -181,5 +212,21 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
+    public void signOut() {
+        googleApiClient.signOut()
+                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        // ...
+                    }
+                });
+    }
+
+
+
+
+
 
 }

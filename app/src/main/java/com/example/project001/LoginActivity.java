@@ -25,6 +25,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 
@@ -35,7 +36,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private static final int OUR_REQUEST_CODE = 49404;
 
-    private GoogleSignInClient mGoogleApiClient;
+    public GoogleSignInClient mGoogleApiClient;
 
 
     @Override
@@ -48,6 +49,7 @@ public class LoginActivity extends AppCompatActivity {
                 .build();
 
         mGoogleApiClient = GoogleSignIn.getClient(this, gso);
+
 
 
         ImageButton googlesignInButton = findViewById(R.id.sign_in_Button);
@@ -67,6 +69,9 @@ public class LoginActivity extends AppCompatActivity {
         Intent signInIntent = mGoogleApiClient.getSignInIntent();
         startActivityForResult(signInIntent,OUR_REQUEST_CODE);
     }
+
+
+
 
 
     @Override
@@ -113,6 +118,10 @@ public class LoginActivity extends AppCompatActivity {
 
 
     }
+
+
+
+
 }
 
 
