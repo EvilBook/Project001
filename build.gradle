@@ -13,6 +13,7 @@ buildscript {
         // Google Services Plugin
         classpath "com.google.gms:google-services:4.1.0"
         classpath 'com.google.gms:google-services:2.0.0-alpha6'
+        classpath 'com.google.gms:google-services:4.2.0'
     }
 }
 
