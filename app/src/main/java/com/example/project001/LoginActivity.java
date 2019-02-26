@@ -87,7 +87,12 @@ public class LoginActivity extends AppCompatActivity {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
 
             Log.i("Message",account.getDisplayName());
+
             Intent intent = new Intent(this, SideBarActivity.class);
+            intent.putExtra("Display",account.getDisplayName());
+            intent.putExtra("Email",account.getEmail());
+
+
 
             startActivity(intent);
 
