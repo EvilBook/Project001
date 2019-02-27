@@ -34,11 +34,13 @@
                     android:background="#ffc916"
                     android:orientation="vertical">
 
-                    <TextView
+                    <EditText
+                        android:id="@+id/editText5"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:text="This is tab 1" />
-
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:inputType="textPersonName"
+                        android:text="Name" />
                 </LinearLayout>
 
                 <LinearLayout
