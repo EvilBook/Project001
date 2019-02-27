@@ -15,12 +15,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.TextView;
 
-import com.google.android.gms.auth.api.Auth;
+import com.example.project001.database.DBConnection;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -30,6 +29,7 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
 
 public class SideBarActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -37,6 +37,11 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
     String displayName;
     String Email;
     GoogleSignInClient googleApiClient;
+
+    //Database
+    DBConnection dbc = new DBConnection();
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,11 +59,6 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
 
 
 
-
-
-
-
-
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,6 +69,7 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
         });
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -129,6 +130,8 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
         Log.i("DisplayName",displayName);
         Log.i("Email",Email);
 
+        dbc.checkIfExists(Email, displayName);
+
 
 
 
@@ -176,17 +179,17 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
 
         } else if (id == R.id.nav_trips) {
             System.out.println("trips");
+            //dbc.addStuff();
+            //dbc.readStuff();
+
+
 
         } else if (id == R.id.nav_settings) {
             System.out.println("settings");
 
         } else if (id == R.id.nav_logout) {
 
-
-
                signOut();
-
-
 
             Intent intent = new Intent(this,LoginActivity.class);
             startActivity(intent);
