@@ -47,7 +47,7 @@ public class DBConnection {
         user.put("last", "Lovelace");
         user.put("born", 1815);
 
-// Add a new document with a generated ID
+        // Add a new document with a generated ID
         db.collection("users")
                 .add(user)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
