@@ -33,16 +33,10 @@ import com.google.android.gms.tasks.Task;
 
 public class SideBarActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    Button nav_messages, nav_trips, nav_settings, nav_logout;
     LinearLayout profile;
-
-
     String displayName;
     String Email;
-
     GoogleSignInClient googleApiClient;
-    
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
