@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,11 +17,23 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
+import android.widget.TextView;
+
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 
 public class SideBarActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     Button nav_messages, nav_trips, nav_settings, nav_logout;
     LinearLayout profile;
+
+    GoogleSignInAccount googleSignInAccount ;
+
+    String displayName;
+    String Email;
+
+
+
 
 
     @Override
@@ -29,6 +42,14 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
         setContentView(R.layout.activity_sidebar);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
+
+
+
+
+
+
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -87,6 +108,20 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.test, menu);
+
+        Intent intent1 = getIntent();
+
+        displayName = intent1.getStringExtra("Display");
+        Email = intent1.getStringExtra("Email");
+
+        TextView DisplayNameArea = findViewById(R.id.DisplayName);
+
+        DisplayNameArea.setText(displayName);
+
+        Log.i("DisplayName",displayName);
+        Log.i("Email",Email);
+
+
 
 
         profile = findViewById(R.id.profile);

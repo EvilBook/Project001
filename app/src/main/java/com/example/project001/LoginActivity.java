@@ -1,5 +1,7 @@
 package com.example.project001;
 
+
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -10,8 +12,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 
 
-import com.example.project001.database.DBConnection;
-import com.example.project001.message.MainActivity;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -26,19 +26,16 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseApp;
 
 
 public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = "SignInTestActivity";
 
+
     private static final int OUR_REQUEST_CODE = 49404;
 
     private GoogleSignInClient mGoogleApiClient;
-
-    //DBConnection dbc = new DBConnection();
-
 
 
     @Override
@@ -90,16 +87,19 @@ public class LoginActivity extends AppCompatActivity {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
 
             Log.i("Message",account.getDisplayName());
+
             Intent intent = new Intent(this, SideBarActivity.class);
+            intent.putExtra("Display",account.getDisplayName());
+            intent.putExtra("Email",account.getEmail());
+
+
+
             startActivity(intent);
+
+
+
+
         } catch (ApiException e) {
-
-
-
-
-            //dbc.addSmth();
-            //dbc.addSmthMore();
-            //dbc.readSmth();
 
             Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
 
