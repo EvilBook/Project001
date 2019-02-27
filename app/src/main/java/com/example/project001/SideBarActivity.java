@@ -40,13 +40,8 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
     String displayName;
     String Email;
 
-    LoginActivity loginActivity = new LoginActivity();
-
-
     GoogleSignInClient googleApiClient;
-
-
-
+    
 
 
     @Override
