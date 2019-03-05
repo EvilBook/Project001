@@ -28,6 +28,11 @@ import android.widget.TextView;
 
 import com.example.project001.database.DBConnection;
 import com.example.project001.database.Trip;
+import com.example.project001.fragment.HomeFragment;
+import com.example.project001.fragment.MessageFragment;
+import com.example.project001.fragment.ProfileFragment;
+import com.example.project001.fragment.SettingsFragment;
+import com.example.project001.fragment.TripFragment;
 import com.example.project001.fragment.mapsFragment;
 import com.example.project001.fragment.tripsFragment;
 import com.google.android.gms.auth.api.Auth;
@@ -59,7 +64,6 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
 
     LinearLayout linearLayout;
     TabHost frameLayout;
-
     EditText destination;
     EditText departure;
     EditText date;
@@ -75,6 +79,7 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
     //Database
     Trip trip;
     DBConnection dbc = new DBConnection();
+
 
 
 
@@ -95,10 +100,6 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
 
         googleApiClient = GoogleSignIn.getClient(this, gso);
 
-
-
-
-
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -108,51 +109,9 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        getSupportFragmentManager().beginTransaction().replace(R.id.containerFragment, new HomeFragment()).commit();
 
 
-        frameLayout=findViewById(R.id.tabHost);
-
-
-        riderButton =  findViewById(R.id.riderButton1);
-        riderButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent myIntent = new Intent(SideBarActivity.this, RidersActivity.class);
-
-                SideBarActivity.this.startActivity(myIntent);
-            }
-        });
-
-
-
-
-        //Tabs
-        TabHost host = findViewById(R.id.tabHost);
-        host.setup();
-
-        //Tab 1
-        TabHost.TabSpec spec = host.newTabSpec("Tab One");
-        spec.setContent(R.id.tab1);
-        spec.setIndicator("Tab One");
-        host.addTab(spec);
-
-        //Tab 2
-        spec = host.newTabSpec("Tab Two");
-        spec.setContent(R.id.tab2);
-        spec.setIndicator("Tab Two");
-        host.addTab(spec);
-
-
-        linearLayout=findViewById(R.id.tab1);
-
-
-
-
-
-
-
-
-        //Profile clickable
 
 
     }
@@ -194,7 +153,10 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
 
             @Override
             public void onClick(View view) {
-                System.out.println("PROFILE CLICKED");
+                getSupportFragmentManager().beginTransaction().replace(R.id.containerFragment, new ProfileFragment()).commit();
+
+                DrawerLayout drawer = findViewById(R.id.drawer_layout);
+                drawer.closeDrawer(GravityCompat.START);
             }
         });
 
@@ -221,6 +183,8 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+
+        Fragment fragment = null;
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         System.out.println("id: "+id);
@@ -230,58 +194,34 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
             startActivity(new Intent(SideBarActivity.this, com.example.project001.message.MainActivity.class));
 
         } else if (id == R.id.nav_trips) {
-            System.out.println("trips");
-
-            Fragment fragment=new mapsFragment();
-
-
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-// Replace the contents of the container with the new fragment
-            ft.replace(linearLayout.getId(), fragment, "maps");
-// or ft.add(R.id.your_placeholder, new FooFragment());
-// Complete the changes added above
-            ft.commit();
-
-
-            for(int i=0; i<linearLayout.getChildCount(); i++){
-
-                Log.e("oneone", linearLayout.getChildAt(i).toString());
-
-            }
-
-
+            fragment = new TripFragment();
 
         } else if (id == R.id.nav_settings) {
-            System.out.println("settings");
+            fragment = new SettingsFragment();
 
 
-            Fragment fragment=new tripsFragment();
+            //Fragment fragment=new tripsFragment();
 
 
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            /*FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 // Replace the contents of the container with the new fragment
             ft.replace(frameLayout.getId(), fragment, "trips");
 // or ft.add(R.id.your_placeholder, new FooFragment());
 // Complete the changes added above
-            ft.commit();
+            ft.commit();*/
 
 
         } else if (id == R.id.nav_logout) {
 
-
-
                signOut();
 
 
-
-            Intent intent = new Intent(this,LoginActivity.class);
-            startActivity(intent);
-            finish();
-
-
-            System.out.println("logout");
-
+        }else if(id == R.id.nav_home){
+            fragment = new HomeFragment();
         }
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.containerFragment, fragment).commit();
+
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -307,7 +247,9 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
 
 
 
-    public void addTrip(View view) {
+
+
+    /*public void addTrip(View view) {
         destination = findViewById(R.id.destination);
         departure = findViewById(R.id.departure);
         date = findViewById(R.id.date);
@@ -346,6 +288,6 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
         availableSeats.setText("");
         date.setText("");
         freeSeats.setText("");
-    }
+    }*/
 
 }
