@@ -1,10 +1,14 @@
 package com.example.project001;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -15,25 +19,47 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.TextView;
+
 import com.example.project001.database.DBConnection;
 import com.example.project001.database.Trip;
+import com.example.project001.fragment.mapsFragment;
+import com.example.project001.fragment.tripsFragment;
+import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
 
+public class SideBarActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, mapsFragment.OnFragmentInteractionListener, tripsFragment.OnFragmentInteractionListener {
 
-public class SideBarActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-
-    //variables
+    Button nav_messages, nav_trips, nav_settings, nav_logout;
     LinearLayout profile;
+
+
     String displayName;
     String Email;
+
+    GoogleSignInClient googleApiClient;
+
+
+    DrawerLayout drawerLayout;
+
+
+    LinearLayout linearLayout;
+    TabHost frameLayout;
+
     EditText destination;
     EditText departure;
     EditText date;
@@ -41,20 +67,27 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
     EditText availableSeats;
     EditText freeSeats;
     TextView textView;
-    GoogleSignInClient googleApiClient;
+
+
+    Button riderButton;
+
 
     //Database
     Trip trip;
     DBConnection dbc = new DBConnection();
 
 
+
+    
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_sidebar);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        drawerLayout=findViewById(R.id.drawer_layout);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -65,17 +98,8 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
 
 
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
-
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -83,6 +107,22 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+
+        frameLayout=findViewById(R.id.tabHost);
+
+
+        riderButton =  findViewById(R.id.riderButton1);
+        riderButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(SideBarActivity.this, RidersActivity.class);
+
+                SideBarActivity.this.startActivity(myIntent);
+            }
+        });
+
 
 
 
@@ -101,6 +141,19 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
         spec.setContent(R.id.tab2);
         spec.setIndicator("Tab Two");
         host.addTab(spec);
+
+
+        linearLayout=findViewById(R.id.tab1);
+
+
+
+
+
+
+
+
+        //Profile clickable
+
 
     }
 
@@ -130,8 +183,6 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
 
         Log.i("DisplayName",displayName);
         Log.i("Email",Email);
-
-        dbc.checkIfExists(Email, displayName);
 
 
 
@@ -167,6 +218,7 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
         return super.onOptionsItemSelected(item);
     }
 
+    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
@@ -180,16 +232,53 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
         } else if (id == R.id.nav_trips) {
             System.out.println("trips");
 
+            Fragment fragment=new mapsFragment();
+
+
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+// Replace the contents of the container with the new fragment
+            ft.replace(linearLayout.getId(), fragment, "maps");
+// or ft.add(R.id.your_placeholder, new FooFragment());
+// Complete the changes added above
+            ft.commit();
+
+
+            for(int i=0; i<linearLayout.getChildCount(); i++){
+
+                Log.e("oneone", linearLayout.getChildAt(i).toString());
+
+            }
+
+
+
         } else if (id == R.id.nav_settings) {
             System.out.println("settings");
 
+
+            Fragment fragment=new tripsFragment();
+
+
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+// Replace the contents of the container with the new fragment
+            ft.replace(frameLayout.getId(), fragment, "trips");
+// or ft.add(R.id.your_placeholder, new FooFragment());
+// Complete the changes added above
+            ft.commit();
+
+
         } else if (id == R.id.nav_logout) {
 
+
+
                signOut();
+
+
 
             Intent intent = new Intent(this,LoginActivity.class);
             startActivity(intent);
             finish();
+
+
             System.out.println("logout");
 
         }
@@ -198,6 +287,25 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
+    public void signOut() {
+        googleApiClient.signOut()
+                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        // ...
+                    }
+                });
+    }
+
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
+
+
 
     public void addTrip(View view) {
         destination = findViewById(R.id.destination);
@@ -209,12 +317,12 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
         textView = findViewById(R.id.textView);
 
         trip = new Trip(destination.getText().toString(),
-                        departure.getText().toString(),
-                        date.getText().toString(),
-                        price.getText().toString(),
-                        availableSeats.getText().toString(),
-                        freeSeats.getText().toString(),
-                        Email);
+                departure.getText().toString(),
+                date.getText().toString(),
+                price.getText().toString(),
+                availableSeats.getText().toString(),
+                freeSeats.getText().toString(),
+                Email);
         Log.e("it contains: ", destination.getText().toString());
         Log.e("it contains: ", departure.getText().toString());
 
@@ -225,7 +333,7 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
                 availableSeats.getText().toString().isEmpty() ||
                 freeSeats.getText().toString().isEmpty()) {
 
-                textView.setText("*Please fill in all the fields.");
+            textView.setText("*Please fill in all the fields.");
         } else {
             dbc.addTripToDB(trip);
         }
@@ -240,14 +348,4 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
         freeSeats.setText("");
     }
 
-    public void signOut() {
-        googleApiClient.signOut()
-                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        // ...
-                    }
-                });
-    }
-    
 }

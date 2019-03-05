@@ -12,5 +12,8 @@
     <string name="loginButton">Login</string>
     <string name="forgotPassword">Forgot Password</string>
     <string name="createAccount">Create Account</string>
-    <string name="add_trip">Add Trip</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_maps">Map</string>
 </resources>
