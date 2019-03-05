@@ -15,37 +15,43 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.TextView;
-
 import com.example.project001.database.DBConnection;
+import com.example.project001.database.Trip;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
+
 
 public class SideBarActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    //variables
     LinearLayout profile;
     String displayName;
     String Email;
+    EditText destination;
+    EditText departure;
+    EditText date;
+    EditText price;
+    EditText availableSeats;
+    EditText freeSeats;
+    TextView textView;
     GoogleSignInClient googleApiClient;
 
     //Database
+    Trip trip;
     DBConnection dbc = new DBConnection();
-
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_sidebar);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -95,11 +101,6 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
         spec.setContent(R.id.tab2);
         spec.setIndicator("Tab Two");
         host.addTab(spec);
-
-
-
-        //Profile clickable
-
 
     }
 
@@ -166,7 +167,6 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
@@ -179,10 +179,6 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
 
         } else if (id == R.id.nav_trips) {
             System.out.println("trips");
-            //dbc.addStuff();
-            //dbc.readStuff();
-
-
 
         } else if (id == R.id.nav_settings) {
             System.out.println("settings");
@@ -194,8 +190,6 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
             Intent intent = new Intent(this,LoginActivity.class);
             startActivity(intent);
             finish();
-
-
             System.out.println("logout");
 
         }
@@ -205,6 +199,46 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
         return true;
     }
 
+    public void addTrip(View view) {
+        destination = findViewById(R.id.destination);
+        departure = findViewById(R.id.departure);
+        date = findViewById(R.id.date);
+        price = findViewById(R.id.price);
+        availableSeats = findViewById(R.id.availableSeats);
+        freeSeats = findViewById(R.id.freeSeats);
+        textView = findViewById(R.id.textView);
+
+        trip = new Trip(destination.getText().toString(),
+                        departure.getText().toString(),
+                        date.getText().toString(),
+                        price.getText().toString(),
+                        availableSeats.getText().toString(),
+                        freeSeats.getText().toString(),
+                        Email);
+        Log.e("it contains: ", destination.getText().toString());
+        Log.e("it contains: ", departure.getText().toString());
+
+        if(destination.getText().toString().isEmpty() ||
+                departure.getText().toString().isEmpty() ||
+                date.getText().toString().isEmpty() ||
+                price.getText().toString().isEmpty() ||
+                availableSeats.getText().toString().isEmpty() ||
+                freeSeats.getText().toString().isEmpty()) {
+
+                textView.setText("*Please fill in all the fields.");
+        } else {
+            dbc.addTripToDB(trip);
+        }
+
+
+
+        destination.setText("");
+        departure.setText("");
+        price.setText("");
+        availableSeats.setText("");
+        date.setText("");
+        freeSeats.setText("");
+    }
 
     public void signOut() {
         googleApiClient.signOut()
@@ -215,10 +249,5 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
                     }
                 });
     }
-
-
-
-
-
-
+    
 }

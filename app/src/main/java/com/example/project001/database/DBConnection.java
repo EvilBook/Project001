@@ -2,7 +2,6 @@ package com.example.project001.database;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -11,22 +10,16 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-
-import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.Map;
-
 import static com.google.android.gms.wearable.DataMap.TAG;
 
 public class DBConnection {
 
     //variables
-    Query query;
-    String queryData;
-    ResultSet rs;
+
 
 
     //Objects
@@ -37,9 +30,8 @@ public class DBConnection {
             .build();
 
 
-
-
-    public void addStuff(String email, String name) {
+    //Methods for registering the user
+    private void addUserToDB(String email, String name) {
 
         //Before everything else
         //db.setFirestoreSettings(settings);
@@ -71,7 +63,6 @@ public class DBConnection {
 
     public void checkIfExists(final String email, final String name) {
 
-
         //db.setFirestoreSettings(settings);
 
         db.collection("person")
@@ -81,14 +72,16 @@ public class DBConnection {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                //Log.d(TAG, document.getId() + " => " + document.getData());
-                                Log.e("actually gets", document.get("email").toString());
+
+                                //Log.e("actually gets", document.get("email").toString());
                                 if(document.get("email").equals(email)) {
                                     Log.e("the email", "exists");
                                     return;
                                 }
                             }
-                            addStuff(email, name);
+
+                            //if doe
+                            addUserToDB(email, name);
 
                         } else {
                             Log.e("data", "inserting");
@@ -96,6 +89,12 @@ public class DBConnection {
                         }
                     }
                 });
+
+    }
+
+    public void addTripToDB(Object trip) {
+
+        db.collection("trip").document().set(trip);
 
     }
 
