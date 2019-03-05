@@ -39,11 +39,6 @@ public class RidersActivity extends FragmentActivity implements OnMapReadyCallba
     LocationListener locationListener;
 
 
-
-
-
-
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -63,6 +58,7 @@ public class RidersActivity extends FragmentActivity implements OnMapReadyCallba
         }
     }
 
+
     public void updateMap(Location location) {
 
         LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
@@ -72,6 +68,7 @@ public class RidersActivity extends FragmentActivity implements OnMapReadyCallba
         TextView yourLocation =  findViewById(R.id.YourLocation);
 
        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+
         List<Address> addresses = null;
         try {
             addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
