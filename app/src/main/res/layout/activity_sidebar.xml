@@ -17,6 +17,7 @@
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/tabs"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".HomePageActivity">
@@ -48,13 +49,21 @@
                         android:id="@+id/tab1"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="#9B9B9B"
+                        android:background="#FF8383"
                         android:orientation="vertical">
 
                         <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:text="This is tab 1" />
+
+
+                        <Button
+                            android:id="@+id/riderButton1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="RIDER" />
+
 
                     </LinearLayout>
 
@@ -65,10 +74,72 @@
                         android:background="#B1B1B1"
                         android:orientation="vertical">
 
-                        <TextView
+                        <EditText
+                            android:id="@+id/destination"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:text="This is tab 2" />
+                            android:layout_height="wrap_content"
+                            android:ems="11"
+                            android:hint="Destination"
+                            android:importantForAutofill="no"
+                            android:inputType="textPersonName"
+                            android:text="" />
+
+                        <EditText
+                            android:id="@+id/departure"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ems="11"
+                            android:hint="Departure"
+                            android:inputType="textPersonName"
+                            android:text="" />
+
+                        <EditText
+                            android:id="@+id/date"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ems="11"
+                            android:hint="Date"
+                            android:inputType="textPersonName"
+                            android:text="" />
+
+                        <EditText
+                            android:id="@+id/price"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ems="11"
+                            android:hint="Price"
+                            android:inputType="textPersonName"
+                            android:text="" />
+
+                        <EditText
+                            android:id="@+id/availableSeats"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ems="11"
+                            android:hint="Available Seats"
+                            android:inputType="textPersonName"
+                            android:text="" />
+
+                        <EditText
+                            android:id="@+id/freeSeats"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ems="11"
+                            android:hint="Free Seats"
+                            android:inputType="textPersonName"
+                            android:text="" />
+
+                        <Button
+                            android:id="@+id/addTrip"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:onClick="addTrip"
+                            android:text="add trip" />
+
+                        <TextView
+                            android:id="@+id/textView"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
                     </LinearLayout>
 
                 </FrameLayout>
