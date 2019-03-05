@@ -9,8 +9,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 
-
-import com.example.project001.message.DatabaseConnection.ForConnecting;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -28,7 +26,6 @@ public class LoginActivity extends AppCompatActivity {
 
     public GoogleSignInClient mGoogleApiClient;
 
-    ForConnecting forConnecting = new ForConnecting();
 
 
 
@@ -44,7 +41,7 @@ public class LoginActivity extends AppCompatActivity {
 
         mGoogleApiClient = GoogleSignIn.getClient(this, gso);
 
-        forConnecting.ThisIsForConnecting1();
+
 
 
 
