@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_messsage);
         // This is where we write the mesage
         editText = findViewById(R.id.editText);

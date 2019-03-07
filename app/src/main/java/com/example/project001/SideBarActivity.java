@@ -78,6 +78,12 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
         displayName = intent1.getStringExtra("Display");
         email = intent1.getStringExtra("Email");
 
+
+        //checks if the profile exists in the database
+        dbc.checkIfExists(email, displayName);
+        dbc.getTrip();
+
+
         Bundle bun = new Bundle();
         bun.putString("email", email);
 
@@ -114,9 +120,7 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
         Log.i("Email", email);
 
 
-        //checks if the profile exists in the database
-        dbc.checkIfExists(email, displayName);
-        dbc.getTrip();
+
 
         profile = findViewById(R.id.profile);
         profile.setOnClickListener(new View.OnClickListener() {
