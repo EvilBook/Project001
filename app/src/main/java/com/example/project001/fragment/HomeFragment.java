@@ -14,27 +14,25 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TabHost;
 import android.widget.TextView;
-
 import com.example.project001.R;
-import com.example.project001.RidersActivity;
 import com.example.project001.SideBarActivity;
 import com.example.project001.database.DBConnection;
 import com.example.project001.database.Trip;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 
+import java.util.ArrayList;
+
 public class HomeFragment extends Fragment {
 
 
-    Button nav_messages, nav_trips, nav_settings, nav_logout;
-    LinearLayout profile;
-    String displayName;
-    String Email;
-    GoogleSignInClient googleApiClient;
-    DrawerLayout drawerLayout;
+    //String displayName;
+    String email;
     LinearLayout linearLayout;
     TabHost frameLayout;
+    Button button;
 
     EditText destination;
     EditText departure;
@@ -43,25 +41,40 @@ public class HomeFragment extends Fragment {
     EditText availableSeats;
     EditText freeSeats;
     TextView textView;
-    Button riderButton;
+
 
 
     //Database
     Trip trip;
     DBConnection dbc = new DBConnection();
+    ArrayList<Object> trips = new ArrayList<>();
+
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+
         return inflater.inflate(R.layout.fragment_home, container, false);
+
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        frameLayout = getView().findViewById(R.id.tabHost);
 
+        if(getArguments() != null) {
+            email = getArguments().getString("email");
+            Log.e("the", email);
+        } else {
+            Log.e("doesnt", "work");
+        }
+
+
+
+        frameLayout = getView().findViewById(R.id.tabHost);
 
         //Tabs
         TabHost host = getView().findViewById(R.id.tabHost);
@@ -79,30 +92,71 @@ public class HomeFragment extends Fragment {
         spec.setIndicator("Tab Two");
         host.addTab(spec);
 
-
         linearLayout = getView().findViewById(R.id.tab1);
         mainScreen();
+
+        button = getView().findViewById(R.id.addTrip);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addTrip();
+            }
+        });
     }
 
     public void mainScreen() {
 
-        Fragment fragment=new mapsFragment();
-
-
+        Fragment fragment = new mapsFragment();
         FragmentTransaction ft = getChildFragmentManager().beginTransaction();
-        // Replace the contents of the container with the new fragment
+
         ft.replace(linearLayout.getId(), fragment, "maps");
-        // or ft.add(R.id.your_placeholder, new FooFragment());
-        // Complete the changes added above
         ft.commit();
 
-
-        for(int i=0; i<linearLayout.getChildCount(); i++){
-
+        for(int i = 0; i < linearLayout.getChildCount(); i++){
             Log.e("oneone", linearLayout.getChildAt(i).toString());
-
         }
 
+    }
+
+    public void addTrip() {
+        destination = getView().findViewById(R.id.destination);
+        departure = getView().findViewById(R.id.departure);
+        date = getView().findViewById(R.id.date);
+        price = getView().findViewById(R.id.price);
+        availableSeats = getView().findViewById(R.id.availableSeats);
+        freeSeats = getView().findViewById(R.id.freeSeats);
+        textView = getView().findViewById(R.id.textView);
+
+        trip = new Trip(destination.getText().toString(),
+                departure.getText().toString(),
+                date.getText().toString(),
+                price.getText().toString(),
+                availableSeats.getText().toString(),
+                freeSeats.getText().toString(),
+                email);
+
+        Log.e("it contains: ", destination.getText().toString());
+        Log.e("it contains: ", departure.getText().toString());
+
+        if(destination.getText().toString().isEmpty() ||
+                departure.getText().toString().isEmpty() ||
+                date.getText().toString().isEmpty() ||
+                price.getText().toString().isEmpty() ||
+                availableSeats.getText().toString().isEmpty() ||
+                freeSeats.getText().toString().isEmpty()) {
+
+            textView.setText("*Please fill in all the fields.");
+        } else {
+            dbc.addTripToDB(trip);
+            //trips.add(trip);
+        }
+
+        destination.setText("");
+        departure.setText("");
+        price.setText("");
+        availableSeats.setText("");
+        date.setText("");
+        freeSeats.setText("");
     }
 
 }

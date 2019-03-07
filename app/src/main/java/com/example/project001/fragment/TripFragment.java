@@ -7,10 +7,16 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 
 import com.example.project001.R;
 
 public class TripFragment extends Fragment {
+
+    //variables
+    ScrollView scrollView;
+    LinearLayout linearLayout;
 
     @Nullable
     @Override
