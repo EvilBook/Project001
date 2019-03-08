@@ -70,7 +70,7 @@ public class TripAdapter extends BaseAdapter {
 
         holder.departure.setText(treps.getDeparture());
         holder.destination.setText(treps.getDestination());
-        holder.destination.setText(treps.getAuthor());
+        holder.author.setText(treps.getAuthor());
 
         return convertView;
     }

@@ -20,30 +20,31 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.TextView;
-
 import com.example.project001.database.DBConnection;
 import com.example.project001.database.Trip;
 import com.example.project001.fragment.HomeFragment;
 import com.example.project001.fragment.ProfileFragment;
 import com.example.project001.fragment.SettingsFragment;
 import com.example.project001.fragment.TripFragment;
+import com.example.project001.fragment.mapsFragment;
+import com.example.project001.fragment.tripsFragment;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
-public class SideBarActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class SideBarActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, mapsFragment.OnFragmentInteractionListener, tripsFragment.OnFragmentInteractionListener {
 
-    //Variables
+    //variables
+    Button nav_messages, nav_trips, nav_settings, nav_logout;
     LinearLayout profile;
     String displayName;
-    String Email;
+    String email;
     GoogleSignInClient googleApiClient;
     DrawerLayout drawerLayout;
-    String email;
 
-    //DB
+    //database
     DBConnection dbc = new DBConnection();
 
 
@@ -51,7 +52,6 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //Log In
         setContentView(R.layout.activity_sidebar);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -61,10 +61,10 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
-
         googleApiClient = GoogleSignIn.getClient(this, gso);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -78,8 +78,11 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
         displayName = intent1.getStringExtra("Display");
         email = intent1.getStringExtra("Email");
 
+
         //checks if the profile exists in the database
         dbc.checkIfExists(email, displayName);
+        //dbc.getTrip();
+
 
         Bundle bun = new Bundle();
         bun.putString("email", email);
@@ -87,13 +90,16 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
         HomeFragment hom = new HomeFragment();
         hom.setArguments(bun);
 
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.containerFragment, hom)
+                .commit();
 
-        //Set Fragment
-        getSupportFragmentManager().beginTransaction().replace(R.id.containerFragment, hom).commit();
     }
 
     @Override
     public void onBackPressed() {
+
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -102,18 +108,17 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
         }
     }
 
-
-    //Create Side Menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.test, menu);
-
-        //Set profile name
         TextView DisplayNameArea = findViewById(R.id.DisplayName);
         DisplayNameArea.setText(displayName);
 
-        //Handle Profile Clicked
+        //Log.i("DisplayName", displayName);
+        //Log.i("Email", email);
+
         profile = findViewById(R.id.profile);
         profile.setOnClickListener(new View.OnClickListener() {
 
@@ -129,13 +134,11 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
         return true;
     }
 
-
-    //Handle Option Bar selected
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_info) {
             System.out.println("info");
             return true;
@@ -144,54 +147,68 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
         return super.onOptionsItemSelected(item);
     }
 
-
-    //Handle Side Menu Buttons
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
 
         Fragment fragment = null;
+
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        System.out.println("id: " + id);
 
-
-        //Handle buttons
         if (id == R.id.nav_messages) {
-            System.out.println("messages");
             startActivity(new Intent(SideBarActivity.this, com.example.project001.message.MainActivity.class));
 
+
+
         } else if (id == R.id.nav_trips) {
-            fragment = new TripFragment();
+            //fragment = new TripFragment();
+
+            Bundle bun = new Bundle();
+            bun.putString("email", email);
+
+            TripFragment trip = new TripFragment();
+            trip.setArguments(bun);
+
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.containerFragment, trip)
+                    .commit();
+
 
         } else if (id == R.id.nav_settings) {
             fragment = new SettingsFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.containerFragment, fragment).commit();
 
         } else if (id == R.id.nav_logout) {
             signOut();
 
-        } else if (id == R.id.nav_home) {
+        } else if(id == R.id.nav_home){
             fragment = new HomeFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.containerFragment, fragment).commit();
         }
 
-        //Switch Fragments
-        getSupportFragmentManager().beginTransaction().replace(R.id.containerFragment, fragment).commit();
 
-        //Close Side Menu
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
 
-    //Handle Sign Out
     public void signOut() {
         googleApiClient.signOut()
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        // ...
+
                     }
                 });
     }
+
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
+
+
 }
