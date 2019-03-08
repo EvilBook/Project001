@@ -2,35 +2,33 @@ package com.example.project001.database;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
+
+import com.example.project001.RidersActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import static com.google.android.gms.wearable.DataMap.TAG;
 
 public class DBConnection {
 
-    //variables
-
-
-
-    //Objects
+    //Variables
+    Trip trip;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    CollectionReference personRef = db.collection("person");
-    FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
-            .setTimestampsInSnapshotsEnabled(true)
-            .build();
+    public ArrayList<Trip> trips = new ArrayList<>();
+
+    public RidersActivity r;
 
 
-    //Methods for registering the user
+    //method for registering the user
     private void addUserToDB(String email, String name) {
 
         //Before everything else
@@ -41,7 +39,6 @@ public class DBConnection {
 
         person.put("name", name);
         person.put("email", email);
-
 
         // Add a new document with a generated ID
         db.collection("person")
@@ -61,6 +58,7 @@ public class DBConnection {
 
     }
 
+    //method for checking if the email exists
     public void checkIfExists(final String email, final String name) {
 
         //db.setFirestoreSettings(settings);
@@ -79,7 +77,6 @@ public class DBConnection {
                                     return;
                                 }
                             }
-
                             //if doe
                             addUserToDB(email, name);
 
@@ -89,13 +86,43 @@ public class DBConnection {
                         }
                     }
                 });
-
     }
 
+    //method to add a trip
     public void addTripToDB(Object trip) {
 
         db.collection("trip").document().set(trip);
 
     }
 
+    public void getTripsforMap() {
+        trips.clear();
+
+        db.collection("trip").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        //Log.d(TAG, document.getId() + " => " + document.getData());
+                        trip = new Trip(document.get("destination").toString(),
+                                document.get("departure").toString(),
+                                document.get("date").toString(),
+                                document.get("price").toString(),
+                                document.get("availableSeats").toString(),
+                                document.get("freeSeats").toString(),
+                                document.getString("author"));
+
+                        trips.add(trip);
+                        System.out.println("SIZE ARRAY: " + trips.size());
+
+                    }
+                    r.getArrayList(trips);
+
+                } else {
+                    Log.d(TAG, "Error getting documents: ", task.getException());
+                }
+            }
+        });
+    }
 }
