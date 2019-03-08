@@ -54,8 +54,6 @@ public class HomeFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-
         return inflater.inflate(R.layout.fragment_home, container, false);
 
     }
@@ -67,7 +65,7 @@ public class HomeFragment extends Fragment {
 
         if(getArguments() != null) {
             email = getArguments().getString("email");
-            Log.e("the", email);
+            Log.e("homeFragment", email);
         } else {
             Log.e("doesnt", "work");
         }

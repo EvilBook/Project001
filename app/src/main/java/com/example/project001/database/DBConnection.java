@@ -33,6 +33,7 @@ public class DBConnection {
 
 
 
+
     //method for registering the user
     private void addUserToDB(String email, String name) {
 
@@ -84,7 +85,7 @@ public class DBConnection {
                                 }
                             }
 
-                            //if doe
+                            //if doesn't exist
                             addUserToDB(email, name);
 
                         } else {
@@ -107,33 +108,7 @@ public class DBConnection {
 
         trips.clear();
 
-        db.collection("trip")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                //Log.d(TAG, document.getId() + " => " + document.getData());
-                                trip = new Trip(document.get("destination").toString(),
-                                        document.get("departure").toString(),
-                                        document.get("date").toString(),
-                                        document.get("price").toString(),
-                                        document.get("availableSeats").toString(),
-                                        document.get("freeSeats").toString(),
-                                        document.getString("author"));
 
-                                trips.add(trip);
-
-                            }
-                        } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
-                        }
-                        for(Trip trip: trips) {
-                            Log.e("author", trip.getAuthor());
-                        }
-                    }
-                });
 
 
     }

@@ -81,7 +81,7 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
 
         //checks if the profile exists in the database
         dbc.checkIfExists(email, displayName);
-        dbc.getTrip();
+        //dbc.getTrip();
 
 
         Bundle bun = new Bundle();
@@ -116,11 +116,8 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
         TextView DisplayNameArea = findViewById(R.id.DisplayName);
         DisplayNameArea.setText(displayName);
 
-        Log.i("DisplayName", displayName);
-        Log.i("Email", email);
-
-
-
+        //Log.i("DisplayName", displayName);
+        //Log.i("Email", email);
 
         profile = findViewById(R.id.profile);
         profile.setOnClickListener(new View.OnClickListener() {
@@ -161,20 +158,34 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
         if (id == R.id.nav_messages) {
             startActivity(new Intent(SideBarActivity.this, com.example.project001.message.MainActivity.class));
 
+
+
         } else if (id == R.id.nav_trips) {
-            fragment = new TripFragment();
+            //fragment = new TripFragment();
+
+            Bundle bun = new Bundle();
+            bun.putString("email", email);
+
+            TripFragment trip = new TripFragment();
+            trip.setArguments(bun);
+
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.containerFragment, trip)
+                    .commit();
+
 
         } else if (id == R.id.nav_settings) {
             fragment = new SettingsFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.containerFragment, fragment).commit();
 
         } else if (id == R.id.nav_logout) {
                signOut();
 
         } else if(id == R.id.nav_home){
             fragment = new HomeFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.containerFragment, fragment).commit();
         }
-
-        getSupportFragmentManager().beginTransaction().replace(R.id.containerFragment, fragment).commit();
 
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
