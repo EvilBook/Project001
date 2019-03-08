@@ -108,9 +108,6 @@ public class DBConnection {
 
         trips.clear();
 
-
-
-
     }
 
 }
