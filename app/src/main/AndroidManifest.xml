@@ -32,10 +32,14 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
+
+        <activity android:name=".ConfirmRide"></activity>
+        <activity android:name=".PlanTrip" />
+
+
         <activity
             android:name=".RidersActivity"
             android:label="title_activity_riders" />
-
         <activity
             android:name=".fragment.MapsActivity"
             android:label="@string/title_activity_maps"></activity>

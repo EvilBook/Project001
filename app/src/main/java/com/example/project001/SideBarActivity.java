@@ -180,7 +180,7 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
             getSupportFragmentManager().beginTransaction().replace(R.id.containerFragment, fragment).commit();
 
         } else if (id == R.id.nav_logout) {
-               signOut();
+            signOut();
 
         } else if(id == R.id.nav_home){
             fragment = new HomeFragment();
