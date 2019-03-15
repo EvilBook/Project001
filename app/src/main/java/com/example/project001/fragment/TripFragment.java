@@ -59,7 +59,6 @@ public class TripFragment extends Fragment {
 
     public void createTrips() {
 
-
         voyages.clear();
         db.collection("trip")
                 .get()
@@ -79,7 +78,7 @@ public class TripFragment extends Fragment {
                                             document.get("freeSeats").toString(),
                                             document.getString("author"));
                                     voyages.add(trip);
-                                    Log.e("trip: ", trip.getAuthor());
+                                    //Log.e("trip: ", trip.getAuthor());
                                 }
                             }
 

@@ -45,6 +45,7 @@ HomeFragment extends Fragment {
     EditText freeSeats;
     TextView textView;
     Button riderButton;
+    Button button;
 
 
     //Database
@@ -60,6 +61,15 @@ HomeFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+
+        if(getArguments() != null) {
+            email = getArguments().getString("email");
+            Log.e("homeFragment", email);
+        } else {
+            Log.e("doesnt", "work");
+        }
+
 
         frameLayout = getView().findViewById(R.id.tabHost);
 
@@ -83,6 +93,15 @@ HomeFragment extends Fragment {
 
         linearLayout = getView().findViewById(R.id.tab1);
         mainScreen();
+
+        button = getView().findViewById(R.id.addTrip);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addTrip();
+            }
+        });
+
     }
 
     public void mainScreen() {

@@ -50,10 +50,11 @@ import java.util.Locale;
 
 public class RidersActivity extends Fragment implements OnMapReadyCallback {
 
-    private GoogleMap mMap;
 
+    private GoogleMap mMap;
     LocationManager locationManager;
     LocationListener locationListener;
+
 
 
     DBConnection db = new DBConnection();

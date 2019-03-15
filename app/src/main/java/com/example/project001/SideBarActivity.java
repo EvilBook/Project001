@@ -81,8 +81,6 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
 
         //checks if the profile exists in the database
         dbc.checkIfExists(email, displayName);
-        //dbc.getTrip();
-
 
         Bundle bun = new Bundle();
         bun.putString("email", email);
