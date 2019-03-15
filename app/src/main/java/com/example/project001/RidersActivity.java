@@ -1,5 +1,10 @@
 package com.example.project001;
 
+import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -37,6 +42,7 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
@@ -50,18 +56,17 @@ import java.util.Locale;
 
 public class RidersActivity extends Fragment implements OnMapReadyCallback {
 
-    private GoogleMap mMap;
+    TextView x;
 
+    //Variables
+    private GoogleMap mMap;
     LocationManager locationManager;
     LocationListener locationListener;
 
-
+    //Database and Context
     DBConnection db = new DBConnection();
-
-
     ArrayList<Trip> t = new ArrayList<>();
     Context con;
-
 
 
     @Nullable
@@ -70,11 +75,10 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
         return (inflater.inflate(R.layout.activity_riders, container, false));
     }
 
+    //ON CREATE
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-
 
         //Database and Context
         con = getContext();
@@ -83,29 +87,24 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
 
 
 
-
-
+        //create map
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
 
-
         mapFragment.getMapAsync(new OnMapReadyCallback() {
+            //ON MAP READY
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 mMap = googleMap;
 
-                Log.e("map ready", "s");
+                Log.e("map is ready", "");
 
+                //Location
                 locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
-
                 locationListener = new LocationListener() {
                     @Override
                     public void onLocationChanged(Location location) {
 
-//                        updateMap(location);
-
-
                     }
-
 
                     @Override
                     public void onStatusChanged(String provider, int status, Bundle extras) {
@@ -123,7 +122,7 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
                     }
                 };
 
-
+                //Location
                 if (Build.VERSION.SDK_INT < 23) {
                     if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                         // TODO: Consider calling
@@ -137,16 +136,17 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
                     }
                     locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
 
-
                 } else {
-                    if (ContextCompat.checkSelfPermission(getContext(),Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
-                        ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.ACCESS_FINE_LOCATION},1);
-                    }else {
+                    if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+                    } else {
                         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
 
                         Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                        if (lastKnownLocation != null){
-                            updateMap(lastKnownLocation);
+                        if (lastKnownLocation != null) {
+
+                            //SET MARKER TO CURRENT LOCATION
+                            updateMapCurrentLocation(lastKnownLocation);
 
                         }
 
@@ -156,8 +156,7 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
         });
 
 
-
-
+        //Button, TextView
         final Button planTrip = getView().findViewById(R.id.PlanYourTrip);
         final TextView toLocation = getView().findViewById(R.id.ToLocation);
 
@@ -165,101 +164,49 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
         toLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Log.e("u clicked ","");
-
+                Log.e("u clicked ", "");
             }
         });
-
 
         planTrip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Intent myIntent = new Intent(getContext(), PlanTrip.class);
-
                 RidersActivity.this.startActivity(myIntent);
-
             }
         });
-
-
     }
-
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        if (requestCode == 1){
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                    locationManager.requestLocationUpdates(locationManager.GPS_PROVIDER, 0, 0, locationListener);
-
-                    Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-
-                    updateMap(lastKnownLocation);
-                }else{
-
-                }
-
-            }else{
-            }
-
-        }else{
-        }
     }
 
 
-    public void updateMap(Location location) {
-
-        Marker marker;
-        MarkerOptions markerOptions=new MarkerOptions();
-
-
+    //Add marker Current Location & Move camera
+    public void updateMapCurrentLocation(Location location) {
         LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
-        markerOptions.position(userLocation).title("Blyat");
-
-        InfoWindowData info = new InfoWindowData();
-        info.setHotel("Hotel : excellent hotels available");
-        info.setFood("Food : all types of restaurants available");
-        info.setTransport("Reach the site by bus, car and train.");
-
-
-        MarkerExtraInfo customInfoWindow = new MarkerExtraInfo(getContext());
-
-
 
         mMap.clear();
-        mMap.setInfoWindowAdapter(customInfoWindow);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation,15));
-        marker=mMap.addMarker(markerOptions);
-        marker.setTag(info);
-        //marker.showInfoWindow();
-        TextView yourLocation =  getView().findViewById(R.id.YourLocation);
 
-        Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
+        //move camera
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 11));
 
-        List<Address> addresses = null;
-        try {
-            addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        String cityName = addresses.get(0).getAddressLine(0);
-        String stateName = addresses.get(0).getAddressLine(1);
-        String countryName = addresses.get(0).getAddressLine(2);
+        //add marker for current location
+        MarkerOptions markerOptions = new MarkerOptions().position(userLocation)
+                .title("Your Location")
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.location));
+        mMap.addMarker(markerOptions);
 
-
-        yourLocation.setText(cityName);
     }
-
 
 
     //Get Array List from database and add markers
     public void getArrayList(ArrayList<Trip> list) {
+
+        MarkerExtraInfo customInfoWindow = new MarkerExtraInfo(getContext());
+        mMap.setInfoWindowAdapter(customInfoWindow);
+
         //copy array list
         t = list;
 
@@ -269,6 +216,7 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
 
         //For each trip
         for (int i = 0; i < t.size(); i++) {
+
 
             //Search for location
             String s = t.get(i).getDeparture();
@@ -287,33 +235,32 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
                 Address address = l.get(0);
 
                 Log.d("", "geoLocate: found a location: " + address.toString());
-                //Toast.makeText(this, address.toString(), Toast.LENGTH_SHORT).show();
 
 
-                //Add marker
-
-
+                //Markers
                 Marker marker;
                 MarkerOptions markerOptions;
-
-                MarkerExtraInfo customInfoWindow = new MarkerExtraInfo(getContext());
-
-
                 LatLng pos = new LatLng(address.getLatitude(), address.getLongitude());
 
+                //Set Marker + Window Info
                 InfoWindowData info = new InfoWindowData();
-                info.setHotel("PLEIS : "+searchString);
-                info.setFood("Food : all types of restaurants available");
-                info.setTransport("Reach the site by bus, car and train.");
+                info.setDeparture("Departure: " + t.get(i).getDeparture());
+                info.setDestination("Destination: " + t.get(i).getDestination());
+                info.setAuthor(t.get(i).getAuthor());
+                info.setDate("Date: " + t.get(i).getDate());
+                info.setPrice(t.get(i).getPrice() + " Kr");
+                info.setAvailableSeats("Total Seats: " + t.get(i).getAvailableSeats());
+
                 markerOptions= new MarkerOptions()
                         .position(pos)
                         .title(searchString)
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker));
+                //Add Marker
                 marker=mMap.addMarker(markerOptions);
+
+                //Add Window
                 marker.setTag(info);
                 marker.showInfoWindow();
-
-
             }
         }
     }
@@ -324,5 +271,4 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         //DON'T ADD ANYTHING HERE, IT DOESN'T WORK.
     }
-
 }

@@ -1,40 +1,58 @@
 package com.example.project001;
 
 public class InfoWindowData {
-    private String image="";
-    private String hotel="";
-    private String food="";
-    private String transport="";
+    private String destination;
+    private String departure;
+    private String date;
+    private String price;
+    private String availableSeats;
+    private String author;
 
-    public String getImage() {
-        return image;
+    public String getDestination() {
+        return destination;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setDestination(String destination) {
+        this.destination = destination;
     }
 
-    public String getHotel() {
-        return hotel;
+    public String getDeparture() {
+        return departure;
     }
 
-    public void setHotel(String hotel) {
-        this.hotel = hotel;
+    public void setDeparture(String departure) {
+        this.departure = departure;
     }
 
-    public String getFood() {
-        return food;
+    public String getDate() {
+        return date;
     }
 
-    public void setFood(String food) {
-        this.food = food;
+    public void setDate(String date) {
+        this.date = date;
     }
 
-    public String getTransport() {
-        return transport;
+    public String getPrice() {
+        return price;
     }
 
-    public void setTransport(String transport) {
-        this.transport = transport;
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public String getAvailableSeats() {
+        return availableSeats;
+    }
+
+    public void setAvailableSeats(String availableSeats) {
+        this.availableSeats = availableSeats;
     }
 }

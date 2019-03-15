@@ -3,45 +3,116 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clipToPadding="false"
-    android:paddingVertical="10dp"
-    android:paddingLeft="15dp"
-    android:paddingRight="60dp">
+    android:paddingTop="10dp"
+    android:paddingBottom="0dp">
 
     <TextView
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/avatar"
-        android:layout_marginLeft="15dp"
         android:layout_toRightOf="@+id/avatar"
-        android:paddingBottom="4dp"
-        android:text="Rose" />
+        android:text="Rose"
+        android:elevation="2dp"
+        android:paddingHorizontal="5dp"
+        android:paddingVertical="2dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:textSize="17dp"/>
 
     <TextView
-        android:id="@+id/message_body"
+        android:id="@+id/destination_body"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/name"
-        android:layout_alignLeft="@+id/name"
         android:background="@drawable/their_message"
         android:elevation="2dp"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="12dp"
+        android:paddingHorizontal="5dp"
+        android:paddingVertical="2dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:text="How are you doing? This is a long message that should probably wrap."
-        android:textSize="18dp" />
+        android:textSize="17dp" />
 
     <TextView
-        android:id="@+id/message_body2"
+        android:id="@+id/devider"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/name"
-        android:layout_alignLeft="@+id/name"
-        android:layout_marginLeft="2dp"
-        android:layout_marginTop="91dp"
+        android:layout_below="@+id/destination_body"
+        android:textSize="14dp"
+        android:paddingVertical="2dp"
+        android:paddingHorizontal="5dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="-------------------------------------------------------------"/>
+
+    <TextView
+        android:id="@+id/author_body"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/devider"
         android:background="@drawable/their_message"
         android:elevation="2dp"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="12dp"
+        android:layout_marginLeft="10dp"
+        android:paddingHorizontal="5dp"
+        android:paddingVertical="2dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:text="How are you doing? This is a long message that should probably wrap."
-        android:textSize="18dp" />
+        android:textSize="14dp" />
+
+    <TextView
+        android:id="@+id/date_body"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/author_body"
+        android:background="@drawable/their_message"
+        android:layout_marginLeft="10dp"
+        android:elevation="2dp"
+        android:paddingHorizontal="5dp"
+        android:paddingVertical="2dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="How are you doing? This is a long message that should probably wrap."
+        android:textSize="14dp" />
+
+    <TextView
+        android:id="@+id/availableSeats_body"
+        android:layout_width="170dp"
+        android:layout_height="23dp"
+        android:layout_below="@+id/date_body"
+        android:background="@drawable/their_message"
+        android:elevation="2dp"
+        android:layout_marginLeft="10dp"
+        android:paddingHorizontal="5dp"
+        android:paddingVertical="2dp"
+        android:text="4 total seats"
+        android:textSize="14dp" />
+
+    <TextView
+        android:id="@+id/price_body"
+        android:layout_width="80dp"
+        android:layout_height="23dp"
+        android:layout_toRightOf="@+id/availableSeats_body"
+        android:layout_below="@+id/date_body"
+        android:background="@drawable/their_message"
+        android:elevation="2dp"
+        android:paddingHorizontal="5dp"
+        android:paddingVertical="2dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="How are you doing? This ige that shoobably wrap."
+        android:textSize="17dp" />
+
+    <Button
+        android:id="@+id/selectButton"
+        android:layout_width="260dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/availableSeats_body"
+        android:text="Select"
+        android:textSize="15dp"/>
+
+
+
+
 </RelativeLayout>

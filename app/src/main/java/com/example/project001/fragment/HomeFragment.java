@@ -27,16 +27,13 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 public class
 HomeFragment extends Fragment {
 
-
-    Button nav_messages, nav_trips, nav_settings, nav_logout;
-    LinearLayout profile;
-    String displayName;
-    String email;
-    GoogleSignInClient googleApiClient;
-    DrawerLayout drawerLayout;
+    //Tabs
     LinearLayout linearLayout;
     TabHost frameLayout;
 
+    //Add trips
+    Button button;
+    String email;
     EditText destination;
     EditText departure;
     EditText date;
@@ -44,12 +41,11 @@ HomeFragment extends Fragment {
     EditText availableSeats;
     EditText freeSeats;
     TextView textView;
-    Button riderButton;
-
 
     //Database
     Trip trip;
     DBConnection dbc = new DBConnection();
+
 
     @Nullable
     @Override
@@ -57,44 +53,60 @@ HomeFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
+    //ON CREATE
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        frameLayout = getView().findViewById(R.id.tabHost);
+
+        if(getArguments() != null){
+            email = getArguments().getString("email");
+            Log.e("homeFragment", email);
+        }else{
+            Log.e("doesn't work", "");
+        }
 
 
         //Tabs
+        frameLayout = getView().findViewById(R.id.tabHost);
         TabHost host = getView().findViewById(R.id.tabHost);
         host.setup();
 
         //Tab 1
         TabHost.TabSpec spec = host.newTabSpec("Tab One");
         spec.setContent(R.id.tab1);
-        spec.setIndicator("Tab One");
+        spec.setIndicator("Passenger");
         host.addTab(spec);
 
         //Tab 2
         spec = host.newTabSpec("Tab Two");
         spec.setContent(R.id.tab2);
-        spec.setIndicator("Tab Two");
+        spec.setIndicator("Driver");
         host.addTab(spec);
 
-
         linearLayout = getView().findViewById(R.id.tab1);
+
+        //load map
         mainScreen();
+
+
+        //add trip button
+        button = getView().findViewById(R.id.addTrip);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addTrip();
+            }
+        });
     }
 
+    //Handle map fragment
     public void mainScreen() {
 
+        //Fragment Map
         Fragment fragment=new RidersActivity();
-
-
         FragmentTransaction ft = getChildFragmentManager().beginTransaction();
-        // Replace the contents of the container with the new fragment
         ft.replace(linearLayout.getId(), fragment, "maps");
-        // or ft.add(R.id.your_placeholder, new FooFragment());
-        // Complete the changes added above
         ft.commit();
 
 
@@ -103,12 +115,10 @@ HomeFragment extends Fragment {
             Log.e("oneone", linearLayout.getChildAt(i).toString());
 
         }
-
     }
 
 
-
-
+    //Handle add trip
     public void addTrip() {
         destination = getView().findViewById(R.id.destination);
         departure = getView().findViewById(R.id.departure);
@@ -149,6 +159,5 @@ HomeFragment extends Fragment {
         date.setText("");
         freeSeats.setText("");
     }
-
 
 }
