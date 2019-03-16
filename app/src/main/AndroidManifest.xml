@@ -33,7 +33,7 @@
             android:value="@string/google_maps_key" />
 
 
-        <activity android:name=".ConfirmRide"></activity>
+        <activity android:name=".ConfirmTrip"></activity>
         <activity android:name=".PlanTrip" />
 
 

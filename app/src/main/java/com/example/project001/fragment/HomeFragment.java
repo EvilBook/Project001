@@ -1,5 +1,6 @@
 package com.example.project001.fragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.TextView;
 
+import com.example.project001.PlanTrip;
 import com.example.project001.R;
 import com.example.project001.RidersActivity;
 import com.example.project001.SideBarActivity;
@@ -30,6 +32,7 @@ HomeFragment extends Fragment {
     //Tabs
     LinearLayout linearLayout;
     TabHost frameLayout;
+    LinearLayout triliniarLayout;
 
     //Add trips
     Button button;
@@ -41,6 +44,8 @@ HomeFragment extends Fragment {
     EditText availableSeats;
     EditText freeSeats;
     TextView textView;
+
+
 
     //Database
     Trip trip;
@@ -85,19 +90,23 @@ HomeFragment extends Fragment {
         host.addTab(spec);
 
         linearLayout = getView().findViewById(R.id.tab1);
+        triliniarLayout = getView().findViewById(R.id.tab2);
 
         //load map
+        planTrip();
         mainScreen();
 
 
+
+
         //add trip button
-        button = getView().findViewById(R.id.addTrip);
+        /*button = getView().findViewById(R.id.addTrip);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 addTrip();
             }
-        });
+        });*/
     }
 
     //Handle map fragment
@@ -117,9 +126,31 @@ HomeFragment extends Fragment {
         }
     }
 
+    public void planTrip() {
+
+
+        Bundle bun = new Bundle();
+        bun.putString("email", email);
+
+        PlanTrip plan = new PlanTrip();
+        plan.setArguments(bun);
+
+        getChildFragmentManager()
+                .beginTransaction()
+                .replace(triliniarLayout.getId(), plan)
+                .commit();
+
+        /*Fragment fragment = new PlanTrip();
+
+        FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+        ft.replace(triliniarLayout.getId(), fragment, "yo mom");
+        ft.commit();
+        Log.e("home", "tab2");*/
+    }
+
 
     //Handle add trip
-    public void addTrip() {
+    /*public void addTrip() {
         destination = getView().findViewById(R.id.destination);
         departure = getView().findViewById(R.id.departure);
         date = getView().findViewById(R.id.date);
@@ -158,6 +189,6 @@ HomeFragment extends Fragment {
         availableSeats.setText("");
         date.setText("");
         freeSeats.setText("");
-    }
+    }*/
 
 }

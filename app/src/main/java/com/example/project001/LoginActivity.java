@@ -1,37 +1,32 @@
 package com.example.project001;
 
-
-import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 
-
-import com.example.project001.message.DatabaseConnection.ForConnecting;
+import com.example.project001.database.DBConnection;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseApp;
+
+import java.net.URL;
 
 
 public class LoginActivity extends AppCompatActivity {
 
+    //Variables
     private static final String TAG = "SignInTestActivity";
-
-
     private static final int OUR_REQUEST_CODE = 49404;
-
     public GoogleSignInClient mGoogleApiClient;
 
-    ForConnecting forConnecting = new ForConnecting();
-
-
+    public static Uri personPhoto;
 
 
     @Override
@@ -45,9 +40,6 @@ public class LoginActivity extends AppCompatActivity {
 
         mGoogleApiClient = GoogleSignIn.getClient(this, gso);
 
-        forConnecting.ThisIsForConnecting1();
-
-
 
         ImageButton googlesignInButton = findViewById(R.id.sign_in_Button);
 
@@ -58,7 +50,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-
     }
 
 
@@ -66,9 +57,6 @@ public class LoginActivity extends AppCompatActivity {
         Intent signInIntent = mGoogleApiClient.getSignInIntent();
         startActivityForResult(signInIntent,OUR_REQUEST_CODE);
     }
-
-
-
 
 
     @Override
@@ -94,31 +82,15 @@ public class LoginActivity extends AppCompatActivity {
             intent.putExtra("Display",account.getDisplayName());
             intent.putExtra("Email",account.getEmail());
 
+            personPhoto = account.getPhotoUrl();
 
 
             startActivity(intent);
 
-
-
-
         } catch (ApiException e) {
-
             Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
-
-
         }
-
-
-
-
-
-
-
     }
-
-
-
-
 }
 
 
