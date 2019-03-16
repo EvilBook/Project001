@@ -5,6 +5,7 @@ import android.content.Context;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.GoogleMap;
@@ -13,7 +14,6 @@ import com.google.android.gms.maps.model.Marker;
 public class MarkerExtraInfo implements GoogleMap.InfoWindowAdapter {
 
     private Context context;
-
 
     public MarkerExtraInfo(Context ctx){
         context = ctx;
@@ -34,8 +34,7 @@ public class MarkerExtraInfo implements GoogleMap.InfoWindowAdapter {
             View view = ((Activity)context).getLayoutInflater()
                     .inflate(R.layout.marker_info, null);
 
-            Button button = view.findViewById(R.id.selectButton);
-            TextView departureBody = view.findViewById(R.id.name);
+            final TextView departureBody = view.findViewById(R.id.name);
             TextView destinationBody = view.findViewById(R.id.destination_body);
             TextView authorBody = view.findViewById(R.id.author_body);
             TextView dateBody = view.findViewById(R.id.date_body);
@@ -44,13 +43,16 @@ public class MarkerExtraInfo implements GoogleMap.InfoWindowAdapter {
 
 
             InfoWindowData infoWindowData = (InfoWindowData) marker.getTag();
+            RidersActivity.fromLocation.setText(infoWindowData.getDeparture());
+            RidersActivity.toLocation.setText(infoWindowData.getDestination());
 
-            departureBody.setText(infoWindowData.getDeparture());
-            destinationBody.setText(infoWindowData.getDestination());
+
+            departureBody.setText("Departure: " + infoWindowData.getDeparture());
+            destinationBody.setText("Destination: " + infoWindowData.getDestination());
             authorBody.setText(infoWindowData.getAuthor());
-            dateBody.setText(infoWindowData.getDate());
-            priceBody.setText(infoWindowData.getPrice());
-            availableSeatsBody.setText(infoWindowData.getAvailableSeats());
+            dateBody.setText("Date: " + infoWindowData.getDate());
+            priceBody.setText(infoWindowData.getPrice() + " Kr");
+            availableSeatsBody.setText("Total Seats: " + infoWindowData.getAvailableSeats());
 
             return view;
 

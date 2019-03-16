@@ -5,6 +5,33 @@ import android.os.Parcelable;
 
 
 public class Trip implements Parcelable {
+    public String getDate() {
+        return date;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public String getDeparture() {
+        return departure;
+    }
+
+    public String getDestination() {
+        return destination;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public String getSeats() {
+        return seats;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
 
     public String date;
     public String time;

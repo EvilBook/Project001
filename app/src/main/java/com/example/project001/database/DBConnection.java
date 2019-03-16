@@ -121,4 +121,62 @@ public class DBConnection {
             }
         });
     }
+    //tripId, passenger, driver, soolean
+    //0 = pending
+    //1 = accepted
+    //2 = declined
+    public void addTripRequest(final String driver, final String passenger, final String status,
+                               final String departure, final String destination, final String date){
+
+        db.collection("trip").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+
+                   System.out.println("THE VALUES: "
+                            + "\ndriver: "+ driver
+                            + "\npassenger: " + passenger
+                            + "\ndeparture: " + departure
+                            + "\ndestination: " + destination
+                            + "\ndate: " + date
+                            + "\nstatus: " + status);
+
+
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+
+                        String tripId;
+
+                       System.out.println("THE VALUES DB: "
+                               + "\ndriver: "+ document.getString("author")
+                                + "\ndeparture: "+ document.getString("departure")
+                               + "\ndestination: "+ document.getString("destination")
+                               + "\ndate: "+ document.getString("date"));
+
+                        if(document.getString("author").equals(passenger)){
+                            Log.e("", "You can't request a trip where you are the driver.");
+                            break;
+
+                        }else if(document.getString("author").equals(driver) &&
+                                document.getString("destination").equals(destination) &&
+                                document.getString("departure").equals(departure) &&
+                                document.getString("date").equals(date)){
+                            tripId = document.getId();
+                            Request request = new Request(tripId, passenger, driver, status);
+                            db.collection("request").document().set(request);
+                            Log.e("", "Added to request table.");
+                            break;
+
+                        }else{
+                            Log.d(TAG, "Can't find the trip in the database: ", task.getException());
+
+                        }
+
+
+                    }
+                } else {
+                    Log.d(TAG, "Error getting documents: ", task.getException());
+                }
+            }
+        });
+    }
 }

@@ -53,6 +53,12 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
     Context con;
 
 
+
+    public static TextView fromLocation;
+    public static TextView toLocation;
+
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -136,29 +142,30 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
 
                     }
                 }
+
+                mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+                    @Override
+                    public void onInfoWindowClick(Marker marker) {
+                        InfoWindowData infoWindowData = (InfoWindowData) marker.getTag();
+
+                        String em = SideBarActivity.email;
+
+                        Bundle bun = new Bundle();
+                        bun.putString("email", em);
+
+                        db.addTripRequest(infoWindowData.getAuthor(), em, "0",
+                                infoWindowData.getDeparture(), infoWindowData.getDestination(), infoWindowData.getDate());
+                    }
+                });
             }
         });
+
+
 
 
         //Button, TextView
-        final Button planTrip = getView().findViewById(R.id.PlanYourTrip);
-        final TextView toLocation = getView().findViewById(R.id.ToLocation);
-
-
-        toLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.e("u clicked ", "");
-            }
-        });
-
-        planTrip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent myIntent = new Intent(getContext(), PlanTrip.class);
-                RidersActivity.this.startActivity(myIntent);
-            }
-        });
+        toLocation = getView().findViewById(R.id.ToLocation);
+        fromLocation = getView().findViewById(R.id.YourLocation);
     }
 
     @Override
@@ -230,12 +237,11 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
 
                 //Set Marker + Window Info
                 InfoWindowData info = new InfoWindowData();
-                info.setDeparture("Departure: " + t.get(i).departure);
-                info.setDestination("Destination: " + t.get(i).destination);
-                info.setAuthor(t.get(i).author);
-                info.setDate("Date: " + t.get(i).date);
-                info.setPrice(t.get(i).price + " Kr");
-                info.setAvailableSeats("Total Seats: " + t.get(i).seats);
+                info.setDeparture(t.get(i).getDeparture());
+                info.setDestination(t.get(i).getDestination());
+                info.setAuthor(t.get(i).getAuthor());
+                info.setDate(t.get(i).getDate());
+                info.setPrice(t.get(i).getPrice());
 
                 markerOptions= new MarkerOptions()
                         .position(pos)

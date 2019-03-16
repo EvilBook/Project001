@@ -36,7 +36,7 @@ public class PlanTrip extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_plan_trip, container, false);
-            }
+    }
 
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -102,11 +102,11 @@ public class PlanTrip extends Fragment {
         System.out.println(list);
 
         if(destination.getText().toString().isEmpty() ||
-                        departure.getText().toString().isEmpty() ||
-                        date.isEmpty() ||
-                        price.getText().toString().isEmpty() ||
-                        seats.getText().toString().isEmpty() ||
-                        time.isEmpty()) {
+                departure.getText().toString().isEmpty() ||
+                date.isEmpty() ||
+                price.getText().toString().isEmpty() ||
+                seats.getText().toString().isEmpty() ||
+                time.isEmpty()) {
 
             createButton.setClickable(false);
 

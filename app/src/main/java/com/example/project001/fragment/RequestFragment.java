@@ -9,26 +9,29 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+
 import com.example.project001.R;
-import com.example.project001.database.Trip;
+import com.example.project001.database.Request;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
 import java.util.ArrayList;
+
 import static com.google.android.gms.wearable.DataMap.TAG;
 
-public class TripFragment extends Fragment {
+public class RequestFragment extends Fragment {
 
     //variables
-    private TripAdapter tripAdapter;
-    private ListView tripView;
+    private RequestAdapter requestAdapter;
+    private ListView requestView;
     String email;
-    Trip trip;
+    Request request;
 
     //objects
-    ArrayList<Trip> voyages = new ArrayList<>();
+    ArrayList<Request> voyages = new ArrayList<>();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
 
@@ -49,11 +52,9 @@ public class TripFragment extends Fragment {
             Log.e("doesnt", "work");
         }
 
-        tripAdapter = new TripAdapter(getContext());
-        tripAdapter.email=email;
-        tripAdapter.view=getView();
-        tripView = getView().findViewById(R.id.tripView);
-        tripView.setAdapter(tripAdapter);
+        requestAdapter = new RequestAdapter(getContext());
+        requestView = getView().findViewById(R.id.requestWindow);
+        requestView.setAdapter(requestAdapter);
 
         createTrips();
 
@@ -63,7 +64,7 @@ public class TripFragment extends Fragment {
 
 
         voyages.clear();
-        db.collection("trip")
+        db.collection("request")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
 
@@ -73,22 +74,18 @@ public class TripFragment extends Fragment {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 //Log.e("the email:", email);
                                 if(document.getString("author").equals(email)) {
-                                    trip = new Trip(document.get("destination").toString(),
+                                    request = new Request(document.get("destination").toString(),
                                             document.get("departure").toString(),
                                             document.get("date").toString(),
-                                            document.get("price").toString(),
-                                            document.get("availableSeats").toString(),
-                                            document.get("freeSeats").toString(),
-                                            document.getString("author"));
-                                    voyages.add(trip);
-                                    Log.e("request: ", trip.getAuthor());
+                                            document.get("price").toString());
+                                    voyages.add(request);
                                 }
                             }
 
-                            for (Trip T : voyages) {
-                                tripAdapter.add(T);
+                            for (Request T : voyages) {
+                                requestAdapter.add(T);
                                 // scroll the ListView to the last added element
-                                tripView.setSelection(tripView.getCount() - 1);
+                                requestView.setSelection(requestView.getCount() - 1);
                             }
 
                         } else {
