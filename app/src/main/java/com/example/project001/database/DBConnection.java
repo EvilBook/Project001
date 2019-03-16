@@ -152,7 +152,7 @@ public class DBConnection {
                                + "\ndestination: "+ document.getString("destination")
                                + "\ndate: "+ document.getString("date"));
 
-                        if(document.getString("author").equals(passenger)){
+                        if(document.getString("author").equals(driver)){
                             Log.e("", "You can't request a trip where you are the driver.");
                             break;
 

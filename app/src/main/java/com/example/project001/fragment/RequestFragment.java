@@ -47,7 +47,7 @@ public class RequestFragment extends Fragment {
 
         if(getArguments() != null) {
             email = getArguments().getString("email");
-            Log.e("tripFragment", email);
+            //Log.e("tripFragment", email);
         } else {
             Log.e("doesnt", "work");
         }

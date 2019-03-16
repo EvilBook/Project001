@@ -93,20 +93,9 @@ HomeFragment extends Fragment {
         triliniarLayout = getView().findViewById(R.id.tab2);
 
         //load map
-        planTrip();
         mainScreen();
+        planTrip();
 
-
-
-
-        //add trip button
-        /*button = getView().findViewById(R.id.addTrip);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addTrip();
-            }
-        });*/
     }
 
     //Handle map fragment

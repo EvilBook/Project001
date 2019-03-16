@@ -186,20 +186,35 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
             startActivity(new Intent(SideBarActivity.this, com.example.project001.message.MainActivity.class));
 
         } else if (id == R.id.nav_trips) {
-            fragment = new TripFragment();
+
+            Bundle bun = new Bundle();
+            bun.putString("email", email);
+
+            TripFragment trp = new TripFragment();
+            trp.setArguments(bun);
+
+            getSupportFragmentManager().beginTransaction().replace(R.id.containerFragment, trp).commit();
 
         } else if (id == R.id.nav_settings) {
             fragment = new SettingsFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.containerFragment, fragment).commit();
 
         } else if (id == R.id.nav_logout) {
             signOut();
 
         } else if (id == R.id.nav_home) {
-            fragment = new HomeFragment();
-        }
 
-        //Switch Fragments
-        getSupportFragmentManager().beginTransaction().replace(R.id.containerFragment, fragment).commit();
+            Bundle bun = new Bundle();
+            bun.putString("email", email);
+
+            HomeFragment hom = new HomeFragment();
+            hom.setArguments(bun);
+
+
+            //Set Fragment
+            getSupportFragmentManager().beginTransaction().replace(R.id.containerFragment, hom).commit();
+            Log.e("curious", "biatch");
+        }
 
         //Close Side Menu
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -218,7 +233,6 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
                     }
                 });
     }
-
 
 
     //Convert URL into Bitmap for Profile Picture

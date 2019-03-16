@@ -71,17 +71,20 @@ public class TripFragment extends Fragment {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                //Log.e("the email:", email);
+                                //Log.e("bloody", email);
+                                //Log.e("anything", document.getString("author"));
+
                                 if(document.getString("author").equals(email)) {
-                                    trip = new Trip(document.get("destination").toString(),
-                                            document.get("departure").toString(),
+                                    trip = new Trip(
                                             document.get("date").toString(),
+                                            document.get("time").toString(),
+                                            document.get("departure").toString(),
+                                            document.get("destination").toString(),
                                             document.get("price").toString(),
-                                            document.get("availableSeats").toString(),
-                                            document.get("freeSeats").toString(),
+                                            document.get("seats").toString(),
                                             document.getString("author"));
                                     voyages.add(trip);
-                                    Log.e("request: ", trip.getAuthor());
+                                    Log.e("bloody hell ", trip.getAuthor());
                                 }
                             }
 
