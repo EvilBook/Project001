@@ -38,7 +38,7 @@
                         android:id="@+id/editText5"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:ems="10"
+                        android:ems="11"
                         android:inputType="textPersonName"
                         android:text="Name" />
                 </LinearLayout>
