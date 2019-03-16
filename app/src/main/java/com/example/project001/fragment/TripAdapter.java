@@ -68,10 +68,9 @@ public class TripAdapter extends BaseAdapter {
         holder.author = convertView.findViewById(R.id.author);
         convertView.setTag(holder);
 
-        holder.departure.setText(treps.getDeparture());
-        holder.destination.setText(treps.getDestination());
-        holder.author.setText(treps.getAuthor());
-
+        holder.departure.setText(treps.departure);
+        holder.destination.setText(treps.destination);
+        holder.author.setText(treps.author);
         return convertView;
     }
 

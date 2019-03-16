@@ -49,74 +49,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="#B1B1B1"
-                        android:orientation="vertical">
-
-                        <EditText
-                            android:id="@+id/destination"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:ems="11"
-                            android:hint="Destination"
-                            android:importantForAutofill="no"
-                            android:inputType="textPersonName"
-                            android:text="" />
-
-                        <EditText
-                            android:id="@+id/departure"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:ems="11"
-                            android:hint="Departure"
-                            android:inputType="textPersonName"
-                            android:text="" />
-
-                        <EditText
-                            android:id="@+id/date"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:ems="11"
-                            android:hint="Date"
-                            android:inputType="textPersonName"
-                            android:text="" />
-
-                        <EditText
-                            android:id="@+id/price"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:ems="11"
-                            android:hint="Price"
-                            android:inputType="textPersonName"
-                            android:text="" />
-
-                        <EditText
-                            android:id="@+id/availableSeats"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:ems="11"
-                            android:hint="Available Seats"
-                            android:inputType="textPersonName"
-                            android:text="" />
-
-                        <EditText
-                            android:id="@+id/freeSeats"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:ems="11"
-                            android:hint="Free Seats"
-                            android:inputType="textPersonName"
-                            android:text="" />
-
-                        <Button
-                            android:id="@+id/addTrip"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="add trip" />
-
-                        <TextView
-                            android:id="@+id/textView"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent" />
-                    </LinearLayout>
+                        android:orientation="vertical"/>
 
                 </FrameLayout>
             </LinearLayout>

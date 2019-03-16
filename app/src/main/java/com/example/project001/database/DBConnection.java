@@ -2,7 +2,6 @@ package com.example.project001.database;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
-
 import com.example.project001.RidersActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -12,7 +11,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,6 +20,8 @@ public class DBConnection {
 
     //Variables
     Trip trip;
+
+
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     public ArrayList<Trip> trips = new ArrayList<>();
 
@@ -30,9 +30,6 @@ public class DBConnection {
 
     //method for registering the user
     private void addUserToDB(String email, String name) {
-
-        //Before everything else
-        //db.setFirestoreSettings(settings);
 
         // Create a new user with a first and last name
         Map<String, Object> person = new HashMap<>();
@@ -55,13 +52,11 @@ public class DBConnection {
                         Log.w(TAG, "Error adding document", e);
                     }
                 });
-
     }
+
 
     //method for checking if the email exists
     public void checkIfExists(final String email, final String name) {
-
-        //db.setFirestoreSettings(settings);
 
         db.collection("person")
                 .get()
@@ -71,13 +66,13 @@ public class DBConnection {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
 
-                                //Log.e("actually gets", document.get("email").toString());
+                                //if exists break
                                 if(document.get("email").equals(email)) {
                                     Log.e("the email", "exists");
                                     return;
                                 }
                             }
-                            //if doe
+                            //if doesn't exist
                             addUserToDB(email, name);
 
                         } else {
@@ -90,12 +85,11 @@ public class DBConnection {
 
     //method to add a trip
     public void addTripToDB(Object trip) {
-
         db.collection("trip").document().set(trip);
-
     }
 
     public void getTripsforMap() {
+
         trips.clear();
 
         db.collection("trip").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -104,17 +98,19 @@ public class DBConnection {
                 if (task.isSuccessful()) {
 
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        //Log.d(TAG, document.getId() + " => " + document.getData());
-                        trip = new Trip(document.get("destination").toString(),
-                                document.get("departure").toString(),
+
+                        trip = new Trip(
                                 document.get("date").toString(),
+                                document.get("time").toString(),
+                                document.get("departure").toString(),
+                                document.get("destination").toString(),
                                 document.get("price").toString(),
-                                document.get("availableSeats").toString(),
-                                document.get("freeSeats").toString(),
+                                document.get("seats").toString(),
                                 document.getString("author"));
 
+
                         trips.add(trip);
-                        System.out.println("SIZE ARRAY: " + trips.size());
+                        System.out.println("SUZ ARRAY: " + trips.size());
 
                     }
                     r.getArrayList(trips);

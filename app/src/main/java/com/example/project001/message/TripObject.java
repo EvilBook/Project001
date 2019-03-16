@@ -67,7 +67,6 @@ public class TripObject implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-
         dest.writeString(destinationfrom);
         dest.writeString(destinatinationTo);
         dest.writeString(String.valueOf(Hr));
@@ -78,11 +77,6 @@ public class TripObject implements Parcelable{
         dest.writeString(String.valueOf(numberOfSeat));
         dest.writeString(licensePlate);
         dest.writeString(price);
-
-
-
-
-
     }
 
     @Override

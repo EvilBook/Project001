@@ -1,79 +1,77 @@
 package com.example.project001.database;
 
-public class Trip {
+import android.os.Parcel;
+import android.os.Parcelable;
 
-    private String destination;
-    private String departure;
-    private String date;
-    private String price;
-    private String availableSeats;
-    private String freeSeats;
-    private String author;
 
-    public Trip(String destination, String departure, String date, String price, String availableSeats, String freeSeats, String author) {
-        this.destination = destination;
-        this.departure = departure;
+public class Trip implements Parcelable {
+
+    public String date;
+    public String time;
+    public String departure;
+    public String destination;
+    public String price;
+    public String seats;
+    public String author;
+
+
+    public Trip(String date, String time, String departure, String destination, String price, String seats, String author) {
         this.date = date;
+        this.time = time;
+        this.departure = departure;
+        this.destination = destination;
         this.price = price;
-        this.availableSeats = availableSeats;
-        this.freeSeats = freeSeats;
+        this.seats = seats;
         this.author = author;
     }
 
-    public String getDestination() {
-        return destination;
+    protected Trip(Parcel in) {
+        date = in.readString();
+        time = in.readString();
+        departure = in.readString();
+        destination = in.readString();
+        price = in.readString();
+        seats = in.readString();
+        author = in.readString();
     }
 
-    public void setDestination(String destination) {
-        this.destination = destination;
+    public static final Creator<Trip> CREATOR = new Creator<Trip>() {
+        @Override
+        public Trip createFromParcel(Parcel in) {
+            return new Trip(in);
+        }
+
+        @Override
+        public Trip[] newArray(int size) {
+            return new Trip[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
-    public String getDeparture() {
-        return departure;
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(date);
+        dest.writeString(time);
+        dest.writeString(departure);
+        dest.writeString(destination);
+        dest.writeString(price);
+        dest.writeString(seats);
+        dest.writeString(author);
     }
 
-    public void setDeparture(String departure) {
-        this.departure = departure;
-    }
 
-    public String getDate() {
-        return date;
+    @Override
+    public String toString() {
+        return  "Departure: " + departure + "\n" +
+                "Destination: " + destination + "\n" +
+                "Date: " + date + "\n" +
+                "Time: " + time + "\n" +
+                "Price: " + price + "\n" +
+                "Seats: " + seats + "\n" +
+                "Author: " + author;
     }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public String getPrice() {
-        return price;
-    }
-
-    public void setPrice(String price) {
-        this.price = price;
-    }
-
-    public String getAvailableSeats() {
-        return availableSeats;
-    }
-
-    public void setAvailableSeats(String availableSeats) {
-        this.availableSeats = availableSeats;
-    }
-
-    public String getFreeSeats() {
-        return freeSeats;
-    }
-
-    public void setFreeSeats(String freeSeats) {
-        this.freeSeats = freeSeats;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.freeSeats = author;
-    }
-
 }

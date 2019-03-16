@@ -8,12 +8,34 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/createButton">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <DatePicker
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+
+            <TimePicker
+                android:id="@+id/time"
+                android:layout_width="432dp"
+                android:layout_height="350dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="95dp"
+                android:layout_marginEnd="92dp"
+                android:layout_marginBottom="68dp" />
 
             <EditText
                 android:id="@+id/departureTXT"
@@ -32,14 +54,6 @@
                 android:inputType="textPersonName" />
 
             <EditText
-                android:id="@+id/dateTXT"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Date"
-                android:inputType="textPersonName" />
-
-            <EditText
                 android:id="@+id/priceTXT"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -48,41 +62,25 @@
                 android:inputType="textPersonName" />
 
             <EditText
-                android:id="@+id/seatTXT"
+                android:id="@+id/seatsTXT"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="Seats"
                 android:inputType="textPersonName" />
 
-            <DatePicker
-                android:id="@+id/datePicker"
-                android:layout_width="wrap_content"
-
-                android:layout_height="324dp"
-                android:layout_gravity="center" />
-
-            <TimePicker
-                android:id="@+id/timePicker1"
-                android:layout_width="432dp"
-                android:layout_height="73dp"
-                android:layout_gravity="center"
-                android:layout_marginStart="95dp"
-                android:layout_marginEnd="92dp"
-                android:layout_marginBottom="68dp" />
-
         </LinearLayout>
     </ScrollView>
 
     <Button
-        android:id="@+id/ComfirmButton"
+        android:id="@+id/createButton"
         android:layout_width="300dp"
         android:layout_height="45dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:backgroundTint="@color/colorAccent"
-        android:text="COMFIRM"
+        android:text="Create Trip"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"

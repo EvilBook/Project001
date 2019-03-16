@@ -92,7 +92,6 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
                 .beginTransaction()
                 .replace(R.id.containerFragment, hom)
                 .commit();
-
     }
 
     @Override

@@ -1,10 +1,5 @@
 package com.example.project001;
 
-import android.app.Activity;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -20,11 +15,7 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,29 +23,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.example.project001.database.DBConnection;
 import com.example.project001.database.Trip;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class RidersActivity extends Fragment implements OnMapReadyCallback {
+
 
     TextView x;
 
@@ -209,6 +193,7 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
 
         //copy array list
         t = list;
+        Log.e("log", String.valueOf(list.size()));
 
         Geocoder geocoder = new Geocoder(con);
         Log.e("CONTEXT: ", "" + con);
@@ -219,7 +204,7 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
 
 
             //Search for location
-            String s = t.get(i).getDeparture();
+            String s = t.get(i).departure;
             String searchString = s.substring(0, 1).toUpperCase() + s.substring(1);
             System.out.println("SEARCH STRING: " + searchString);
 
@@ -227,6 +212,7 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
 
             try {
                 l = geocoder.getFromLocationName(searchString, 1);
+
             } catch (IOException e) {
                 Log.e(".", "geoLocate: IOException: " + e.getMessage());
             }
@@ -244,19 +230,20 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
 
                 //Set Marker + Window Info
                 InfoWindowData info = new InfoWindowData();
-                info.setDeparture("Departure: " + t.get(i).getDeparture());
-                info.setDestination("Destination: " + t.get(i).getDestination());
-                info.setAuthor(t.get(i).getAuthor());
-                info.setDate("Date: " + t.get(i).getDate());
-                info.setPrice(t.get(i).getPrice() + " Kr");
-                info.setAvailableSeats("Total Seats: " + t.get(i).getAvailableSeats());
+                info.setDeparture("Departure: " + t.get(i).departure);
+                info.setDestination("Destination: " + t.get(i).destination);
+                info.setAuthor(t.get(i).author);
+                info.setDate("Date: " + t.get(i).date);
+                info.setPrice(t.get(i).price + " Kr");
+                info.setAvailableSeats("Total Seats: " + t.get(i).seats);
 
                 markerOptions= new MarkerOptions()
                         .position(pos)
                         .title(searchString)
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker));
+
                 //Add Marker
-                marker=mMap.addMarker(markerOptions);
+                marker = mMap.addMarker(markerOptions);
 
                 //Add Window
                 marker.setTag(info);
