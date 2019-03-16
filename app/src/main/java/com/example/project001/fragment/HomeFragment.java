@@ -1,13 +1,10 @@
 package com.example.project001.fragment;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -83,17 +80,6 @@ HomeFragment extends Fragment {
         planTrip();
         mainScreen();
 
-
-
-
-        //add trip button
-        /*button = getView().findViewById(R.id.addTrip);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addTrip();
-            }
-        });*/
     }
 
     //Handle map fragment
@@ -114,8 +100,6 @@ HomeFragment extends Fragment {
     }
 
     public void planTrip() {
-
-
         Bundle bun = new Bundle();
         bun.putString("email", email);
 
@@ -126,13 +110,5 @@ HomeFragment extends Fragment {
                 .beginTransaction()
                 .replace(triliniarLayout.getId(), plan)
                 .commit();
-
-        /*Fragment fragment = new PlanTrip();
-
-        FragmentTransaction ft = getChildFragmentManager().beginTransaction();
-        ft.replace(triliniarLayout.getId(), fragment, "yo mom");
-        ft.commit();
-        Log.e("home", "tab2");*/
     }
-
 }
