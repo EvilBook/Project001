@@ -28,6 +28,7 @@ public class PlanTrip extends Fragment {
     public static EditText destination;
     public static EditText price;
     public static EditText seats;
+    Button createButton;
     Trip trip;
 
 
@@ -61,13 +62,12 @@ public class PlanTrip extends Fragment {
         final TimePicker timePicker = getView().findViewById(R.id.time);
         final DatePicker datePicker = getView().findViewById(R.id.date);
 
-        Button confirmButton = getView().findViewById(R.id.createButton);
+        createButton = getView().findViewById(R.id.createButton);
 
-        confirmButton.setOnClickListener(new View.OnClickListener() {
+        createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                
                 int hour = timePicker.getHour();
                 int min = timePicker.getMinute();
                 int day = datePicker.getDayOfMonth();
@@ -77,27 +77,48 @@ public class PlanTrip extends Fragment {
                 time = String.valueOf(hour) + ":" + String.valueOf(min);
                 date = String.valueOf(day) + "/" + String.valueOf(month) + "/" + String.valueOf(year);
 
-                trip = new Trip(
-                        date,
-                        time,
-                        departure.getText().toString(),
-                        destination.getText().toString(),
-                        price.getText().toString(),
-                        seats.getText().toString(),
-                        email);
-
-                final ArrayList<Trip> list = new ArrayList<>();
-
-                list.add(trip);
-                System.out.println(list);
-
-                Intent myIntent = new Intent(getContext(), ConfirmTrip.class);
-                myIntent.putParcelableArrayListExtra("An Object", list);
-                PlanTrip.this.startActivity(myIntent);
-
+                addTrip();
 
             }
         });
+    }
+
+
+    public void addTrip() {
+
+        trip = new Trip(
+                date,
+                time,
+                departure.getText().toString(),
+                destination.getText().toString(),
+                price.getText().toString(),
+                seats.getText().toString(),
+                email
+        );
+
+        final ArrayList<Trip> list = new ArrayList<>();
+
+        list.add(trip);
+        System.out.println(list);
+
+        if(destination.getText().toString().isEmpty() ||
+                        departure.getText().toString().isEmpty() ||
+                        date.isEmpty() ||
+                        price.getText().toString().isEmpty() ||
+                        seats.getText().toString().isEmpty() ||
+                        time.isEmpty()) {
+
+            createButton.setClickable(false);
+
+        } else {
+
+            Intent myIntent = new Intent(getContext(), ConfirmTrip.class);
+            myIntent.putParcelableArrayListExtra("An Object", list);
+            PlanTrip.this.startActivity(myIntent);
+
+        }
+
+        createButton.setClickable(true);
 
     }
 

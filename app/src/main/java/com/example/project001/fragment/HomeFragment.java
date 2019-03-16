@@ -34,22 +34,9 @@ HomeFragment extends Fragment {
     TabHost frameLayout;
     LinearLayout triliniarLayout;
 
-    //Add trips
-    Button button;
+    //Add trip
     String email;
-    EditText destination;
-    EditText departure;
-    EditText date;
-    EditText price;
-    EditText availableSeats;
-    EditText freeSeats;
-    TextView textView;
 
-
-
-    //Database
-    Trip trip;
-    DBConnection dbc = new DBConnection();
 
 
     @Nullable
@@ -147,48 +134,5 @@ HomeFragment extends Fragment {
         ft.commit();
         Log.e("home", "tab2");*/
     }
-
-
-    //Handle add trip
-    /*public void addTrip() {
-        destination = getView().findViewById(R.id.destination);
-        departure = getView().findViewById(R.id.departure);
-        date = getView().findViewById(R.id.date);
-        price = getView().findViewById(R.id.price);
-        availableSeats = getView().findViewById(R.id.availableSeats);
-        freeSeats = getView().findViewById(R.id.freeSeats);
-        textView = getView().findViewById(R.id.textView);
-
-        trip = new Trip(destination.getText().toString(),
-                departure.getText().toString(),
-                date.getText().toString(),
-                price.getText().toString(),
-                availableSeats.getText().toString(),
-                freeSeats.getText().toString(),
-                email);
-
-        Log.e("it contains: ", destination.getText().toString());
-        Log.e("it contains: ", departure.getText().toString());
-
-        if(destination.getText().toString().isEmpty() ||
-                departure.getText().toString().isEmpty() ||
-                date.getText().toString().isEmpty() ||
-                price.getText().toString().isEmpty() ||
-                availableSeats.getText().toString().isEmpty() ||
-                freeSeats.getText().toString().isEmpty()) {
-
-            textView.setText("*Please fill in all the fields.");
-        } else {
-            dbc.addTripToDB(trip);
-            //trips.add(trip);
-        }
-
-        destination.setText("");
-        departure.setText("");
-        price.setText("");
-        availableSeats.setText("");
-        date.setText("");
-        freeSeats.setText("");
-    }*/
 
 }

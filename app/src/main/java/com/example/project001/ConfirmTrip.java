@@ -19,7 +19,6 @@ public class ConfirmTrip extends AppCompatActivity {
 
     //objects
     DBConnection dbc = new DBConnection();
-    PlanTrip pt = new PlanTrip();
 
 
     @Override
