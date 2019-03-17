@@ -3,6 +3,9 @@ package com.example.project001.database;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import com.example.project001.RidersActivity;
+import com.example.project001.SideBarActivity;
+import com.example.project001.fragment.HomeFragment;
+import com.example.project001.fragment.ProfileFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -26,6 +29,7 @@ public class DBConnection {
     public ArrayList<Trip> trips = new ArrayList<>();
 
     public RidersActivity r;
+    public ProfileFragment p;
 
 
     //method for registering the user
@@ -121,10 +125,10 @@ public class DBConnection {
             }
         });
     }
-    //tripId, passenger, driver, soolean
-    //0 = pending
-    //1 = accepted
-    //2 = declined
+
+
+
+    //0 = pending, 1 = accepted, 2 = declined
     public void addTripRequest(final String driver, final String passenger, final String status,
                                final String departure, final String destination, final String date){
 
@@ -133,28 +137,28 @@ public class DBConnection {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
 
-                   System.out.println("THE VALUES: "
-                            + "\ndriver: "+ driver
-                            + "\npassenger: " + passenger
-                            + "\ndeparture: " + departure
-                            + "\ndestination: " + destination
-                            + "\ndate: " + date
-                            + "\nstatus: " + status);
+//                   System.out.println("THE VALUES: "
+//                            + "\ndriver: "+ driver
+//                            + "\npassenger: " + passenger
+//                            + "\ndeparture: " + departure
+//                            + "\ndestination: " + destination
+//                            + "\ndate: " + date
+//                            + "\nstatus: " + status);
 
 
                     for (QueryDocumentSnapshot document : task.getResult()) {
 
                         String tripId;
 
-                       System.out.println("THE VALUES DB: "
-                               + "\ndriver: "+ document.getString("author")
-                                + "\ndeparture: "+ document.getString("departure")
-                               + "\ndestination: "+ document.getString("destination")
-                               + "\ndate: "+ document.getString("date"));
+//                       System.out.println("THE VALUES DATABASE: "
+//                               + "\ndriver: "+ document.getString("author")
+//                                + "\ndeparture: "+ document.getString("departure")
+//                               + "\ndestination: "+ document.getString("destination")
+//                               + "\ndate: "+ document.getString("date"));
 
-                        if(document.getString("author").equals(driver)){
+                        if(document.getString("author").equals(passenger)){
                             Log.e("", "You can't request a trip where you are the driver.");
-                            break;
+
 
                         }else if(document.getString("author").equals(driver) &&
                                 document.getString("destination").equals(destination) &&
@@ -179,4 +183,39 @@ public class DBConnection {
             }
         });
     }
+
+
+
+
+    public void getProfileInformation() {
+
+        final String userEmail = SideBarActivity.email;
+
+        db.collection("person").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+
+                        if(document.getString("email").equals(userEmail)){
+
+//                            System.out.println("MATCH FOUND" +
+//                                    "\nuseremail: " + userEmail +
+//                                    "\nname: " + document.getString("name"));
+
+                            p.setValues(userEmail, document.getString("name"), "0677773842");
+                            break;
+                        }
+                    }
+
+
+                } else {
+                    Log.d(TAG, "Error getting documents: ", task.getException());
+                }
+            }
+        });
+    }
+
 }
+

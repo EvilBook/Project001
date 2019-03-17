@@ -236,7 +236,7 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
 
 
     //Convert URL into Bitmap for Profile Picture
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+     public static class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
 
         public DownloadImageTask(ImageView bmImage) {
@@ -259,5 +259,6 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
         protected void onPostExecute(Bitmap result) {
             bmImage.setImageBitmap(result);
         }
-    }
+
+     }
 }
