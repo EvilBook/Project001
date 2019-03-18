@@ -1,21 +1,32 @@
 package com.example.project001;
 
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TimePicker;
 import com.example.project001.database.Trip;
+import com.example.project001.fragment.ProfileFragment;
+
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 
 public class PlanTrip extends Fragment {
@@ -28,8 +39,11 @@ public class PlanTrip extends Fragment {
     public static EditText destination;
     public static EditText price;
     public static EditText seats;
-    Button createButton;
+    ImageView calendar, clock;
+    Button createButton,buttonCalendar,buttonClock;
     Trip trip;
+
+    int hour,min,day,month,year;
 
 
     @Nullable
@@ -58,29 +72,142 @@ public class PlanTrip extends Fragment {
         destination = getView().findViewById(R.id.destinationTXT);
         price = getView().findViewById(R.id.priceTXT);
         seats = getView().findViewById(R.id.seatsTXT);
-
-        final TimePicker timePicker = getView().findViewById(R.id.time);
-        final DatePicker datePicker = getView().findViewById(R.id.date);
-
+        calendar = getView().findViewById(R.id.calendar);
+        clock = getView().findViewById(R.id.clock);
         createButton = getView().findViewById(R.id.createButton);
+
+        calendar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //popup window info
+                LayoutInflater inflater = (LayoutInflater) PlanTrip.this.getActivity().getSystemService(getContext().LAYOUT_INFLATER_SERVICE);
+                View layout = inflater.inflate(R.layout.popup_calender,null);
+
+                //layout fields
+                buttonCalendar = layout.findViewById(R.id.buttonCalendar);
+                final DatePicker datePicker = layout.findViewById(R.id.date);
+
+
+
+                float density=PlanTrip.this.getResources().getDisplayMetrics().density;
+                final PopupWindow pw = new PopupWindow(layout, (int)density*350, (int)density*460, true);
+
+
+                buttonCalendar.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        day = datePicker.getDayOfMonth();
+                        month = datePicker.getMonth();
+                        year = datePicker.getYear();
+
+                        date = String.valueOf(day) + "/" + String.valueOf(month) + "/" + String.valueOf(year);
+                        pw.dismiss();
+                    }
+                });
+
+
+                //handle touch outside popup window
+                pw.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                pw.setTouchInterceptor(new View.OnTouchListener() {
+                    public boolean onTouch(View v, MotionEvent event) {
+                        if(event.getAction() == MotionEvent.ACTION_OUTSIDE) {
+                            pw.dismiss();
+                            return true;
+                        }
+                        return false;
+                    }
+                });
+                pw.setOutsideTouchable(true);
+
+                //start pop up window
+                pw.showAtLocation(layout, Gravity.CENTER, 0, -100);
+
+                dimBehind(pw);
+            }
+        });
+
+
+        clock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //popup window info
+                LayoutInflater inflater = (LayoutInflater) PlanTrip.this.getActivity().getSystemService(getContext().LAYOUT_INFLATER_SERVICE);
+                final View layout = inflater.inflate(R.layout.popup_clock,null);
+
+                //layout fields
+                buttonClock = layout.findViewById(R.id.buttonClock);
+                final TimePicker timePicker = layout.findViewById(R.id.time);
+
+
+                float density=PlanTrip.this.getResources().getDisplayMetrics().density;
+                final PopupWindow pw = new PopupWindow(layout, (int)density*350, (int)density*460, true);
+
+                buttonClock.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        hour = timePicker.getHour();
+                        min = timePicker.getMinute();
+                        time = String.valueOf(hour) + ":" + String.valueOf(min);
+
+                        pw.dismiss();
+                    }
+                });
+
+                //handle touch outside popup window
+                pw.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                pw.setTouchInterceptor(new View.OnTouchListener() {
+                    public boolean onTouch(View v, MotionEvent event) {
+                        if(event.getAction() == MotionEvent.ACTION_OUTSIDE) {
+                            pw.dismiss();
+                            return true;
+                        }
+                        return false;
+                    }
+                });
+                pw.setOutsideTouchable(true);
+
+                //start pop up window
+                pw.showAtLocation(layout, Gravity.CENTER, 0, -100);
+
+                dimBehind(pw);
+            }
+        });
+
 
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                int hour = timePicker.getHour();
-                int min = timePicker.getMinute();
-                int day = datePicker.getDayOfMonth();
-                int month = datePicker.getMonth();
-                int year = datePicker.getYear();
-
-                time = String.valueOf(hour) + ":" + String.valueOf(min);
-                date = String.valueOf(day) + "/" + String.valueOf(month) + "/" + String.valueOf(year);
-
                 addTrip();
 
             }
         });
+    }
+
+
+    //dim background for pop up window
+    private void dimBehind(PopupWindow popupWindow) {
+        View container;
+        if (popupWindow.getBackground() == null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                container = (View) popupWindow.getContentView().getParent();
+            } else {
+                container = popupWindow.getContentView();
+            }
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                container = (View) popupWindow.getContentView().getParent().getParent();
+            } else {
+                container = (View) popupWindow.getContentView().getParent();
+            }
+        }
+        Context context = popupWindow.getContentView().getContext();
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        WindowManager.LayoutParams p = (WindowManager.LayoutParams) container.getLayoutParams();
+        p.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+        p.dimAmount = 0.6f;
+        wm.updateViewLayout(container, p);
     }
 
 

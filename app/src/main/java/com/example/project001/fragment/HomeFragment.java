@@ -83,14 +83,23 @@ HomeFragment extends Fragment {
         spec.setIndicator("Passenger");
         host.addTab(spec);
 
+        //set text color tab 1
+        TextView tv = host.getTabWidget().getChildAt(0).findViewById(android.R.id.title);
+        tv.setTextColor(getResources().getColor(R.color.white));
+
         //Tab 2
         spec = host.newTabSpec("Tab Two");
         spec.setContent(R.id.tab2);
         spec.setIndicator("Driver");
         host.addTab(spec);
 
+        //set text color tab 2
+        TextView tv2 = host.getTabWidget().getChildAt(1).findViewById(android.R.id.title);
+        tv2.setTextColor(getResources().getColor(R.color.white));
+
         linearLayout = getView().findViewById(R.id.tab1);
         triliniarLayout = getView().findViewById(R.id.tab2);
+
 
         //load map
         mainScreen();

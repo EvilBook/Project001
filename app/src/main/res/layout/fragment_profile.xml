@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     android:elevation="4dp">
 
+
     <ImageView
         android:id="@+id/ProfilePic2"
         android:layout_width="160dp"
@@ -28,7 +29,8 @@
         android:text="Your Profile Information"
         android:textSize="25dp"
         android:textStyle="italic"
-        android:elevation="10dp"/>
+        android:elevation="10dp"
+        android:textColor="#000000"/>
 
 
     <android.support.constraint.ConstraintLayout
@@ -44,10 +46,11 @@
             android:id="@+id/devLine"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@android:color/darker_gray"
+            android:background="@android:color/black"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
+            app:layout_constraintRight_toRightOf="parent"
+            android:textColor="#000000" />
 
         <TextView
             android:id="@+id/view1"
@@ -58,7 +61,9 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/devLine"
             android:textSize="20dp"
-            android:text="Name: "/>
+            android:text="Name: "
+            android:textColor="#000000"
+            android:gravity="right"/>
         <TextView
             android:id="@+id/nameTextView"
             android:layout_width="wrap_content"
@@ -67,7 +72,9 @@
             app:layout_constraintLeft_toRightOf="@id/view1"
             app:layout_constraintTop_toBottomOf="@id/devLine"
             android:textSize="20dp"
-            android:text="Sample Name Here"/>
+            android:text="Sample Name Here"
+            android:textColor="#707070"
+            android:layout_marginLeft="10dp"/>
 
 
         <TextView
@@ -78,7 +85,9 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/view1"
             android:textSize="20dp"
-            android:text="Email: "/>
+            android:text="Email: "
+            android:textColor="#000000"
+            android:gravity="right"/>
         <TextView
             android:id="@+id/emailTextView"
             android:layout_width="wrap_content"
@@ -86,7 +95,9 @@
             app:layout_constraintLeft_toRightOf="@id/view2"
             app:layout_constraintTop_toBottomOf="@id/nameTextView"
             android:textSize="20dp"
-            android:text="example@gmail.com"/>
+            android:text="example@gmail.com"
+            android:textColor="#707070"
+            android:layout_marginLeft="10dp"/>
 
         <TextView
             android:id="@+id/view3"
@@ -96,7 +107,9 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/view2"
             android:textSize="20dp"
-            android:text="Phone: "/>
+            android:text="Phone: "
+            android:textColor="#000000"
+            android:gravity="right"/>
         <TextView
             android:id="@+id/phoneTextView"
             android:layout_width="wrap_content"
@@ -104,7 +117,9 @@
             app:layout_constraintLeft_toRightOf="@id/view3"
             app:layout_constraintTop_toBottomOf="@id/emailTextView"
             android:textSize="20dp"
-            android:text="063831233"/>
+            android:text="063831233"
+            android:textColor="#707070"
+            android:layout_marginLeft="10dp"/>
 
 
     </android.support.constraint.ConstraintLayout>
@@ -115,6 +130,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:text="Change Phone Number"/>
+        android:text="Change Phone Number"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:background="@color/colorPrimary"/>
 
 </android.support.constraint.ConstraintLayout>

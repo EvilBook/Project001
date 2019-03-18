@@ -115,6 +115,10 @@ public class ProfileFragment extends Fragment {
                 editPhone.setText(phone);
                 editPhoneButton = layout.findViewById(R.id.editPhoneButton);
 
+
+                float density=ProfileFragment.this.getResources().getDisplayMetrics().density;
+                final PopupWindow pw = new PopupWindow(layout, (int)density*350, (int)density*238, true);
+
                 editPhoneButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -123,12 +127,10 @@ public class ProfileFragment extends Fragment {
                         }else{
                             Log.e("PHONE NUM: ", "please fill in the phone number.");
                         }
+
+                        pw.dismiss();
                     }
                 });
-
-                float density=ProfileFragment.this.getResources().getDisplayMetrics().density;
-                final PopupWindow pw = new PopupWindow(layout, (int)density*350, (int)density*238, true);
-
 
                 //handle touch outside popup window
                 pw.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));

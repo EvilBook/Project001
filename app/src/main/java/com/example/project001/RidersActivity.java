@@ -1,5 +1,7 @@
 package com.example.project001;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.support.v4.app.Fragment;
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -211,54 +213,69 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
 
 
         //For each trip
-        for (int i = 0; i < t.size(); i++) {
+        if(t.size() > 0) {
+            for (int i = 0; i < t.size(); i++) {
 
 
-            //Search for location
-            String s = t.get(i).departure;
-            String searchString = s.substring(0, 1).toUpperCase() + s.substring(1);
-            System.out.println("SEARCH STRING: " + searchString);
+                //Search for location
+                String s = t.get(i).departure;
+                String searchString = s.substring(0, 1).toUpperCase() + s.substring(1);
+                System.out.println("SEARCH STRING: " + searchString);
 
-            List<Address> l = new ArrayList<>();
+                List<Address> l = new ArrayList<>();
 
-            try {
-                l = geocoder.getFromLocationName(searchString, 1);
+                try {
+                    l = geocoder.getFromLocationName(searchString, 1);
 
-            } catch (IOException e) {
-                Log.e(".", "geoLocate: IOException: " + e.getMessage());
+                } catch (IOException e) {
+                    Log.e(".", "geoLocate: IOException: " + e.getMessage());
+                }
+
+                if (list.size() > 0) {
+                    Address address = l.get(0);
+
+                    Log.d("", "geoLocate: found a location: " + address.toString());
+
+
+                    //Markers
+                    Marker marker;
+                    MarkerOptions markerOptions;
+                    LatLng pos = new LatLng(address.getLatitude(), address.getLongitude());
+
+                    //Set Marker + Window Info
+                    InfoWindowData info = new InfoWindowData();
+                    info.setDeparture(t.get(i).getDeparture());
+                    info.setDestination(t.get(i).getDestination());
+                    info.setAuthor(t.get(i).getAuthor());
+                    info.setDate(t.get(i).getDate());
+                    info.setPrice(t.get(i).getPrice());
+
+                    markerOptions = new MarkerOptions()
+                            .position(pos)
+                            .title(searchString)
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker));
+
+                    //Add Marker
+                    marker = mMap.addMarker(markerOptions);
+
+                    //Add Window
+                    marker.setTag(info);
+                    marker.showInfoWindow();
+                }
             }
-
-            if (list.size() > 0) {
-                Address address = l.get(0);
-
-                Log.d("", "geoLocate: found a location: " + address.toString());
-
-
-                //Markers
-                Marker marker;
-                MarkerOptions markerOptions;
-                LatLng pos = new LatLng(address.getLatitude(), address.getLongitude());
-
-                //Set Marker + Window Info
-                InfoWindowData info = new InfoWindowData();
-                info.setDeparture(t.get(i).getDeparture());
-                info.setDestination(t.get(i).getDestination());
-                info.setAuthor(t.get(i).getAuthor());
-                info.setDate(t.get(i).getDate());
-                info.setPrice(t.get(i).getPrice());
-
-                markerOptions= new MarkerOptions()
-                        .position(pos)
-                        .title(searchString)
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker));
-
-                //Add Marker
-                marker = mMap.addMarker(markerOptions);
-
-                //Add Window
-                marker.setTag(info);
-                marker.showInfoWindow();
-            }
+        }else{
+            Log.e("Error: ", "Can't add markers to map because array is empty.");
+            //show dialog
+            AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
+            alertDialog.setTitle("Problem Requesting Trips");
+            alertDialog.setMessage("Please Refresh The Home Page.");
+            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            alertDialog.show();
         }
     }
 

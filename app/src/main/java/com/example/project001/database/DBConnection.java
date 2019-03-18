@@ -60,7 +60,6 @@ public class DBConnection {
                 });
     }
 
-
     //method for checking if the email exists
     public void checkIfExists(final String email, final String name) {
 
@@ -94,6 +93,7 @@ public class DBConnection {
         db.collection("trip").document().set(trip);
     }
 
+    //method for getting trips for the map
     public void getTripsforMap() {
 
         trips.clear();
@@ -128,8 +128,7 @@ public class DBConnection {
         });
     }
 
-
-
+    //method for adding a trip request
     //0 = pending, 1 = accepted, 2 = declined
     public void addTripRequest(final String driver, final String passenger, final String status,
                                final String departure, final String destination, final String date){
@@ -162,6 +161,18 @@ public class DBConnection {
 
                         if(document.getString("author").equals(passenger)){
                             Log.e("", "You can't request a trip where you are the driver.");
+
+                            //show dialog
+                            AlertDialog alertDialog = new AlertDialog.Builder(r.getContext()).create();
+                            alertDialog.setTitle("Problem Requesting Trip");
+                            alertDialog.setMessage("You can't request a trip where you are the driver.");
+                            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+                            alertDialog.show();
 
 
                         }else if(document.getString("author").equals(driver) &&
@@ -265,8 +276,7 @@ public class DBConnection {
                 }
             } }); }
 
-
-
+    //method for getting profile information
     public void getProfileInformation() {
 
         final String userEmail = SideBarActivity.email;
