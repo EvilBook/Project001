@@ -117,7 +117,7 @@ public class ProfileFragment extends Fragment {
 
 
                 float density=ProfileFragment.this.getResources().getDisplayMetrics().density;
-                final PopupWindow pw = new PopupWindow(layout, (int)density*350, (int)density*238, true);
+                final PopupWindow pw = new PopupWindow(layout, (int)density*350, (int)density*234, true);
 
                 editPhoneButton.setOnClickListener(new View.OnClickListener() {
                     @Override

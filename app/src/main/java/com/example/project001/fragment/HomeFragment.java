@@ -46,7 +46,6 @@ HomeFragment extends Fragment {
     TextView textView;
 
 
-
     //Database
     Trip trip;
     DBConnection dbc = new DBConnection();
@@ -103,6 +102,7 @@ HomeFragment extends Fragment {
 
         //load map
         mainScreen();
+        //load add trip
         planTrip();
 
     }

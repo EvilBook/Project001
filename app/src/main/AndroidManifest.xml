@@ -45,9 +45,6 @@
             android:name=".fragment.MapsActivity"
             android:label="@string/title_activity_maps"></activity>
         <activity
-            android:name=".CreateActivity"
-            android:theme="@style/AppTheme.PopTheme"></activity>
-        <activity
             android:name=".SideBarActivity"
             android:label="@string/title_activity_test"
             android:theme="@style/AppTheme.NoActionBar" />

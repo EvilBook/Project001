@@ -7,14 +7,12 @@
         android:width="240dp"/>
 
     <gradient
-        android:startColor="#BDBDBD"
-        android:endColor="#EBEBEB"
-        android:angle="0"/>
+        android:startColor="@color/colorPrimary"
+        android:endColor="@color/colorPrimary"
+        android:angle="180"/>
 
     <corners
         android:bottomRightRadius="14dp"
-        android:bottomLeftRadius="14dp"
-
-        />
+        android:bottomLeftRadius="14dp" />
 
 </shape>

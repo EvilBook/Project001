@@ -1,7 +1,9 @@
 package com.example.project001;
 
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -234,6 +236,19 @@ public class PlanTrip extends Fragment {
                 price.getText().toString().isEmpty() ||
                 seats.getText().toString().isEmpty() ||
                 time.isEmpty()) {
+
+
+            //show dialog
+            AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
+            alertDialog.setTitle("Problem Creating Trip");
+            alertDialog.setMessage("Please Fill In All Fields");
+            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            alertDialog.show();
 
             createButton.setClickable(false);
 
