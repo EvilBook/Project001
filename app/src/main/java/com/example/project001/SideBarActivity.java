@@ -201,6 +201,9 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
 
         } else if (id == R.id.nav_logout) {
             signOut();
+            Intent intent = new Intent(SideBarActivity.this,LoginActivity.class);
+
+            SideBarActivity.this.startActivity(intent);
 
         } else if (id == R.id.nav_home) {
 
@@ -225,8 +228,7 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
 
     //Handle Sign Out
     public void signOut() {
-        googleApiClient.signOut()
-                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+        googleApiClient.signOut().addOnCompleteListener(this, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         // ...

@@ -9,6 +9,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:background="#aaaaaa"
         app:layout_constraintBottom_toTopOf="@+id/createButton">
 
         <LinearLayout
@@ -26,7 +27,10 @@
                 android:layout_width="wrap_content"
 
                 android:layout_height="wrap_content"
-                android:layout_gravity="center" />
+                android:layout_gravity="center"
+                android:background="#dfe0e2"
+                android:headerBackground="#eb5160"
+                android:yearListSelectorColor="#eb5160" />
 
             <TimePicker
                 android:id="@+id/time"
@@ -35,7 +39,10 @@
                 android:layout_gravity="center"
                 android:layout_marginStart="95dp"
                 android:layout_marginEnd="92dp"
-                android:layout_marginBottom="68dp" />
+                android:layout_marginBottom="68dp"
+                android:background="#aaaaaa"
+                android:headerBackground="#eb5160"
+                android:numbersSelectorColor="#eb5160" />
 
             <EditText
                 android:id="@+id/departureTXT"

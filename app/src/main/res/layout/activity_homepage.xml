@@ -31,30 +31,15 @@
                     android:id="@+id/tab1"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="#ffc916"
-                    android:orientation="vertical">
-
-                    <EditText
-                        android:id="@+id/editText5"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="11"
-                        android:inputType="textPersonName"
-                        android:text="Name" />
-                </LinearLayout>
+                    android:background="#b7999c"
+                    android:orientation="vertical" />
 
                 <LinearLayout
                     android:id="@+id/tab2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="#da8200"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:text="This is tab 2" />
-                </LinearLayout>
+                    android:background="#b7999c"
+                    android:orientation="vertical" />
 
             </FrameLayout>
         </LinearLayout>
