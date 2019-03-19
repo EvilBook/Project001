@@ -19,19 +19,37 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
+import android.widget.NumberPicker;
 import android.widget.PopupWindow;
 import android.widget.TimePicker;
+import android.widget.Toast;
+
 import com.example.project001.database.Trip;
 import com.example.project001.fragment.ProfileFragment;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.sql.SQLOutput;
 import java.util.ArrayList;
 
-public class PlanTrip extends Fragment {
+public class PlanTrip extends Fragment implements AdapterView.OnItemClickListener{
 
     //variables
     public static String date;
@@ -39,13 +57,18 @@ public class PlanTrip extends Fragment {
     public static String email;
     public static EditText departure;
     public static EditText destination;
-    public static EditText price;
-    public static EditText seats;
+    public static NumberPicker price;
+    public static NumberPicker seats;
     ImageView calendar, clock;
     Button createButton,buttonCalendar,buttonClock;
     Trip trip;
 
     int hour,min,day,month,year;
+
+
+    AutoCompleteTextView autoCompView;
+    AutoCompleteTextView autoCompView2;
+
 
 
     @Nullable
@@ -59,6 +82,17 @@ public class PlanTrip extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+
+        autoCompView = (AutoCompleteTextView) getView().findViewById(R.id.departureTXT);
+        autoCompView.setAdapter(new GooglePlacesAutocompleteAdapter(getActivity(), R.layout.list_item));
+        autoCompView.setOnItemClickListener(this);
+
+        autoCompView2 = (AutoCompleteTextView) getView().findViewById(R.id.destinationTXT);
+        autoCompView2.setAdapter(new GooglePlacesAutocompleteAdapter(getActivity(), R.layout.list_item));
+        autoCompView2.setOnItemClickListener(this);
+
+
 
         if(getArguments() != null) {
             email = getArguments().getString("email");
@@ -77,6 +111,13 @@ public class PlanTrip extends Fragment {
         calendar = getView().findViewById(R.id.calendar);
         clock = getView().findViewById(R.id.clock);
         createButton = getView().findViewById(R.id.createButton);
+
+        price.setMinValue(50);
+        price.setMaxValue(1500);
+
+        seats.setMinValue(1);
+        seats.setMaxValue(15);
+
 
         calendar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -220,10 +261,11 @@ public class PlanTrip extends Fragment {
                 time,
                 departure.getText().toString(),
                 destination.getText().toString(),
-                price.getText().toString(),
-                seats.getText().toString(),
+                String.valueOf(price.getValue()),
+                String.valueOf(seats.getValue()),
                 email
         );
+
 
         final ArrayList<Trip> list = new ArrayList<>();
 
@@ -233,8 +275,8 @@ public class PlanTrip extends Fragment {
         if(destination.getText().toString().isEmpty() ||
                 departure.getText().toString().isEmpty() ||
                 date.isEmpty() ||
-                price.getText().toString().isEmpty() ||
-                seats.getText().toString().isEmpty() ||
+                String.valueOf(price.getValue()).isEmpty() ||
+                String.valueOf(seats.getValue()).isEmpty() ||
                 time.isEmpty()) {
 
 
@@ -264,4 +306,117 @@ public class PlanTrip extends Fragment {
 
     }
 
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        String str = (String) parent.getItemAtPosition(position);
+        Toast.makeText(getActivity(), str, Toast.LENGTH_SHORT).show();
+    }
+}
+
+
+class GooglePlacesAutocompleteAdapter extends ArrayAdapter implements Filterable {
+    private ArrayList resultList;
+
+    public GooglePlacesAutocompleteAdapter(Context context, int textViewResourceId) {
+        super(context, textViewResourceId);
+    }
+
+    @Override
+    public int getCount() {
+        return resultList.size();
+    }
+
+    @Override
+    public String getItem(int index) {
+        return (String) resultList.get(index);
+    }
+
+    @Override
+    public Filter getFilter() {
+        Filter filter = new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                FilterResults filterResults = new FilterResults();
+                if (constraint != null) {
+                    // Retrieve the autocomplete results.
+                    resultList = autocomplete(constraint.toString());
+
+                    // Assign the data to the FilterResults
+                    filterResults.values = resultList;
+                    filterResults.count = resultList.size();
+                }
+                return filterResults;
+            }
+
+            private ArrayList autocomplete(String toString) {
+                String LOG_TAG = "GooglePlaceAutocomplete";
+                String PLACES_API_BASE = "https://maps.googleapis.com/maps/api/place";
+                String TYPE_AUTOCOMPLETE = "/autocomplete";
+                String OUT_JSON = "/json";
+                String API_KEY = "AIzaSyC6m2lEXUWFI7csc1393xi-ldWIe_SC9FM";
+
+                ArrayList resultList = null;
+
+                HttpURLConnection conn = null;
+                StringBuilder jsonResults = new StringBuilder();
+                try {
+                    StringBuilder sb = new StringBuilder(PLACES_API_BASE + TYPE_AUTOCOMPLETE + OUT_JSON);
+                    sb.append("?key=" + API_KEY);
+                    sb.append("&components=country:se");
+                    sb.append("&input=" + URLEncoder.encode(toString, "utf8"));
+
+                    URL url = new URL(sb.toString());
+                    conn = (HttpURLConnection) url.openConnection();
+                    InputStreamReader in = new InputStreamReader(conn.getInputStream());
+
+                    // Load the results into a StringBuilder
+                    int read;
+                    char[] buff = new char[1024];
+                    while ((read = in.read(buff)) != -1) {
+                        jsonResults.append(buff, 0, read);
+                        System.out.println(jsonResults);
+                    }
+                } catch (MalformedURLException e) {
+                    Log.e(LOG_TAG, "Error processing Places API URL", e);
+                    return resultList;
+                } catch (IOException e) {
+                    Log.e(LOG_TAG, "Error connecting to Places API", e);
+                    return resultList;
+                } finally {
+                    if (conn != null) {
+                        conn.disconnect();
+                    }
+                }
+
+                try {
+                    // Create a JSON object hierarchy from the results
+                    JSONObject jsonObj = new JSONObject(jsonResults.toString());
+                    JSONArray predsJsonArray = jsonObj.getJSONArray("predictions");
+
+                    // Extract the Place descriptions from the results
+                    resultList = new ArrayList(predsJsonArray.length());
+                    for (int i = 0; i < predsJsonArray.length(); i++) {
+                        System.out.println(predsJsonArray.getJSONObject(i).getString("description"));
+                        System.out.println("============================================================");
+                        resultList.add(predsJsonArray.getJSONObject(i).getString("description"));
+                    }
+                } catch (JSONException e) {
+                    Log.e(LOG_TAG, "Cannot process JSON results", e);
+                }
+
+                return resultList;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                if (results != null && results.count > 0) {
+                    notifyDataSetChanged();
+
+                } else {
+                    notifyDataSetInvalidated();
+                }
+            }
+        };
+        return filter;
+    }
 }
