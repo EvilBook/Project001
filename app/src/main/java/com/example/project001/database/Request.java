@@ -5,6 +5,10 @@ public class Request {
 
     public String tripId;
 
+
+    public String requestId;
+
+
     public Request(String tripId, String passenger, String driver, String soolean) {
         this.tripId = tripId;
         this.passenger = passenger;

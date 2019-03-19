@@ -7,23 +7,33 @@ import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.example.project001.R;
 import com.example.project001.database.Request;
 import com.example.project001.database.Trip;
 import com.example.project001.message.MessageAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.zip.Inflater;
 
 import static com.google.android.gms.wearable.DataMap.TAG;
@@ -38,6 +48,10 @@ public class TripAdapter extends BaseAdapter {
     Request request;
     View view;
 
+
+    String tripId;
+
+
     //objects
     ArrayList<Request> voyages = new ArrayList<>();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -48,6 +62,18 @@ public class TripAdapter extends BaseAdapter {
 
 
     TripViewHolder holder = new TripViewHolder();
+
+    private float x1,x2;
+    static final int MIN_DISTANCE = 12;
+    static final int MIN_DISTANCE1 = -12;
+
+
+    int time=0;
+
+    ArrayList<String> buffer=new ArrayList<>();
+    ArrayList<View> buffer1=new ArrayList<>();
+
+
 
 
     public TripAdapter(Context context) {
@@ -80,6 +106,8 @@ public class TripAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
+
+
         LayoutInflater tripInflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         Trip treps = trips.get(position);
 
@@ -92,56 +120,18 @@ public class TripAdapter extends BaseAdapter {
 
         holder.departure.setText(treps.getDeparture());
         holder.destination.setText(treps.getDestination());
-        holder.author.setText(treps.getAuthor());
+        holder.author.setText(treps.tripId);
 
 
-        requestAdapter = new RequestAdapter(context);
-        requestView = convertView.findViewById(R.id.requestWindow);
-        requestView.setAdapter(requestAdapter);
 
-        addRequests();
+
+
 
         return convertView;
     }
 
-    private void addRequests() {
 
 
-
-
-        voyages.clear();
-        db.collection("request")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                //Log.e("the email:", email);
-                                if(document.getString("driver").equals(email)) {
-                                    request = new Request(document.getString("soolean"),
-                                            document.getString("passenger"),
-                                            document.getString("driver"),
-                                            document.getString("tripId"));
-                                    voyages.add(request);
-                                }
-                            }
-
-                            for (Request T : voyages) {
-                                requestAdapter.add(T);
-                                // scroll the ListView to the last added element
-                                requestView.setSelection(requestView.getCount() - 1);
-                            }
-
-                        } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
-                        }
-                    }
-                });
-
-
-    }
 
 
 }

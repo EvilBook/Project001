@@ -66,7 +66,7 @@ public class RequestAdapter extends BaseAdapter {
         holder.author = convertView.findViewById(R.id.author);
         convertView.setTag(holder);
 
-        holder.departure.setText(treps.getTripId());
+        holder.departure.setText(treps.requestId);
         holder.destination.setText(treps.getDriver());
         holder.author.setText(treps.getPassenger());
 

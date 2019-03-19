@@ -102,7 +102,7 @@ public class ChatFragment extends Fragment {
                                     chat = new Chat(document.get("driverName").toString(),
                                             document.get("id").toString(),
                                             document.get("passengerName").toString()
-                                            );
+                                    );
 
                                     chats.add(chat);
                                     roomID = chat.getId();

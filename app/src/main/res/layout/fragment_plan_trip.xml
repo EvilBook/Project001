@@ -6,92 +6,218 @@
     android:layout_height="match_parent"
     tools:context=".PlanTrip">
 
-    <ScrollView
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/layout"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="#aaaaaa"
-        app:layout_constraintBottom_toTopOf="@+id/createButton">
+        android:layout_height="match_parent"
+        android:paddingLeft="20dp"
+        android:paddingTop="20dp"
+        android:paddingRight="20dp"
+        android:paddingBottom="40dp"
+        app:layout_constraintBottom_toTopOf="@id/createButton"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+
+        <ImageView
+            android:id="@+id/mapImg"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/txtv"
+            app:layout_constraintTop_toTopOf="parent"
+            android:src="@drawable/map" />
+
+        <TextView
+            android:id="@+id/txtv"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:paddingLeft="8dp"
+            android:layout_marginTop="7dp"
+            android:text="Create a New Trip"
+            android:textSize="20dp"
+            android:textStyle="italic"
+            app:layout_constraintLeft_toRightOf="@id/mapImg"
+            app:layout_constraintTop_toTopOf="parent"
+            android:textColor="#000000"
+            android:layout_marginLeft="5dp"
+            android:gravity="bottom" />
 
-            <TextView
-                android:id="@+id/textView5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+        <View
+            android:id="@+id/devLine"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:background="@android:color/darker_gray"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtv" />
 
-            <DatePicker
-                android:id="@+id/date"
-                android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/txtv1"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center|right"
+            android:text="Departure: "
+            android:textSize="17dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/devLine"
+            android:textColor="#000000" />
 
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="#dfe0e2"
-                android:headerBackground="#eb5160"
-                android:yearListSelectorColor="#eb5160" />
 
-            <TimePicker
-                android:id="@+id/time"
-                android:layout_width="432dp"
-                android:layout_height="350dp"
-                android:layout_gravity="center"
-                android:layout_marginStart="95dp"
-                android:layout_marginEnd="92dp"
-                android:layout_marginBottom="68dp"
-                android:background="#aaaaaa"
-                android:headerBackground="#eb5160"
-                android:numbersSelectorColor="#eb5160" />
 
-            <EditText
-                android:id="@+id/departureTXT"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Departure"
-                android:inputType="textPersonName" />
+        <AutoCompleteTextView
+            android:id="@+id/departureTXT"
+            android:dropDownHeight="130dp"
+            android:layout_width="220dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="20dp"
+            android:textSize="17dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            app:layout_constraintLeft_toRightOf="@id/txtv1"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/devLine"
+            android:textColor="#707070" />
 
-            <EditText
-                android:id="@+id/destinationTXT"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Destination"
-                android:inputType="textPersonName" />
+        <TextView
+            android:id="@+id/txtv2"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:gravity="center|right"
+            android:text="Destination :"
+            android:textSize="17dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtv1"
+            android:textColor="#000000" />
 
-            <EditText
-                android:id="@+id/priceTXT"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Price"
-                android:inputType="textPersonName" />
 
-            <EditText
-                android:id="@+id/seatsTXT"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Seats"
-                android:inputType="textPersonName" />
 
-        </LinearLayout>
-    </ScrollView>
+        <AutoCompleteTextView
+            android:id="@+id/destinationTXT"
+            android:dropDownHeight="130dp"
+            android:layout_width="220dp"
+            android:layout_height="40dp"
+            android:textSize="17dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            app:layout_constraintLeft_toRightOf="@id/txtv2"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/departureTXT"
+            android:textColor="#707070" />
+
+
+        <NumberPicker
+            android:id="@+id/priceTXT"
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            android:textSize="25dp"
+            android:layout_marginTop="20dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/seatsTXT"
+            app:layout_constraintTop_toBottomOf="@id/txtv2" />
+
+
+        <NumberPicker
+            android:id="@+id/seatsTXT"
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            android:textSize="25dp"
+            android:layout_marginTop="20dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            app:layout_constraintLeft_toRightOf="@id/priceTXT"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/destinationTXT" />
+
+        <TextView
+            android:id="@+id/txtv3"
+            android:layout_height="wrap_content"
+            android:layout_width="80dp"
+            android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@id/priceTXT"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/txtv4"
+            android:text="Set Price"
+            android:textColor="@color/colorPrimaryDark"/>
+
+
+        <TextView
+            android:id="@+id/txtv4"
+            android:layout_height="wrap_content"
+            android:layout_width="80dp"
+            android:gravity="center"
+            android:text="Set Seats"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/txtv3"
+            app:layout_constraintTop_toBottomOf="@id/seatsTXT"
+            android:textColor="@color/colorPrimaryDark"/>
+
+        <ImageView
+            android:id="@+id/calendar"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginTop="50dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/clock"
+            app:layout_constraintTop_toBottomOf="@id/txtv3"
+            app:srcCompat="@drawable/calander" />
+
+        <ImageView
+            android:id="@+id/clock"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginTop="50dp"
+            android:src="@drawable/clock"
+            app:layout_constraintLeft_toRightOf="@id/calendar"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtv4" />
+
+        <TextView
+            android:id="@+id/txtv5"
+            android:layout_height="wrap_content"
+            android:layout_width="80dp"
+            android:gravity="center"
+            android:text="Set Date"
+            android:layout_marginTop="5dp"
+            app:layout_constraintTop_toBottomOf="@id/calendar"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/txtv6"
+            android:clickable="true"
+            android:textColor="@color/colorPrimaryDark"/>
+
+        <TextView
+            android:id="@+id/txtv6"
+            android:layout_width="80dp"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:text="Set Time"
+            android:layout_marginTop="5dp"
+            app:layout_constraintTop_toBottomOf="@id/clock"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/txtv5"
+            android:clickable="true"
+            android:textColor="@color/colorPrimaryDark"/>
+
+
+    </android.support.constraint.ConstraintLayout>
 
     <Button
         android:id="@+id/createButton"
-        android:layout_width="300dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
         android:backgroundTint="@color/colorAccent"
         android:text="Create Trip"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
-        app:layout_constraintStart_toStartOf="parent" />
-
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

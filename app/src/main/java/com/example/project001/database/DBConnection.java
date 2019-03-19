@@ -60,7 +60,6 @@ public class DBConnection {
                 });
     }
 
-
     //method for checking if the email exists
     public void checkIfExists(final String email, final String name) {
 
@@ -94,6 +93,7 @@ public class DBConnection {
         db.collection("trip").document().set(trip);
     }
 
+    //method for getting trips for the map
     public void getTripsforMap() {
 
         trips.clear();
@@ -128,8 +128,7 @@ public class DBConnection {
         });
     }
 
-
-
+    //method for adding a trip request
     //0 = pending, 1 = accepted, 2 = declined
     public void addTripRequest(final String driver, final String passenger, final String status,
                                final String departure, final String destination, final String date){
@@ -139,49 +138,63 @@ public class DBConnection {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
 
-//                   System.out.println("THE VALUES: "
-//                            + "\ndriver: "+ driver
-//                            + "\npassenger: " + passenger
-//                            + "\ndeparture: " + departure
-//                            + "\ndestination: " + destination
-//                            + "\ndate: " + date
-//                            + "\nstatus: " + status);
+                    System.out.println("THE VALUES: "
+                            + "\ndriver: "+ driver
+                            + "\npassenger: " + passenger
+                            + "\ndeparture: " + departure
+                            + "\ndestination: " + destination
+                            + "\ndate: " + date
+                            + "\nstatus: " + status);
 
 
 
                     for (QueryDocumentSnapshot document : task.getResult()) {
-
                         final String tripId;
 
 
-//                       System.out.println("THE VALUES DATABASE: "
-//                               + "\ndriver: "+ document.getString("author")
-//                                + "\ndeparture: "+ document.getString("departure")
-//                               + "\ndestination: "+ document.getString("destination")
-//                               + "\ndate: "+ document.getString("date"));
-
-                        if(document.getString("author").equals(passenger)){
-                            Log.e("", "You can't request a trip where you are the driver.");
+                        System.out.println("THE VALUES DATABASE: "
+                                + "\ndriver: "+ document.getString("author")
+                                + "\ndeparture: "+ document.getString("departure")
+                                + "\ndestination: "+ document.getString("destination")
+                                + "\ndate: "+ document.getString("date"));
 
 
-                        }else if(document.getString("author").equals(driver) &&
+                        if(document.getString("author").equals(driver) &&
                                 document.getString("destination").equals(destination) &&
                                 document.getString("departure").equals(departure) &&
                                 document.getString("date").equals(date)){
 
-                            tripId = document.getId();
+
+                            if(document.getString("author").equals(passenger)) {
+                                Log.e("", "You can't request a trip where you are the driver.");
+
+                                //show dialog
+                                AlertDialog alertDialog = new AlertDialog.Builder(r.getContext()).create();
+                                alertDialog.setTitle("Problem Requesting Trip");
+                                alertDialog.setMessage("You can't request a trip where you are the driver.");
+                                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                            }
+                                        });
+                                alertDialog.show();
+                                break;
 
 
+                            }else {
+                                tripId = document.getId();
 
-                            //CHECK IS REQUEST IS ALREADY IN TABLE
-                            db.collection("request").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                    if (task.isSuccessful()) {
 
-                                        boolean checkIfinTable = false;
+                                //CHECK IS REQUEST IS ALREADY IN TABLE
+                                db.collection("request").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
 
-                                        for (QueryDocumentSnapshot document2 : task.getResult()) {
+                                            boolean checkIfinTable = false;
+
+                                            for (QueryDocumentSnapshot document2 : task.getResult()) {
 
 //                                            System.out.println("VALUES: " +
 //                                                    "\ntripid " + tripId +
@@ -195,66 +208,69 @@ public class DBConnection {
 //                                             &&
 //                                                    document2.getString("passenger").equals(passenger))
 
-                                            if(document2.getString("tripId").equals(tripId)){
-                                                System.out.println("request already in table");
+                                                if (document2.getString("tripId").equals(tripId)) {
+                                                    System.out.println("request already in table");
 
-                                                if(document2.getString("passenger").equals(passenger)){
+                                                    if (document2.getString("passenger").equals(passenger)) {
 
-                                                    //SET BOOLEAN TO TRUE WHEN FOUND
-                                                    System.out.println("REQUEST FOUND IN TABLE");
-                                                    checkIfinTable = true;
-                                                    break;
+                                                        //SET BOOLEAN TO TRUE WHEN FOUND
+                                                        System.out.println("REQUEST FOUND IN TABLE");
+                                                        checkIfinTable = true;
+                                                        break;
+                                                    }
                                                 }
-                                            }
 
-                                        }
+                                            }
 
 //                                        System.out.println("BOOLEAN: " + checkIfinTable);
 
 
-                                        //CHECK BOOLEAN WHETHER QUEST IS FOUND OR NOT
-                                        if(checkIfinTable){
+                                            //CHECK BOOLEAN WHETHER QUEST IS FOUND OR NOT
+                                            if (checkIfinTable) {
 
-                                            //show dialog
-                                            AlertDialog alertDialog = new AlertDialog.Builder(r.getContext()).create();
-                                            alertDialog.setTitle("Problem Requesting Trip");
-                                            alertDialog.setMessage("You already made a request for this trip.");
-                                            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                                                    new DialogInterface.OnClickListener() {
-                                                        public void onClick(DialogInterface dialog, int which) {
-                                                            dialog.dismiss();
-                                                        }
-                                                    });
-                                            alertDialog.show();
-
-
-                                            System.out.println("nothing happens");
-
-                                        }else{
-
-                                            //ADD REQUEST TO DB
-                                            Request request = new Request(tripId, passenger, driver, status);
-                                            db.collection("request").document().set(request);
-                                            Log.e("", "Added to request table.");
+                                                //show dialog
+                                                AlertDialog alertDialog = new AlertDialog.Builder(r.getContext()).create();
+                                                alertDialog.setTitle("Problem Requesting Trip");
+                                                alertDialog.setMessage("You already made a request for this trip.");
+                                                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                                        new DialogInterface.OnClickListener() {
+                                                            public void onClick(DialogInterface dialog, int which) {
+                                                                dialog.dismiss();
+                                                            }
+                                                        });
+                                                alertDialog.show();
 
 
-                                            //show dialog
-                                            AlertDialog alertDialog = new AlertDialog.Builder(r.getContext()).create();
-                                            alertDialog.setTitle("Your Request Has Been Made");
-                                            alertDialog.setMessage("Request has been added to your trips.");
-                                            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                                                    new DialogInterface.OnClickListener() {
-                                                        public void onClick(DialogInterface dialog, int which) {
-                                                            dialog.dismiss();
-                                                        }
-                                                    });
-                                            alertDialog.show();
+                                                System.out.println("nothing happens");
+
+                                            } else {
+
+                                                //ADD REQUEST TO DB
+                                                Request request = new Request(tripId, passenger, driver, status);
+                                                db.collection("request").document().set(request);
+                                                Log.e("", "Added to request table.");
+
+
+                                                //show dialog
+                                                AlertDialog alertDialog = new AlertDialog.Builder(r.getContext()).create();
+                                                alertDialog.setTitle("Your Request Has Been Made");
+                                                alertDialog.setMessage("Request has been added to your trips.");
+                                                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                                        new DialogInterface.OnClickListener() {
+                                                            public void onClick(DialogInterface dialog, int which) {
+                                                                dialog.dismiss();
+                                                            }
+                                                        });
+                                                alertDialog.show();
+                                            }
+
+
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
                                         }
-
-
-                                    } else {
-                                        Log.d(TAG, "Error getting documents: ", task.getException());
-                                    } } });
+                                    }
+                                });
+                            }
                             break;
                         }else{
                             Log.d(TAG, "Can't find the trip in the database: ", task.getException());
@@ -265,8 +281,7 @@ public class DBConnection {
                 }
             } }); }
 
-
-
+    //method for getting profile information
     public void getProfileInformation() {
 
         final String userEmail = SideBarActivity.email;
