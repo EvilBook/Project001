@@ -73,7 +73,8 @@
 
         <AutoCompleteTextView
             android:id="@+id/departureTXT"
-            android:layout_width="wrap_content"
+            android:dropDownHeight="130dp"
+            android:layout_width="220dp"
             android:layout_height="40dp"
             android:layout_marginTop="20dp"
             android:textSize="17dp"
@@ -100,7 +101,8 @@
 
         <AutoCompleteTextView
             android:id="@+id/destinationTXT"
-            android:layout_width="wrap_content"
+            android:dropDownHeight="130dp"
+            android:layout_width="220dp"
             android:layout_height="40dp"
             android:textSize="17dp"
             android:ems="10"

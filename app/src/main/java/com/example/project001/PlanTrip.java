@@ -84,11 +84,9 @@ public class PlanTrip extends Fragment implements AdapterView.OnItemClickListene
         super.onActivityCreated(savedInstanceState);
 
 
-        autoCompView = (AutoCompleteTextView) getView().findViewById(R.id.departureTXT);
         autoCompView.setAdapter(new GooglePlacesAutocompleteAdapter(getActivity(), R.layout.list_item));
         autoCompView.setOnItemClickListener(this);
 
-        autoCompView2 = (AutoCompleteTextView) getView().findViewById(R.id.destinationTXT);
         autoCompView2.setAdapter(new GooglePlacesAutocompleteAdapter(getActivity(), R.layout.list_item));
         autoCompView2.setOnItemClickListener(this);
 
@@ -114,9 +112,13 @@ public class PlanTrip extends Fragment implements AdapterView.OnItemClickListene
 
         price.setMinValue(50);
         price.setMaxValue(1500);
+        price.setWrapSelectorWheel(true);
+
 
         seats.setMinValue(1);
         seats.setMaxValue(15);
+        seats.setWrapSelectorWheel(true);
+
 
 
         calendar.setOnClickListener(new View.OnClickListener() {
