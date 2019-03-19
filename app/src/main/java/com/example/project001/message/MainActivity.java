@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -27,6 +28,8 @@ import com.scaledrone.lib.Room;
 import com.scaledrone.lib.RoomListener;
 import com.scaledrone.lib.Scaledrone;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
@@ -35,10 +38,12 @@ public class MainActivity extends AppCompatActivity implements RoomListener {
 
     private String channelID = "TYnj1IFntgbMaf48";
     private String roomName;
-    private EditText editText;
+    private EditText msgText;
     private Scaledrone scaledrone;
     private MessageAdapter messageAdapter;
     private ListView messagesView;
+    ImageView sendView;
+    ImageView callView;
     String name;
     RelativeLayout textView;
     ArrayList<String> history=new ArrayList<>();
@@ -61,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements RoomListener {
         setContentView(R.layout.activity_messsage);
 
         // This is where we write the message
-        editText = findViewById(R.id.editText);
+        msgText = findViewById(R.id.msgText);
 
         messageAdapter = new MessageAdapter(this);
         messagesView = findViewById(R.id.messages_view);
@@ -105,11 +110,12 @@ public class MainActivity extends AppCompatActivity implements RoomListener {
         });
 
 
-        button1 = findViewById(R.id.button1);
-        button1.setOnClickListener(new View.OnClickListener() {
+        sendView = findViewById(R.id.sendView);
+        sendView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addNotification();
+                sendMessage();
+                //addNotification();
             }
         });
     }
@@ -164,13 +170,13 @@ public class MainActivity extends AppCompatActivity implements RoomListener {
     }
 
 
-    public void sendMessage(View view) {
+    public void sendMessage() {
 
-        String message = editText.getText().toString();
+        String message = msgText.getText().toString();
         if (message.length() > 0) {
             Log.e("room value inside if", roomName);
             scaledrone.publish(roomName, message);
-            editText.getText().clear();
+            msgText.getText().clear();
         }
 
         Log.e("msg", roomName);
