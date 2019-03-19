@@ -43,11 +43,6 @@ public class TripAdapter extends BaseAdapter {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
 
-
-
-
-
-
     List<Trip> trips = new ArrayList<Trip>();
     Context context;
 
@@ -62,7 +57,7 @@ public class TripAdapter extends BaseAdapter {
 
     public void add(Trip trip) {
         this.trips.add(trip);
-        notifyDataSetChanged(); // to render the list we need to notify
+        notifyDataSetChanged();
     }
 
 

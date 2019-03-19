@@ -6,54 +6,67 @@
     android:layout_height="match_parent"
     tools:context="com.example.project001.message.MainActivity">
 
-    <ListView
-        android:id="@+id/messages_view"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="58dp"
-        android:layout_weight="2"
-        android:divider="#fff"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-        app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/constttt"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/csLays"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#fff"
-        android:orientation="horizontal">
+        android:layout_height="200dp">
+
+        <ListView
+            android:id="@+id/messages_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="#fff"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
+
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/csLays"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/constttt"
+
+        >
+
+        <ImageView
+            android:id="@+id/callView"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/msgText"
+            app:srcCompat="@drawable/call" />
 
         <EditText
-            android:id="@+id/editText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:id="@+id/msgText"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
             android:ems="11"
             android:hint="Write a message"
             android:inputType="text"
             android:paddingHorizontal="11dp"
-            android:text="" />
+            android:text=""
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/callView"
+            app:layout_constraintRight_toLeftOf="@id/sendView" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginHorizontal="12dp"
-            android:onClick="sendMessage"
-            android:padding="20dp"
-            android:scaleType="fitCenter" />
+        <ImageView
+            android:id="@+id/sendView"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/msgText"
+            app:layout_constraintRight_toRightOf="parent"
 
-        <Button
-            android:id="@+id/button1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginHorizontal="12dp"
-            android:layout_weight="2"
-            android:onClick="addNotification"
-            android:padding="20dp"
-            android:scaleType="fitCenter" />
-    </LinearLayout>
+            app:srcCompat="@drawable/send" />
+    </android.support.constraint.ConstraintLayout>
+
+
 </android.support.constraint.ConstraintLayout>

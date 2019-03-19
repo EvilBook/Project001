@@ -25,9 +25,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.project001.database.DBConnection;
+import com.example.project001.fragment.ChatFragment;
 import com.example.project001.fragment.HomeFragment;
 import com.example.project001.fragment.ProfileFragment;
 import com.example.project001.fragment.TripFragment;
+import com.example.project001.message.MainActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -45,7 +47,6 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
     String displayName;
     Uri profilePic;
     URL url;
-    String Email;
     GoogleSignInClient googleApiClient;
     DrawerLayout drawerLayout;
     public static String email;
@@ -94,6 +95,8 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
 
         HomeFragment hom = new HomeFragment();
         hom.setArguments(bun);
+
+
 
 
         //Set Fragment
@@ -193,7 +196,15 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
         //Handle buttons
         if (id == R.id.nav_messages) {
             System.out.println("messages");
-            startActivity(new Intent(SideBarActivity.this, com.example.project001.message.MainActivity.class));
+
+            Bundle bun = new Bundle();
+            bun.putString("email", email);
+            bun.putString("name", displayName);
+
+            ChatFragment chat = new ChatFragment();
+            chat.setArguments(bun);
+
+            getSupportFragmentManager().beginTransaction().replace(R.id.containerFragment, chat).commit();
 
         } else if (id == R.id.nav_trips) {
 
