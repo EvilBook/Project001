@@ -153,6 +153,10 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
                         Bundle bun = new Bundle();
                         bun.putString("email", em);
 
+//                        System.out.println("THE VALUES RIDERS ACTIVITY: ");
+//                        System.out.println("Author: " + infoWindowData.getAuthor() + ", passenger: " + em + ", departure: " + infoWindowData.getDeparture()
+//                        + ", destination: " + infoWindowData.getDestination() + ", date: " + infoWindowData.getDate());
+
                         db.addTripRequest(infoWindowData.getAuthor(), em, "0",
                                 infoWindowData.getDeparture(), infoWindowData.getDestination(), infoWindowData.getDate());
                     }
@@ -163,7 +167,7 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
 
 
 
-        //Button, TextView
+        //TextView
         toLocation = getView().findViewById(R.id.ToLocation);
         fromLocation = getView().findViewById(R.id.YourLocation);
     }

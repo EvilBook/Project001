@@ -37,6 +37,7 @@
         <activity android:name=".PlanTrip" />
 
 
+
         <activity
             android:name=".RidersActivity"
             android:label="title_activity_riders" />

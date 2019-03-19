@@ -1,5 +1,7 @@
 package com.example.project001;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -18,18 +20,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TabHost;
 import android.widget.TextView;
 
 import com.example.project001.database.DBConnection;
-import com.example.project001.database.Trip;
 import com.example.project001.fragment.HomeFragment;
 import com.example.project001.fragment.ProfileFragment;
-import com.example.project001.fragment.SettingsFragment;
 import com.example.project001.fragment.TripFragment;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -162,6 +159,19 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_info) {
             System.out.println("info");
+
+            //show dialog
+            AlertDialog alertDialog = new AlertDialog.Builder(SideBarActivity.this).create();
+            alertDialog.setTitle("This Project Has Been Created By:");
+            alertDialog.setMessage("Martin Zannato, Mujemya Levin Martin, Suzanne Zomer & Andrei Casian.");
+            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            alertDialog.show();
+
             return true;
         }
 
@@ -194,10 +204,6 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
             trp.setArguments(bun);
 
             getSupportFragmentManager().beginTransaction().replace(R.id.containerFragment, trp).commit();
-
-        } else if (id == R.id.nav_settings) {
-            fragment = new SettingsFragment();
-            getSupportFragmentManager().beginTransaction().replace(R.id.containerFragment, fragment).commit();
 
         } else if (id == R.id.nav_logout) {
             signOut();
@@ -238,7 +244,7 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
 
 
     //Convert URL into Bitmap for Profile Picture
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+     public static class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
 
         public DownloadImageTask(ImageView bmImage) {
@@ -261,5 +267,6 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
         protected void onPostExecute(Bitmap result) {
             bmImage.setImageBitmap(result);
         }
-    }
+
+     }
 }
