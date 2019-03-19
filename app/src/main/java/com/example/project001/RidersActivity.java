@@ -216,7 +216,9 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
         if(t.size() > 0) {
             for (int i = 0; i < t.size(); i++) {
 
+                if(t.get(i).getSeats().equals("0")) {
 
+                }else{
                 //Search for location
                 String s = t.get(i).departure;
                 String searchString = s.substring(0, 1).toUpperCase() + s.substring(1);
@@ -236,7 +238,6 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
 
                     Log.d("", "geoLocate: found a location: " + address.toString());
 
-
                     //Markers
                     Marker marker;
                     MarkerOptions markerOptions;
@@ -249,6 +250,7 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
                     info.setAuthor(t.get(i).getAuthor());
                     info.setDate(t.get(i).getDate());
                     info.setPrice(t.get(i).getPrice());
+                    info.setAvailableSeats(t.get(i).getSeats());
 
                     markerOptions = new MarkerOptions()
                             .position(pos)
@@ -263,7 +265,10 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
                     marker.showInfoWindow();
                 }
             }
-        }else{
+
+
+                }
+            }else{
             Log.e("Error: ", "Can't add markers to map because array is empty.");
             //show dialog
             AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
