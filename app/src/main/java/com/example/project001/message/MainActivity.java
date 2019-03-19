@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements RoomListener {
         sendView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendMessage(v);
+                sendMessage();
             }
         });
     }
@@ -169,7 +169,7 @@ public class MainActivity extends AppCompatActivity implements RoomListener {
     }
 
 
-    public void sendMessage(View view) {
+    public void sendMessage() {
 
         String message = msgText.getText().toString();
         if (message.length() > 0) {

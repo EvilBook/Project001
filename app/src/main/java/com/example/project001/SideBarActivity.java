@@ -26,11 +26,9 @@ import android.widget.TabHost;
 import android.widget.TextView;
 
 import com.example.project001.database.DBConnection;
-import com.example.project001.database.Trip;
 import com.example.project001.fragment.ChatFragment;
 import com.example.project001.fragment.HomeFragment;
 import com.example.project001.fragment.ProfileFragment;
-import com.example.project001.fragment.SettingsFragment;
 import com.example.project001.fragment.TripFragment;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -202,10 +200,6 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
             trp.setArguments(bun);
 
             getSupportFragmentManager().beginTransaction().replace(R.id.containerFragment, trp).commit();
-
-        } else if (id == R.id.nav_settings) {
-            fragment = new SettingsFragment();
-            getSupportFragmentManager().beginTransaction().replace(R.id.containerFragment, fragment).commit();
 
         } else if (id == R.id.nav_logout) {
             signOut();
