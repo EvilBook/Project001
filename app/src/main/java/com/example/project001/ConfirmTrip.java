@@ -42,8 +42,8 @@ public class ConfirmTrip extends AppCompatActivity {
 
                 PlanTrip.departure.setText("");
                 PlanTrip.destination.setText("");
-                PlanTrip.price.setText("");
-                PlanTrip.seats.setText("");
+                PlanTrip.price.setValue(0);
+                PlanTrip.seats.setValue(0);
                 finish();
             }
         });

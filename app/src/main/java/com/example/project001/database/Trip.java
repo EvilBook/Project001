@@ -40,6 +40,7 @@ public class Trip implements Parcelable {
     public String price;
     public String seats;
     public String author;
+    public String tripId;
 
 
     public Trip(String date, String time, String departure, String destination, String price, String seats, String author) {

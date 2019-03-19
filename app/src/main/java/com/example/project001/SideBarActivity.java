@@ -27,6 +27,7 @@ import android.widget.TextView;
 
 import com.example.project001.database.DBConnection;
 import com.example.project001.database.Trip;
+import com.example.project001.fragment.ChatFragment;
 import com.example.project001.fragment.HomeFragment;
 import com.example.project001.fragment.ProfileFragment;
 import com.example.project001.fragment.SettingsFragment;
@@ -183,29 +184,52 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
         //Handle buttons
         if (id == R.id.nav_messages) {
             System.out.println("messages");
-            startActivity(new Intent(SideBarActivity.this, com.example.project001.message.MainActivity.class));
 
+            Bundle bun = new Bundle();
+            bun.putString("email", email);
+            bun.putString("name", displayName);
+
+            ChatFragment chat = new ChatFragment();
+            chat.setArguments(bun);
+
+            getSupportFragmentManager().beginTransaction().replace(R.id.containerFragment, chat).commit();
         } else if (id == R.id.nav_trips) {
-            fragment = new TripFragment();
+
+            Bundle bun = new Bundle();
+            bun.putString("email", email);
+
+            TripFragment trp = new TripFragment();
+            trp.setArguments(bun);
+
+            getSupportFragmentManager().beginTransaction().replace(R.id.containerFragment, trp).commit();
 
         } else if (id == R.id.nav_settings) {
             fragment = new SettingsFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.containerFragment, fragment).commit();
 
         } else if (id == R.id.nav_logout) {
             signOut();
 
         } else if (id == R.id.nav_home) {
-            fragment = new HomeFragment();
-        }
 
-        //Switch Fragments
-        getSupportFragmentManager().beginTransaction().replace(R.id.containerFragment, fragment).commit();
+            Bundle bun = new Bundle();
+            bun.putString("email", email);
+
+            HomeFragment hom = new HomeFragment();
+            hom.setArguments(bun);
+
+
+            //Set Fragment
+            getSupportFragmentManager().beginTransaction().replace(R.id.containerFragment, hom).commit();
+            Log.e("curious", "biatch");
+        }
 
         //Close Side Menu
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 
 
     //Handle Sign Out
@@ -220,9 +244,8 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
     }
 
 
-
     //Convert URL into Bitmap for Profile Picture
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+    public static class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
 
         public DownloadImageTask(ImageView bmImage) {
@@ -245,5 +268,6 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
         protected void onPostExecute(Bitmap result) {
             bmImage.setImageBitmap(result);
         }
+
     }
 }

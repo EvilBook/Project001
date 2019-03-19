@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -27,52 +28,68 @@ import com.scaledrone.lib.Room;
 import com.scaledrone.lib.RoomListener;
 import com.scaledrone.lib.Scaledrone;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class MainActivity extends AppCompatActivity implements
-        RoomListener {
+public class MainActivity extends AppCompatActivity implements RoomListener {
 
-    private String channelID = "k3QjbrG67eP7elvK";
-    private String roomName = "observable-room";
-    private EditText editText;
+    private String channelID = "TYnj1IFntgbMaf48";
+    private String roomName;
+    private EditText msgText;
     private Scaledrone scaledrone;
     private MessageAdapter messageAdapter;
     private ListView messagesView;
+    ImageView sendView;
+    ImageView callView;
+    String name;
     RelativeLayout textView;
     ArrayList<String> history=new ArrayList<>();
     Notification.Builder notification;
-
-
     private static int idNumber;
-
-
     Button button1;
-
-
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+        Intent intent = getIntent();
+        name = intent.getStringExtra("name");
+        roomName = "observable-" + intent.getStringExtra("room");
+        Log.e("room value", roomName);
+
+
         setContentView(R.layout.activity_messsage);
-        // This is where we write the mesage
-        editText = findViewById(R.id.editText);
+
+        // This is where we write the message
+        msgText = findViewById(R.id.msgText);
 
         messageAdapter = new MessageAdapter(this);
         messagesView = findViewById(R.id.messages_view);
         messagesView.setAdapter(messageAdapter);
 
-        MemberData data = new MemberData(getRandomName(), getRandomColor());
+
+
+
+        //Log.e("my name is:", name);
+        MemberData data = new MemberData(name, getRandomColor());
 
         scaledrone = new Scaledrone(channelID, data);
+
+
+
+
         scaledrone.connect(new Listener() {
             @Override
             public void onOpen() {
                 System.out.println("Scaledrone connection open");
                 // Since the MainActivity itself already implement RoomListener we can pass it as a target
                 scaledrone.subscribe(roomName, MainActivity.this);
+
             }
 
             @Override
@@ -87,37 +104,25 @@ public class MainActivity extends AppCompatActivity implements
 
             @Override
             public void onClosed(String reason) {
+
                 System.err.println(reason);
             }
         });
 
 
-        button1= findViewById(R.id.button1);
-
-
-
-        button1.setOnClickListener(new View.OnClickListener() {
+        sendView = findViewById(R.id.sendView);
+        sendView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addNotification();
+                sendMessage(v);
             }
         });
-
-
-
-
-
-
-
-
-
-
     }
 
     // Successfully connected to Scaledrone room
     @Override
     public void onOpen(Room room) {
-        System.out.println("Conneted to room");
+        System.out.println("Connected to room");
     }
 
     // Connecting to Scaledrone room failed
@@ -129,6 +134,7 @@ public class MainActivity extends AppCompatActivity implements
     // Received a message from Scaledrone room
     @Override
     public void onMessage(Room room, final JsonNode json, final Member member) {
+
         // To transform the raw JsonNode into a POJO we can use an ObjectMapper
         final ObjectMapper mapper = new ObjectMapper();
         try {
@@ -153,16 +159,6 @@ public class MainActivity extends AppCompatActivity implements
     }
 
 
-    private String getRandomName() {
-        String[] adjs = {"autumn", "hidden", "bitter", "misty", "silent", "empty", "dry", "dark", "summer", "icy", "delicate", "quiet", "white", "cool", "spring", "winter", "patient", "twilight", "dawn", "crimson", "wispy", "weathered", "blue", "billowing", "broken", "cold", "damp", "falling", "frosty", "green", "long", "late", "lingering", "bold", "little", "morning", "muddy", "old", "red", "rough", "still", "small", "sparkling", "throbbing", "shy", "wandering", "withered", "wild", "black", "young", "holy", "solitary", "fragrant", "aged", "snowy", "proud", "floral", "restless", "divine", "polished", "ancient", "purple", "lively", "nameless"};
-        String[] nouns = {"shit", "dick", "poop", "pussy", "ass", "booty", "pee", "cumstain", "whore", "prostitute", "cancer", "turd", "tits", "nipples", "hair", "rapist", "diharea", "urine", "excrement"};
-        return (
-                adjs[(int) Math.floor(Math.random() * adjs.length)] +
-                        "_" +
-                        nouns[(int) Math.floor(Math.random() * nouns.length)]
-        );
-    }
-
     private String getRandomColor() {
         Random r = new Random();
         StringBuffer sb = new StringBuffer("#");
@@ -174,11 +170,16 @@ public class MainActivity extends AppCompatActivity implements
 
 
     public void sendMessage(View view) {
-        String message = editText.getText().toString();
+
+        String message = msgText.getText().toString();
         if (message.length() > 0) {
+            Log.e("room value inside if", roomName);
             scaledrone.publish(roomName, message);
-            editText.getText().clear();
+            msgText.getText().clear();
         }
+
+        Log.e("msg", roomName);
+        Log.e("msg", message);
     }
 
 
@@ -189,40 +190,24 @@ public class MainActivity extends AppCompatActivity implements
 
         for (int i=0; i<messagesView.getChildCount(); i++){
 
-
             textView=(RelativeLayout)messagesView.getChildAt(i);
 
-
-            if(textView.getChildCount()==1) {
+            if(textView.getChildCount() == 1) {
 
                 history.add(((TextView) textView.getChildAt(0)).getText().toString());
 
-
-            }else if(textView.getChildCount()==3){
-
+            } else if(textView.getChildCount() == 3) {
 
                 history.add(((TextView) textView.getChildAt(1)).getText().toString()+"/"+((TextView) textView.getChildAt(2)).getText().toString());
 
             }
 
-
-
-
-
-
-
         }
-
 
 
         for (String s:history){
-
-
             Log.e("message 1", s);
-
         }
-
-
 
     }
 
@@ -243,11 +228,5 @@ public class MainActivity extends AppCompatActivity implements
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         manager.notify(0, builder.build());
     }
-
-
-
-
-
-
 
 }
