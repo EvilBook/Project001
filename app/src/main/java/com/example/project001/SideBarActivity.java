@@ -209,6 +209,9 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
 
         } else if (id == R.id.nav_logout) {
             signOut();
+            finish();
+            Intent intent=new Intent(SideBarActivity.this, LoginActivity.class);
+            SideBarActivity.this.startActivity(intent);
 
         } else if (id == R.id.nav_home) {
 

@@ -85,6 +85,7 @@ public class LoginActivity extends AppCompatActivity {
             personPhoto = account.getPhotoUrl();
 
 
+            finish();
             startActivity(intent);
 
         } catch (ApiException e) {
