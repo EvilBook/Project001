@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements RoomListener {
 
 
         //Log.e("my name is:", name);
-        MemberData data = new MemberData(name, getRandomColor());
+        MemberData data = new MemberData(name, "#7CB1E2");
 
         scaledrone = new Scaledrone(channelID, data);
 
@@ -165,6 +165,7 @@ public class MainActivity extends AppCompatActivity implements RoomListener {
         while(sb.length() < 7){
             sb.append(Integer.toHexString(r.nextInt()));
         }
+
         return sb.toString().substring(0, 7);
     }
 

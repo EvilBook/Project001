@@ -35,19 +35,22 @@
                 android:id="@+id/departure"
                 android:layout_width="157dp"
                 android:layout_height="50dp"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:textColor="@color/white"/>
 
             <TextView
                 android:id="@+id/destination"
                 android:layout_width="150dp"
                 android:layout_height="50dp"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:textColor="@color/white"/>
 
             <TextView
                 android:id="@+id/author"
                 android:layout_width="185dp"
                 android:layout_height="50dp"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:textColor="@color/white"/>
         </LinearLayout>
     </LinearLayout>
 

@@ -203,10 +203,6 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
 
             getSupportFragmentManager().beginTransaction().replace(R.id.containerFragment, trp).commit();
 
-        } else if (id == R.id.nav_settings) {
-            fragment = new SettingsFragment();
-            getSupportFragmentManager().beginTransaction().replace(R.id.containerFragment, fragment).commit();
-
         } else if (id == R.id.nav_logout) {
             signOut();
             finish();

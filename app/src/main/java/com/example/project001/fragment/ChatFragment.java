@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.example.project001.R;
 import com.example.project001.database.Chat;
@@ -72,6 +74,9 @@ public class ChatFragment extends Fragment {
         chatView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                roomID = ((TextView)(((LinearLayout)(((LinearLayout)(((RelativeLayout)(((RelativeLayout)(view )).getChildAt(0))).getChildAt(0))).getChildAt(0))).getChildAt(0))).getText().toString();
+
                 Intent intent = new Intent(getContext(), MainActivity.class);
                 intent.putExtra("email", email);
                 intent.putExtra("name", name);
