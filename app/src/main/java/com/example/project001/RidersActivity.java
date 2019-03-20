@@ -1,12 +1,12 @@
 package com.example.project001;
 
 import android.app.AlertDialog;
+import android.app.Service;
 import android.content.DialogInterface;
 import android.support.v4.app.Fragment;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -23,7 +23,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 import com.example.project001.database.DBConnection;
 import com.example.project001.database.Trip;
@@ -35,12 +34,18 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
-public class RidersActivity extends Fragment implements OnMapReadyCallback {
-
+public class RidersActivity extends Fragment implements OnMapReadyCallback{
 
     TextView x;
 
@@ -56,6 +61,11 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
 
 
 
+
+
+
+
+
     public static TextView fromLocation;
     public static TextView toLocation;
 
@@ -67,12 +77,29 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
         return (inflater.inflate(R.layout.activity_riders, container, false));
     }
 
-    //ON CREATE
+
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    public void onActivityCreated(@Nullable Bundle savedInstanceState)  {
         super.onActivityCreated(savedInstanceState);
 
-        //Database and Context
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         con = getContext();
         db.r = this;
         db.getTripsforMap();
@@ -290,4 +317,22 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         //DON'T ADD ANYTHING HERE, IT DOESN'T WORK.
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

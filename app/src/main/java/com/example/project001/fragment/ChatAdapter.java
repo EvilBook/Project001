@@ -63,7 +63,7 @@ public class ChatAdapter extends BaseAdapter {
         holder.chatName = convertView.findViewById(R.id.chatName);
         convertView.setTag(holder);
 
-        holder.chatName.setText(chets.getPassenger());
+        holder.chatName.setText(chets.getId());
         return convertView;
     }
 }

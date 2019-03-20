@@ -7,11 +7,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.icu.text.SimpleDateFormat;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.text.format.DateFormat;
+import android.text.format.Time;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -35,6 +39,12 @@ import android.widget.Toast;
 
 import com.example.project001.database.Trip;
 import com.example.project001.fragment.ProfileFragment;
+import com.google.api.client.util.DateTime;
+import com.google.api.services.calendar.Calendar;
+import com.google.api.services.calendar.model.Event;
+import com.google.api.services.calendar.model.EventAttendee;
+import com.google.api.services.calendar.model.EventDateTime;
+import com.google.api.services.calendar.model.EventReminder;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -47,7 +57,11 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.sql.SQLOutput;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.SimpleTimeZone;
 
 public class PlanTrip extends Fragment implements AdapterView.OnItemClickListener{
 
@@ -62,6 +76,12 @@ public class PlanTrip extends Fragment implements AdapterView.OnItemClickListene
     ImageView calendar, clock;
     Button createButton,buttonCalendar,buttonClock;
     Trip trip;
+
+
+
+
+
+
 
     int hour,min,day,month,year;
 
@@ -91,6 +111,8 @@ public class PlanTrip extends Fragment implements AdapterView.OnItemClickListene
         autoCompView2=getView().findViewById(R.id.destinationTXT);
         autoCompView2.setAdapter(new GooglePlacesAutocompleteAdapter(getActivity(), R.layout.list_item));
         autoCompView2.setOnItemClickListener(this);
+
+
 
 
 
@@ -148,7 +170,7 @@ public class PlanTrip extends Fragment implements AdapterView.OnItemClickListene
                         month = datePicker.getMonth();
                         year = datePicker.getYear();
 
-                        date = String.valueOf(day) + "/" + String.valueOf(month) + "/" + String.valueOf(year);
+                        date = String.valueOf(year) + "-" + String.valueOf(month) + "-" + String.valueOf(day);
                         pw.dismiss();
                     }
                 });
@@ -222,11 +244,16 @@ public class PlanTrip extends Fragment implements AdapterView.OnItemClickListene
         });
 
 
+
         createButton.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
 
                 addTrip();
+
+
+
 
             }
         });
@@ -302,6 +329,7 @@ public class PlanTrip extends Fragment implements AdapterView.OnItemClickListene
 
             Intent myIntent = new Intent(getContext(), ConfirmTrip.class);
             myIntent.putParcelableArrayListExtra("An Object", list);
+
             PlanTrip.this.startActivity(myIntent);
 
         }
@@ -315,6 +343,15 @@ public class PlanTrip extends Fragment implements AdapterView.OnItemClickListene
         String str = (String) parent.getItemAtPosition(position);
         Toast.makeText(getActivity(), str, Toast.LENGTH_SHORT).show();
     }
+
+
+
+
+
+
+
+
+
 }
 
 
@@ -423,4 +460,9 @@ class GooglePlacesAutocompleteAdapter extends ArrayAdapter implements Filterable
         };
         return filter;
     }
+
+
+
+
+
 }
