@@ -1,7 +1,5 @@
 package com.example.project001.fragment;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -35,20 +33,7 @@ HomeFragment extends Fragment {
     LinearLayout triliniarLayout;
 
     //Add trips
-    Button button;
     String email;
-    EditText destination;
-    EditText departure;
-    EditText date;
-    EditText price;
-    EditText availableSeats;
-    EditText freeSeats;
-    TextView textView;
-
-
-    //Database
-    Trip trip;
-    DBConnection dbc = new DBConnection();
 
 
     @Nullable

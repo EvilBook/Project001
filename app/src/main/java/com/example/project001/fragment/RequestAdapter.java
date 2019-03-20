@@ -2,6 +2,7 @@ package com.example.project001.fragment;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,6 +66,7 @@ public class RequestAdapter extends BaseAdapter {
         holder.departure.setText(treps.requestId);
         holder.destination.setText(treps.getDriver());
         holder.author.setText(treps.getPassenger());
+        convertView.setBackgroundColor(Color.parseColor(treps.getColour()));
 
         return convertView;
     }
@@ -78,6 +80,5 @@ class RequestViewHolder {
     TextView departure;
     TextView destination;
     TextView author;
-
 
 }
