@@ -20,6 +20,7 @@
         android:paddingBottom="20dp" />
 
     <LinearLayout
+        android:id="@+id/tripClick"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:background="@drawable/customshape1"

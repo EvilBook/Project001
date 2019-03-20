@@ -79,19 +79,35 @@ public class TripFragment extends Fragment {
         tripView.setAdapter(tripAdapter);
 
 
+        createTrips();
+
+        tripView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                deleteTrip(view);
+
+                LinearLayout linearLayout = view.findViewById(R.id.tripClick);
+                linearLayout.setBackgroundColor(Color.parseColor("#f93943"));
+
+                view.setEnabled(false);
+                view.setOnClickListener(null);
+
+                return true;
+            }
+        });
+
+
         tripView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 createRequest(view);
-
-
                 expand(((RelativeLayout)(view)).getChildAt(0));
 
             }
         });
 
 
-        createTrips();
+
 
 
     }
@@ -138,6 +154,30 @@ public class TripFragment extends Fragment {
                 });
 
     }
+
+    public void deleteTrip(View view) {
+
+        tripId = ((TextView)((((LinearLayout)((((LinearLayout)(((RelativeLayout)(view)).getChildAt(1))).getChildAt(0)))).getChildAt(2)))).getText().toString();
+
+        db.collection("trip").document(tripId)
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        //startChat();
+                        Log.d(TAG, "DocumentSnapshot successfully deleted!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error deleting document", e);
+                    }
+                });
+
+    }
+
+
 
 
     private float x1,x2;
@@ -202,7 +242,7 @@ public class TripFragment extends Fragment {
                                 {
                                     Toast.makeText(getContext(), "left2right swipe", Toast.LENGTH_SHORT).show ();
                                     linearLayout.setBackgroundColor(Color.parseColor("#f93943"));
-                                    deleteTrip(id);
+                                    deleteRequest(id);
                                 }
                                 if (deltaX < MIN_DISTANCE1)
                                 {
@@ -265,18 +305,13 @@ public class TripFragment extends Fragment {
                     }
                 });
 
-
-
-
-
-
     }
 
 
 
 
 
-    public void deleteTrip(String id){
+    public void deleteRequest(String id){
 
 
         db.collection("request").document(id)

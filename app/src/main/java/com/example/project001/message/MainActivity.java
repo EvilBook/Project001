@@ -5,7 +5,11 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +21,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.project001.LoginActivity;
 import com.example.project001.R;
 import com.example.project001.message.MessageAdapter;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -34,6 +39,8 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
+import static android.Manifest.permission.CALL_PHONE;
+
 public class MainActivity extends AppCompatActivity implements RoomListener {
 
     private String channelID = "TYnj1IFntgbMaf48";
@@ -42,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements RoomListener {
     private Scaledrone scaledrone;
     private MessageAdapter messageAdapter;
     private ListView messagesView;
+    Uri avatarPic = LoginActivity.personPhoto;
     ImageView sendView;
     ImageView callView;
     String name;
@@ -56,12 +64,10 @@ public class MainActivity extends AppCompatActivity implements RoomListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         Intent intent = getIntent();
         name = intent.getStringExtra("name");
         roomName = "observable-" + intent.getStringExtra("room");
         Log.e("room value", roomName);
-
 
         setContentView(R.layout.activity_messsage);
 
@@ -72,24 +78,15 @@ public class MainActivity extends AppCompatActivity implements RoomListener {
         messagesView = findViewById(R.id.messages_view);
         messagesView.setAdapter(messageAdapter);
 
-
-
-
         //Log.e("my name is:", name);
         MemberData data = new MemberData(name, getRandomColor());
-
         scaledrone = new Scaledrone(channelID, data);
-
-
-
-
         scaledrone.connect(new Listener() {
             @Override
             public void onOpen() {
                 System.out.println("Scaledrone connection open");
                 // Since the MainActivity itself already implement RoomListener we can pass it as a target
                 scaledrone.subscribe(roomName, MainActivity.this);
-
             }
 
             @Override
@@ -103,13 +100,10 @@ public class MainActivity extends AppCompatActivity implements RoomListener {
             }
 
             @Override
-            public void onClosed(String reason) {
-
-                System.err.println(reason);
-            }
+            public void onClosed(String reason) { System.err.println(reason); }
         });
 
-
+        //send message
         sendView = findViewById(R.id.sendView);
         sendView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,6 +111,16 @@ public class MainActivity extends AppCompatActivity implements RoomListener {
                 sendMessage();
             }
         });
+
+        //phone call
+        callView = findViewById(R.id.callView);
+        callView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callPhone();
+            }
+        });
+
     }
 
     // Successfully connected to Scaledrone room
@@ -173,14 +177,16 @@ public class MainActivity extends AppCompatActivity implements RoomListener {
 
         String message = msgText.getText().toString();
         if (message.length() > 0) {
-            Log.e("room value inside if", roomName);
+            //Log.e("room value inside if", roomName);
             scaledrone.publish(roomName, message);
             msgText.getText().clear();
         }
 
-        Log.e("msg", roomName);
-        Log.e("msg", message);
+        //Log.e("msg", roomName);
+        //Log.e("msg", message);
     }
+
+
 
 
     @Override
@@ -228,5 +234,23 @@ public class MainActivity extends AppCompatActivity implements RoomListener {
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         manager.notify(0, builder.build());
     }
+
+    public void callPhone() {
+
+        Intent intent = new Intent(Intent.ACTION_CALL);
+        intent.setData(Uri.parse("tel:0760704639"));
+
+        if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
+                CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+            startActivity(intent);
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(new String[]{CALL_PHONE}, 1);
+            }
+        }
+
+    }
+
+
 
 }

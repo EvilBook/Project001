@@ -19,10 +19,6 @@ import java.util.List;
 public class RequestAdapter extends BaseAdapter {
 
 
-
-
-
-
     List<Request> requests = new ArrayList<>();
     Context context;
 

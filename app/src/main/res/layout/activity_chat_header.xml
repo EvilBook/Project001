@@ -7,15 +7,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
-        android:paddingVertical="11dp"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp">
+        android:paddingVertical="11dp">
 
         <LinearLayout
             android:id="@+id/chatClick"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
             android:background="#4CAF50"
             android:orientation="vertical">
 
