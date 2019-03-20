@@ -1,5 +1,7 @@
 package com.example.project001;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -163,6 +165,19 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_info) {
             System.out.println("info");
+
+            //show dialog
+            AlertDialog alertDialog = new AlertDialog.Builder(SideBarActivity.this).create();
+            alertDialog.setTitle("This App Has Been Created By");
+            alertDialog.setMessage("Andrei, Suzanne, Martin & Martin");
+            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            alertDialog.show();
+
             return true;
         }
 

@@ -38,6 +38,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class RidersActivity extends Fragment implements OnMapReadyCallback {
 
@@ -76,6 +77,12 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
         con = getContext();
         db.r = this;
         db.getTripsforMap();
+
+
+
+        //TextView
+        toLocation = getView().findViewById(R.id.ToLocation);
+        fromLocation = getView().findViewById(R.id.YourLocation);
 
 
 
@@ -168,10 +175,6 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
 
 
 
-
-        //TextView
-        toLocation = getView().findViewById(R.id.ToLocation);
-        fromLocation = getView().findViewById(R.id.YourLocation);
     }
 
     @Override
@@ -238,6 +241,15 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
 
                         Log.d("", "geoLocate: found a location: " + address.toString());
 
+                        int[] pics = {R.drawable.pic1, R.drawable.pic2, R.drawable.pic3,
+                                R.drawable.pic4, R.drawable.pic5, R.drawable.pic6,
+                                R.drawable.pic7, R.drawable.pic8, R.drawable.pic9,
+                                R.drawable.pic10, R.drawable.pic11,};
+
+                        Random r=new Random();
+                        int randomNumber = r.nextInt(pics.length);
+
+
                         //Markers
                         Marker marker;
                         MarkerOptions markerOptions;
@@ -255,7 +267,7 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
                         markerOptions = new MarkerOptions()
                                 .position(pos)
                                 .title(searchString)
-                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker));
+                                .icon(BitmapDescriptorFactory.fromResource(pics[randomNumber]));
 
                         //Add Marker
                         marker = mMap.addMarker(markerOptions);
