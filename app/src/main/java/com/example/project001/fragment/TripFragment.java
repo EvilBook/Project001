@@ -43,11 +43,8 @@ public class TripFragment extends Fragment {
     private ListView tripView;
     String email;
     Trip trip;
-    ArrayList<Trip> voyages = new ArrayList<>();
-
     String tripId;
-
-
+    ArrayList<Trip> voyages = new ArrayList<>();
 
     //objects
     ArrayList<Request> voyages1 = new ArrayList<>();
@@ -133,7 +130,7 @@ public class TripFragment extends Fragment {
                                             document.get("price").toString(),
                                             document.get("seats").toString(),
                                             document.getString("author"));
-                                    trip.tripId=document.getId();
+                                    trip.tripId = document.getId();
                                     tripAdapter.buffer.add(document.getId());
                                     voyages.add(trip);
                                 }
