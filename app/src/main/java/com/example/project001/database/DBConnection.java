@@ -138,25 +138,24 @@ public class DBConnection {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
 
-                    System.out.println("THE VALUES: "
-                            + "\ndriver: "+ driver
-                            + "\npassenger: " + passenger
-                            + "\ndeparture: " + departure
-                            + "\ndestination: " + destination
-                            + "\ndate: " + date
-                            + "\nstatus: " + status);
+//                    System.out.println("THE VALUES: "
+//                            + "\ndriver: "+ driver
+//                            + "\npassenger: " + passenger
+//                            + "\ndeparture: " + departure
+//                            + "\ndestination: " + destination
+//                            + "\ndate: " + date
+//                            + "\nstatus: " + status);
 
 
 
-                    for (QueryDocumentSnapshot document : task.getResult()) {
+                    for (final QueryDocumentSnapshot document : task.getResult()) {
                         final String tripId;
 
-
-                        System.out.println("THE VALUES DATABASE: "
-                                + "\ndriver: "+ document.getString("author")
-                                + "\ndeparture: "+ document.getString("departure")
-                                + "\ndestination: "+ document.getString("destination")
-                                + "\ndate: "+ document.getString("date"));
+//                        System.out.println("THE VALUES DATABASE: "
+//                                + "\ndriver: "+ document.getString("author")
+//                                + "\ndeparture: "+ document.getString("departure")
+//                                + "\ndestination: "+ document.getString("destination")
+//                                + "\ndate: "+ document.getString("date"));
 
 
                         if(document.getString("author").equals(driver) &&
@@ -185,6 +184,11 @@ public class DBConnection {
                             }else {
                                 tripId = document.getId();
 
+                                final String seat = document.getString("seats");
+                                Log.e("Seats xxx ", "" + seat);
+
+
+
 
                                 //CHECK IS REQUEST IS ALREADY IN TABLE
                                 db.collection("request").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -196,6 +200,7 @@ public class DBConnection {
 
                                             for (QueryDocumentSnapshot document2 : task.getResult()) {
 
+
 //                                            System.out.println("VALUES: " +
 //                                                    "\ntripid " + tripId +
 //                                                    "\npass " + passenger);
@@ -205,8 +210,6 @@ public class DBConnection {
 //                                                    "\npass " + document2.getString("passenger"));
 
 
-//                                             &&
-//                                                    document2.getString("passenger").equals(passenger))
 
                                                 if (document2.getString("tripId").equals(tripId)) {
                                                     System.out.println("request already in table");
@@ -262,6 +265,29 @@ public class DBConnection {
                                                             }
                                                         });
                                                 alertDialog.show();
+
+
+                                                //Convert seat string and decrease
+                                                String str = seat;
+                                                int result = Integer.parseInt(str);
+                                                result = result - 1;
+                                                String numberAsString = Integer.toString(result);
+
+
+                                                //UPDATE SEATS IN DB
+                                                DocumentReference washingtonRef = db.collection("trip").document(tripId);
+
+                                                washingtonRef.update("seats", numberAsString).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void aVoid) {
+                                                        Log.d(TAG, "DocumentSnapshot successfully updated!");
+                                                    }
+                                                }).addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull Exception e) {
+                                                            Log.w(TAG, "Error updating document", e);
+                                                    }
+                                                });
                                             }
 
 
@@ -313,4 +339,5 @@ public class DBConnection {
     }
 
 }
+
 
