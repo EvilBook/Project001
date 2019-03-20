@@ -116,16 +116,13 @@ public class TripAdapter extends BaseAdapter {
         holder.destination = convertView.findViewById(R.id.destination);
         holder.author = convertView.findViewById(R.id.author);
         holder.requestsWindow = convertView.findViewById(R.id.requestWindow);
+        holder.tripClick = convertView.findViewById(R.id.tripClick);
+        //holder.tripClick.setBackgroundColor(Color.parseColor(treps.getColour()));
         convertView.setTag(holder);
 
         holder.departure.setText(treps.getDeparture());
         holder.destination.setText(treps.getDestination());
         holder.author.setText(treps.tripId);
-
-
-
-
-
 
         return convertView;
     }
@@ -142,6 +139,8 @@ class TripViewHolder {
     TextView destination;
     TextView author;
     ListView requestsWindow;
+    LinearLayout tripClick;
+
 
 
 }

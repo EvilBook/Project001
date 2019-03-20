@@ -4,9 +4,8 @@ public class Request {
     //tripId, passenger, driver, soolean
 
     public String tripId;
-
-
     public String requestId;
+    public String colour;
 
 
     public Request(String tripId, String passenger, String driver, String soolean) {
@@ -20,6 +19,14 @@ public class Request {
     public String driver;
     public String soolean;
 
+
+    public String getColour() {
+        return colour;
+    }
+
+    public void setColour(String colour) {
+        this.colour = colour;
+    }
 
     public String getTripId() {
         return tripId;

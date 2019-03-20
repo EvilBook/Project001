@@ -44,10 +44,19 @@ public class TripFragment extends Fragment {
     String email;
     Trip trip;
     String tripId;
-    ArrayList<Trip> voyages = new ArrayList<>();
+    private RequestAdapter requestAdapter;
+    private ListView requestView;
+    Request request;
+    View view;
+    RequestAdapter andreiAdapter;
 
     //objects
+    ArrayList<Trip> voyages = new ArrayList<>();
+    //andrei
+    ArrayList<Request> requests = new ArrayList<>();
+    //martin
     ArrayList<Request> voyages1 = new ArrayList<>();
+    //firebase
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
 
@@ -77,6 +86,7 @@ public class TripFragment extends Fragment {
 
 
         createTrips();
+
 
         tripView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
@@ -130,14 +140,78 @@ public class TripFragment extends Fragment {
                                             document.get("price").toString(),
                                             document.get("seats").toString(),
                                             document.getString("author"));
+
                                     trip.tripId = document.getId();
                                     tripAdapter.buffer.add(document.getId());
                                     voyages.add(trip);
                                 }
                             }
-
                             for (Trip T : voyages) {
                                 tripAdapter.add(T);
+                                // scroll the ListView to the last added element
+                                tripView.setSelection(tripView.getCount() - 1);
+                            }
+
+                            displayRequest();
+
+
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
+    }
+
+
+    public void displayRequest() {
+
+        requests.clear();
+        db.collection("request")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.e("dsplaying", document.getString("passenger") + " " + email + " " + document.getString("soolean"));
+                                if(document.getString("passenger").equals(email) && document.getString("soolean").equals("0")) {
+
+                                    request = new Request(
+                                            document.getString("tripId"),
+                                            document.getString("passenger"),
+                                            document.getString("driver"),
+                                            document.getString("soolean")
+
+                                    );
+                                    Log.e("soolean", "0");
+                                    request.setColour("#aaaaaa");
+                                    requests.add(request);
+                                }
+                            }
+
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                if(document.getString("passenger").equals(email) && document.getString("soolean").equals("1")) {
+
+                                    request = new Request(
+                                            document.getString("tripId"),
+                                            document.getString("passenger"),
+                                            document.getString("driver"),
+                                            document.getString("soolean"));
+
+                                    Log.e("soolean", "1");
+                                    request.setColour("#091209");
+                                    requests.add(request);
+                                }
+                            }
+
+                            andreiAdapter = new RequestAdapter(getContext());
+
+                            tripView.setAdapter(andreiAdapter);
+
+                            for (Request T : requests) {
+                                andreiAdapter.add(T);
                                 // scroll the ListView to the last added element
                                 tripView.setSelection(tripView.getCount() - 1);
                             }
@@ -150,7 +224,9 @@ public class TripFragment extends Fragment {
                     }
                 });
 
+
     }
+
 
     public void deleteTrip(View view) {
 
@@ -174,31 +250,15 @@ public class TripFragment extends Fragment {
 
     }
 
-
-
-
     private float x1,x2;
     static final int MIN_DISTANCE = 12;
     static final int MIN_DISTANCE1 = -12;
 
 
-    //variables
-    private RequestAdapter requestAdapter;
-    private ListView requestView;
-    Request request;
-    View view;
-
-
-
-
     public void createRequest(View view){
 
-
-
-        tripId=((TextView)((((LinearLayout)((((LinearLayout)(((RelativeLayout)(view)).getChildAt(1))).getChildAt(0)))).getChildAt(2)))).getText().toString();
+        tripId = ((TextView)((((LinearLayout)((((LinearLayout)(((RelativeLayout)(view)).getChildAt(1))).getChildAt(0)))).getChildAt(2)))).getText().toString();
         Log.e("2", tripId);
-
-
 
         requestAdapter = new RequestAdapter(view.getContext());
         requestView = view.findViewById(R.id.requestWindow);
@@ -259,9 +319,6 @@ public class TripFragment extends Fragment {
 
         requestView.setBackgroundResource(R.drawable.customshape);
 
-
-
-
         voyages1.clear();
         db.collection("request")
                 .get()
@@ -303,9 +360,6 @@ public class TripFragment extends Fragment {
                 });
 
     }
-
-
-
 
 
     public void deleteRequest(String id){
@@ -411,10 +465,5 @@ public class TripFragment extends Fragment {
         a.setDuration((int)(initialHeight / v.getContext().getResources().getDisplayMetrics().density));
         v.startAnimation(a);
     }
-
-
-
-
-
 
 }
