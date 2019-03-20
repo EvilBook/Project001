@@ -19,7 +19,8 @@
             android:layout_height="match_parent"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="55dp">
+            android:layout_marginTop="55dp"
+            android:background="@color/backgroundHome">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -41,7 +42,6 @@
                         android:id="@+id/tab1"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="#e34"
                         android:orientation="vertical">
                     </LinearLayout>
 

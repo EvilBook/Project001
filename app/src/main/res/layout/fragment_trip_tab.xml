@@ -10,7 +10,6 @@
         android:id="@+id/tripListView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="58dp"
         android:layout_weight="2"
         android:divider="#fff"
         app:layout_constraintBottom_toBottomOf="parent"

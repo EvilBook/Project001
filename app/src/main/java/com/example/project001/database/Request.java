@@ -5,7 +5,7 @@ public class Request {
 
     public String tripId;
     public String requestId;
-    public String colour;
+    public String colour = "#ffffff";
 
 
     public Request(String tripId, String passenger, String driver, String soolean) {

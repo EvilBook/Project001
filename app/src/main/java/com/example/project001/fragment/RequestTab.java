@@ -122,7 +122,7 @@ public class RequestTab extends Fragment {
 
                                     );
                                     Log.e("soolean", "0");
-                                    request.setColour("#DFDFDF");
+                                    request.setColour("#ffffff");
                                     request.requestId = document.getId();
                                     requests.add(request);
                                 }
