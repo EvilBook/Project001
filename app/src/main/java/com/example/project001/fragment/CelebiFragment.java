@@ -28,6 +28,7 @@ CelebiFragment extends Fragment {
     //Add trips
     String email;
 
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

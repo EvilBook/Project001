@@ -1,12 +1,14 @@
 package com.example.project001;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.VideoView;
 
 import com.example.project001.database.DBConnection;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -50,6 +52,19 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+
+        //VideoView videoview = (VideoView) findViewById(R.id.videoView);
+        //videoview.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+        //    @Override
+         //   public void onPrepared(MediaPlayer mp) {
+         //       mp.setLooping(true);
+         //   }
+       // });
+       // Uri uri = Uri.parse("android.resource://"+getPackageName()+"/"+R.raw.lgonscreen);
+       // videoview.setVideoURI(uri);
+        //videoview.start();
+
+
     }
 
 
@@ -85,6 +100,7 @@ public class LoginActivity extends AppCompatActivity {
             personPhoto = account.getPhotoUrl();
 
 
+            finish();
             startActivity(intent);
 
         } catch (ApiException e) {

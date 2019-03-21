@@ -62,7 +62,6 @@ public class ProfileFragment extends Fragment {
     DBConnection dbc = new DBConnection();
 
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -179,7 +178,6 @@ public class ProfileFragment extends Fragment {
         p.dimAmount = 0.6f;
         wm.updateViewLayout(container, p);
     }
-
 
 
     //set values collected from the db

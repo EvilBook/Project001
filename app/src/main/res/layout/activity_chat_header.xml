@@ -1,19 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/backgroundHome">
+
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
-        android:paddingVertical="11dp">
+        android:paddingBottom="5dp"
+        android:layout_marginTop="10dp">
+
 
         <LinearLayout
             android:id="@+id/chatClick"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#4CAF50"
+            android:background="@drawable/customshape1"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
             android:orientation="vertical">
 
             <LinearLayout
@@ -24,8 +33,12 @@
                 <TextView
                     android:id="@+id/chatName"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_weight="1" />
+                    android:layout_height="60dp"
+                    android:textColor="@color/white"
+                    android:paddingLeft="15dp"
+                    android:paddingTop="5dp"
+                    android:textSize="13dp"
+                    android:gravity="center|left"/>
 
             </LinearLayout>
         </LinearLayout>

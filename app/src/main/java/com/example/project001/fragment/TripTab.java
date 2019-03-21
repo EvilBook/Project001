@@ -335,7 +335,7 @@ public class TripTab extends Fragment {
         }
         v.measure(AbsListView.LayoutParams.MATCH_PARENT, AbsListView.LayoutParams.WRAP_CONTENT);
         //final int targetHeight = v.getMeasuredHeight();
-        final int targetHeight = 240;
+        final int targetHeight = 300;
 
         // Older versions of android (pre API 21) cancel animations for views with a height of 0.
         v.getLayoutParams().height = 1;
@@ -387,6 +387,7 @@ public class TripTab extends Fragment {
         v.startAnimation(a);
     }
 
+
     public void changeStatus(View view) {
 
         String requestId;
@@ -407,7 +408,6 @@ public class TripTab extends Fragment {
             }
         });
     }
-
 
 
 }

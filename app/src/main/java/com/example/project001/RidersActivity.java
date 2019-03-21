@@ -1,5 +1,7 @@
 package com.example.project001;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.support.v4.app.Fragment;
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -36,6 +38,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class RidersActivity extends Fragment implements OnMapReadyCallback {
 
@@ -57,6 +60,13 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
     public static TextView fromLocation;
     public static TextView toLocation;
 
+    Button searchForShit;
+
+
+    String email;
+
+
+
 
 
     @Nullable
@@ -69,6 +79,15 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+
+        if(getArguments() != null){
+            email = getArguments().getString("email");
+            Log.e("homeFragment", email);
+        }else{
+            Log.e("doesn't work", "");
+        }
+
 
         //Database and Context
         con = getContext();
@@ -170,6 +189,24 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
         //TextView
         toLocation = getView().findViewById(R.id.ToLocation);
         fromLocation = getView().findViewById(R.id.YourLocation);
+
+        searchForShit=getView().findViewById(R.id.button);
+
+
+        searchForShit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), SearchResultsActivity.class);
+                intent.putExtra("departure",fromLocation.getText().toString());
+                intent.putExtra("destination",toLocation.getText().toString());
+                intent.putExtra("email",email);
+
+
+                startActivity(intent);
+            }
+        });
+
+
     }
 
     @Override
@@ -196,6 +233,7 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
     }
 
 
+
     //Get Array List from database and add markers
     public void getArrayList(ArrayList<Trip> list) {
 
@@ -211,54 +249,83 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
 
 
         //For each trip
-        for (int i = 0; i < t.size(); i++) {
+        if(t.size() > 0) {
+            for (int i = 0; i < t.size(); i++) {
+
+                if(t.get(i).getSeats().equals("0")) {
+
+                }else{
+                    //Search for location
+                    String s = t.get(i).departure;
+                    String searchString = s.substring(0, 1).toUpperCase() + s.substring(1);
+                    System.out.println("SEARCH STRING: " + searchString);
+
+                    List<Address> l = new ArrayList<>();
+
+                    try {
+                        l = geocoder.getFromLocationName(searchString, 1);
+
+                    } catch (IOException e) {
+                        Log.e(".", "geoLocate: IOException: " + e.getMessage());
+                    }
+
+                    if (list.size() > 0) {
+                        Address address = l.get(0);
+
+                        Log.d("", "geoLocate: found a location: " + address.toString());
+
+                        int[] pics = {R.drawable.pic1, R.drawable.pic2, R.drawable.pic3,
+                                R.drawable.pic4, R.drawable.pic5, R.drawable.pic6,
+                                R.drawable.pic7, R.drawable.pic8, R.drawable.pic9,
+                                R.drawable.pic10, R.drawable.pic11,};
+
+                        Random r=new Random();
+                        int randomNumber = r.nextInt(pics.length);
 
 
-            //Search for location
-            String s = t.get(i).departure;
-            String searchString = s.substring(0, 1).toUpperCase() + s.substring(1);
-            System.out.println("SEARCH STRING: " + searchString);
+                        //Markers
+                        Marker marker;
+                        MarkerOptions markerOptions;
+                        LatLng pos = new LatLng(address.getLatitude(), address.getLongitude());
 
-            List<Address> l = new ArrayList<>();
+                        //Set Marker + Window Info
+                        InfoWindowData info = new InfoWindowData();
+                        info.setDeparture(t.get(i).getDeparture());
+                        info.setDestination(t.get(i).getDestination());
+                        info.setAuthor(t.get(i).getAuthor());
+                        info.setDate(t.get(i).getDate());
+                        info.setPrice(t.get(i).getPrice());
+                        info.setAvailableSeats(t.get(i).getSeats());
 
-            try {
-                l = geocoder.getFromLocationName(searchString, 1);
+                        markerOptions = new MarkerOptions()
+                                .position(pos)
+                                .title(searchString)
+                                .icon(BitmapDescriptorFactory.fromResource(pics[randomNumber]));
 
-            } catch (IOException e) {
-                Log.e(".", "geoLocate: IOException: " + e.getMessage());
+                        //Add Marker
+                        marker = mMap.addMarker(markerOptions);
+
+                        //Add Window
+                        marker.setTag(info);
+                        marker.showInfoWindow();
+                    }
+                }
+
+
             }
-
-            if (list.size() > 0) {
-                Address address = l.get(0);
-
-                Log.d("", "geoLocate: found a location: " + address.toString());
-
-
-                //Markers
-                Marker marker;
-                MarkerOptions markerOptions;
-                LatLng pos = new LatLng(address.getLatitude(), address.getLongitude());
-
-                //Set Marker + Window Info
-                InfoWindowData info = new InfoWindowData();
-                info.setDeparture(t.get(i).getDeparture());
-                info.setDestination(t.get(i).getDestination());
-                info.setAuthor(t.get(i).getAuthor());
-                info.setDate(t.get(i).getDate());
-                info.setPrice(t.get(i).getPrice());
-
-                markerOptions= new MarkerOptions()
-                        .position(pos)
-                        .title(searchString)
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker));
-
-                //Add Marker
-                marker = mMap.addMarker(markerOptions);
-
-                //Add Window
-                marker.setTag(info);
-                marker.showInfoWindow();
-            }
+        }else{
+            Log.e("Error: ", "Can't add markers to map because array is empty.");
+            //show dialog
+            AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
+            alertDialog.setTitle("Problem Requesting Trips");
+            alertDialog.setMessage("Please Refresh The Home Page.");
+            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            alertDialog.show();
         }
     }
 

@@ -4,62 +4,55 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#eff7ff"
-    tools:context=".ConfirmTrip">
+    tools:context=".ConfirmTrip"
+    android:background="@color/backgroundHome">
 
     <TextView
         android:id="@+id/tittle"
-        android:layout_width="257dp"
-        android:layout_height="28dp"
-        android:layout_marginTop="8dp"
-        android:text="Your Trip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="Confirm Your Trip"
         android:textAlignment="center"
-        android:textSize="24dp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/displayTrip"
+        android:textSize="25dp"
+        android:textStyle="italic"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.297" />
+        android:textColor="@color/colorPrimaryDark" />
 
     <TextView
         android:id="@+id/displayTrip"
         android:layout_width="348dp"
         android:layout_height="287dp"
         android:layout_marginBottom="144dp"
-        android:background="#e8db7d"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.492"
+        android:textSize="18dp"
+        android:layout_marginTop="40dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"
+        android:gravity="center|top"
+        app:layout_constraintTop_toBottomOf="@+id/tittle"/>
 
     <Button
         android:id="@+id/confirmButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="45dp"
-        android:layout_marginBottom="60dp"
-        android:background="#e8db7d"
         android:text="Confirm"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.131"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/cancelButton"
-        app:layout_constraintTop_toBottomOf="@+id/displayTrip"
-        app:layout_constraintVertical_bias="0.555" />
+        android:background="@color/colorPrimary"
+        android:layout_marginBottom="20dp"/>
 
     <Button
         android:id="@+id/cancelButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="45dp"
-        android:layout_marginRight="32dp"
-        android:layout_marginBottom="60dp"
-        android:background="#e8db7d"
         android:text="Cancel"
+        app:layout_constraintLeft_toRightOf="@id/confirmButton"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/displayTrip"
-        app:layout_constraintVertical_bias="0.668" />
+        android:background="@color/colorPrimary"
+        android:layout_marginBottom="20dp"/>
 </android.support.constraint.ConstraintLayout>

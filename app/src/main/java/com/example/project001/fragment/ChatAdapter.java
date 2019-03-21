@@ -18,7 +18,11 @@ public class ChatAdapter extends BaseAdapter {
 
     //variables
     String email;
+    String chatID;
     View view;
+
+    //objects
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     List<Chat> chats = new ArrayList<Chat>();
     Context context;
@@ -33,7 +37,6 @@ public class ChatAdapter extends BaseAdapter {
         this.chats.add(chat);
         notifyDataSetChanged();
     }
-
 
     @Override
     public int getCount() {
@@ -58,9 +61,11 @@ public class ChatAdapter extends BaseAdapter {
 
         convertView = tripInflater.inflate(R.layout.activity_chat_header, null);
         holder.chatName = convertView.findViewById(R.id.chatName);
+
         convertView.setTag(holder);
 
         holder.chatName.setText(chets.getId());
+
         return convertView;
     }
 }

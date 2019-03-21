@@ -17,7 +17,8 @@
         android:layout_marginTop="71dp"
         android:layout_marginRight="14dp"
         android:elevation="2dp"
-        android:paddingBottom="20dp" />
+        android:paddingBottom="20dp"
+        android:paddingTop="30dp" />
 
     <LinearLayout
         android:id="@+id/tripClick"

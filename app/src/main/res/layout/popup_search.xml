@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="350dp"
+    android:layout_height="238dp"
+    android:background="@drawable/popupwindow">
+
+
+    <TextView
+        android:id="@+id/viewwwww"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_marginTop="30dp"
+        android:text="Request a seat for this trip?"
+        android:textAlignment="center"
+        android:textSize="34dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/acceptSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:background="@drawable/popupwindowbutton"
+        android:text="Request"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/cancelSearch"
+        app:layout_constraintRight_toRightOf="parent"
+
+        />
+
+    <Button
+        android:id="@+id/cancelSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:background="@drawable/popupwindowbutton"
+        android:text="Cancel"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/acceptSearch" />
+
+
+</android.support.constraint.ConstraintLayout>

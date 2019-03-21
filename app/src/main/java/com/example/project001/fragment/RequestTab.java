@@ -111,7 +111,6 @@ public class RequestTab extends Fragment {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.e("dsplaying", document.getString("passenger") + " " + email + " " + document.getString("soolean"));
                                 if(document.getString("passenger").equals(email) && document.getString("soolean").equals("0")) {
 
                                     request = new Request(

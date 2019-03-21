@@ -1,5 +1,7 @@
 package com.example.project001;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -26,10 +28,12 @@ import android.widget.TabHost;
 import android.widget.TextView;
 
 import com.example.project001.database.DBConnection;
+import com.example.project001.database.Trip;
 import com.example.project001.fragment.CelebiFragment;
 import com.example.project001.fragment.ChatFragment;
 import com.example.project001.fragment.HomeFragment;
 import com.example.project001.fragment.ProfileFragment;
+import com.example.project001.fragment.SettingsFragment;
 import com.example.project001.fragment.TripFragment;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -162,6 +166,19 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_info) {
             System.out.println("info");
+
+            //show dialog
+            AlertDialog alertDialog = new AlertDialog.Builder(SideBarActivity.this).create();
+            alertDialog.setTitle("This App Has Been Created By");
+            alertDialog.setMessage("Andrei, Suzanne, Martin & Martin");
+            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            alertDialog.show();
+
             return true;
         }
 
@@ -192,8 +209,8 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
             chat.setArguments(bun);
 
             getSupportFragmentManager().beginTransaction().replace(R.id.containerFragment, chat).commit();
-
         } else if (id == R.id.nav_trips) {
+
 
             Bundle bun = new Bundle();
             bun.putString("email", email);
@@ -205,18 +222,21 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
 
         } else if (id == R.id.nav_logout) {
             signOut();
+            finish();
+            Intent intent=new Intent(SideBarActivity.this, LoginActivity.class);
+            SideBarActivity.this.startActivity(intent);
 
         } else if (id == R.id.nav_home) {
 
             Bundle bun = new Bundle();
             bun.putString("email", email);
 
-            HomeFragment homeFragment = new HomeFragment();
-            homeFragment.setArguments(bun);
+            HomeFragment hom = new HomeFragment();
+            hom.setArguments(bun);
 
 
             //Set Fragment
-            getSupportFragmentManager().beginTransaction().replace(R.id.containerFragment, homeFragment).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.containerFragment, hom).commit();
             Log.e("curious", "biatch");
         }
 

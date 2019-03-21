@@ -21,7 +21,6 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.project001.LoginActivity;
 import com.example.project001.R;
 import com.example.project001.message.MessageAdapter;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -35,6 +34,12 @@ import com.scaledrone.lib.Scaledrone;
 
 import org.w3c.dom.Text;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
@@ -49,7 +54,6 @@ public class MainActivity extends AppCompatActivity implements RoomListener {
     private Scaledrone scaledrone;
     private MessageAdapter messageAdapter;
     private ListView messagesView;
-    Uri avatarPic = LoginActivity.personPhoto;
     ImageView sendView;
     ImageView callView;
     String name;
@@ -64,10 +68,12 @@ public class MainActivity extends AppCompatActivity implements RoomListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         Intent intent = getIntent();
         name = intent.getStringExtra("name");
         roomName = "observable-" + intent.getStringExtra("room");
         Log.e("room value", roomName);
+
 
         setContentView(R.layout.activity_messsage);
 
@@ -78,15 +84,24 @@ public class MainActivity extends AppCompatActivity implements RoomListener {
         messagesView = findViewById(R.id.messages_view);
         messagesView.setAdapter(messageAdapter);
 
+
+
+
         //Log.e("my name is:", name);
         MemberData data = new MemberData(name, getRandomColor());
+
         scaledrone = new Scaledrone(channelID, data);
+
+
+
+
         scaledrone.connect(new Listener() {
             @Override
             public void onOpen() {
                 System.out.println("Scaledrone connection open");
                 // Since the MainActivity itself already implement RoomListener we can pass it as a target
                 scaledrone.subscribe(roomName, MainActivity.this);
+
             }
 
             @Override
@@ -100,17 +115,21 @@ public class MainActivity extends AppCompatActivity implements RoomListener {
             }
 
             @Override
-            public void onClosed(String reason) { System.err.println(reason); }
+            public void onClosed(String reason) {
+
+                System.err.println(reason);
+            }
         });
 
-        //send message
+
         sendView = findViewById(R.id.sendView);
         sendView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendMessage();
+                sendMessage(v);
             }
         });
+
 
         //phone call
         callView = findViewById(R.id.callView);
@@ -121,12 +140,14 @@ public class MainActivity extends AppCompatActivity implements RoomListener {
             }
         });
 
+
     }
 
     // Successfully connected to Scaledrone room
     @Override
     public void onOpen(Room room) {
         System.out.println("Connected to room");
+        readFromFile(this);
     }
 
     // Connecting to Scaledrone room failed
@@ -173,19 +194,30 @@ public class MainActivity extends AppCompatActivity implements RoomListener {
     }
 
 
-    public void sendMessage() {
+    public void sendMessage(View view) {
 
         String message = msgText.getText().toString();
         if (message.length() > 0) {
-            //Log.e("room value inside if", roomName);
+            Log.e("room value inside if", roomName);
             scaledrone.publish(roomName, message);
             msgText.getText().clear();
         }
 
-        //Log.e("msg", roomName);
-        //Log.e("msg", message);
+        Log.e("msg", roomName);
+        Log.e("msg", message);
     }
 
+
+    public void sendMessage1(String i) {
+
+
+        if (i.length() > 0) {
+            Log.e("room value inside if", roomName);
+            scaledrone.publish(roomName, i);
+        }
+
+        Log.e("msg", roomName);
+    }
 
 
 
@@ -200,15 +232,19 @@ public class MainActivity extends AppCompatActivity implements RoomListener {
 
             if(textView.getChildCount() == 1) {
 
-                history.add(((TextView) textView.getChildAt(0)).getText().toString());
+                history.add(":::US:::"+((TextView) textView.getChildAt(0)).getText().toString());
 
             } else if(textView.getChildCount() == 3) {
 
-                history.add(((TextView) textView.getChildAt(1)).getText().toString()+"/"+((TextView) textView.getChildAt(2)).getText().toString());
+                history.add(":::THEM:::"+((TextView) textView.getChildAt(2)).getText().toString());
 
             }
 
         }
+
+        writeToFile("",this);
+
+
 
 
         for (String s:history){
@@ -235,6 +271,57 @@ public class MainActivity extends AppCompatActivity implements RoomListener {
         manager.notify(0, builder.build());
     }
 
+
+    private void writeToFile(String data,Context context) {
+        try {
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput(roomName+".txt", Context.MODE_PRIVATE));
+            for (String s : history) {
+                outputStreamWriter.write(s);
+            }
+            outputStreamWriter.close();
+        }
+        catch (IOException e) {
+            Log.e("Exception", "File write failed: " + e.toString());
+        }
+    }
+
+
+    private String readFromFile(Context context) {
+
+        String ret = "";
+
+        try {
+            InputStream inputStream = context.openFileInput(roomName+".txt");
+
+            if ( inputStream != null ) {
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                String receiveString = "";
+                StringBuilder stringBuilder = new StringBuilder();
+
+                while ( (receiveString = bufferedReader.readLine()) != null ) {
+
+                    sendMessage1(receiveString);
+                    Log.e("WHATATDATDAT", receiveString);
+                    stringBuilder.append(receiveString);
+
+                }
+
+                inputStream.close();
+                ret = stringBuilder.toString();
+                Log.e("WHATATDATDAT111", ret);
+            }
+        }
+        catch (FileNotFoundException e) {
+            Log.e("login activity", "File not found: " + e.toString());
+        } catch (IOException e) {
+            Log.e("login activity", "Can not read file: " + e.toString());
+        }
+
+        return ret;
+    }
+
+
     public void callPhone() {
 
         Intent intent = new Intent(Intent.ACTION_CALL);
@@ -250,6 +337,7 @@ public class MainActivity extends AppCompatActivity implements RoomListener {
         }
 
     }
+
 
 
 
