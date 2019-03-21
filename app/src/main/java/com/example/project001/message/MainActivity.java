@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements RoomListener {
     @Override
     public void onOpen(Room room) {
         System.out.println("Connected to room");
-        readFromFile(this);
+        //readFromFile(this);
     }
 
     // Connecting to Scaledrone room failed
