@@ -385,7 +385,7 @@ public class DBConnection {
                                 Log.e("", "You can't request a trip where you are the driver.");
 
                                 //show dialog
-                                AlertDialog alertDialog = new AlertDialog.Builder(r.getContext()).create();
+                                AlertDialog alertDialog = new AlertDialog.Builder(context).create();
                                 alertDialog.setTitle("Problem Requesting Trip");
                                 alertDialog.setMessage("You can't request a trip where you are the driver.");
                                 alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
