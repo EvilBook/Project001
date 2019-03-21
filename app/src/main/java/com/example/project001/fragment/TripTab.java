@@ -26,6 +26,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -231,6 +232,7 @@ public class TripTab extends Fragment {
                                     Toast.makeText(getContext(), "right2left swipe", Toast.LENGTH_SHORT).show ();
                                     linearLayout.setBackgroundColor(Color.parseColor("#85ff9e"));
                                     acceptTrip(driverName+passengerName+"", driverName, passengerName);
+                                    changeStatus(v);
                                 }
                                 break;
                         }
@@ -384,5 +386,28 @@ public class TripTab extends Fragment {
         a.setDuration((int)(initialHeight / v.getContext().getResources().getDisplayMetrics().density));
         v.startAnimation(a);
     }
+
+    public void changeStatus(View view) {
+
+        String requestId;
+
+        requestId = ((TextView)((((LinearLayout)((((LinearLayout)(((RelativeLayout)(view)).getChildAt(0))).getChildAt(0)))).getChildAt(0)))).getText().toString();
+
+        DocumentReference req = db.collection("request").document(requestId);
+
+        req.update("soolean", "1").addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d(TAG, "DocumentSnapshot successfully updated!");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.w(TAG, "Error updating document", e);
+            }
+        });
+    }
+
+
 
 }

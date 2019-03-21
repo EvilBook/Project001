@@ -192,6 +192,7 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
             chat.setArguments(bun);
 
             getSupportFragmentManager().beginTransaction().replace(R.id.containerFragment, chat).commit();
+
         } else if (id == R.id.nav_trips) {
 
             Bundle bun = new Bundle();
