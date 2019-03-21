@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="wrap_content"
-    android:layout_margin="0dp"
     android:layout_width="wrap_content">
 
     <TextView
@@ -52,12 +51,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/devider"
-        android:layout_marginLeft="10dp"
         android:maxWidth="300dp"
         android:elevation="2dp"
         android:paddingHorizontal="5dp"
         android:paddingVertical="2dp"
-        android:paddingLeft="10dp"
+        android:paddingLeft="20dp"
         android:paddingRight="10dp"
         android:text="How are you doing? This is a long message that should probably wrap."
         android:textSize="14dp" />
@@ -67,12 +65,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/author_body"
-        android:layout_marginLeft="10dp"
         android:maxWidth="300dp"
         android:elevation="2dp"
         android:paddingHorizontal="5dp"
         android:paddingVertical="2dp"
-        android:paddingLeft="10dp"
+        android:paddingLeft="20dp"
         android:paddingRight="10dp"
         android:text="How are you doing? This is a long message that should probably wrap."
         android:textSize="14dp" />
@@ -81,11 +78,9 @@
         android:id="@+id/availableSeats_body"
         android:layout_width="170dp"
         android:layout_height="23dp"
-        android:maxWidth="300dp"
-
         android:layout_below="@+id/date_body"
-        android:layout_marginLeft="10dp"
         android:elevation="2dp"
+        android:paddingLeft="20dp"
         android:paddingHorizontal="5dp"
         android:paddingVertical="2dp"
         android:text="4 total seats"
@@ -93,9 +88,8 @@
 
     <TextView
         android:id="@+id/price_body"
-        android:layout_width="80dp"
+        android:layout_width="70dp"
         android:layout_height="23dp"
-        android:maxWidth="300dp"
 
         android:layout_below="@+id/date_body"
         android:layout_toRightOf="@+id/availableSeats_body"

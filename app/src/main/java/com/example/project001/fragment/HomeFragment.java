@@ -110,8 +110,16 @@ HomeFragment extends Fragment {
     //Handle map fragment
     public void mainScreen() {
 
+        Bundle bun = new Bundle();
+        bun.putString("email", email);
+
+
+
+
+
         //Fragment Map
         Fragment fragment=new RidersActivity();
+        fragment.setArguments(bun);
         FragmentTransaction ft = getChildFragmentManager().beginTransaction();
         ft.replace(linearLayout.getId(), fragment, "maps");
         ft.commit();

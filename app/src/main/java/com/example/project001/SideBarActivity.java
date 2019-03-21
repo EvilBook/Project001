@@ -1,5 +1,7 @@
 package com.example.project001;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -27,6 +29,7 @@ import android.widget.TextView;
 
 import com.example.project001.database.DBConnection;
 import com.example.project001.database.Trip;
+import com.example.project001.fragment.CelebiFragment;
 import com.example.project001.fragment.ChatFragment;
 import com.example.project001.fragment.HomeFragment;
 import com.example.project001.fragment.ProfileFragment;
@@ -163,6 +166,19 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_info) {
             System.out.println("info");
+
+            //show dialog
+            AlertDialog alertDialog = new AlertDialog.Builder(SideBarActivity.this).create();
+            alertDialog.setTitle("This App Has Been Created By");
+            alertDialog.setMessage("Andrei, Suzanne, Martin & Martin");
+            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            alertDialog.show();
+
             return true;
         }
 
@@ -195,17 +211,14 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
             getSupportFragmentManager().beginTransaction().replace(R.id.containerFragment, chat).commit();
         } else if (id == R.id.nav_trips) {
 
+
             Bundle bun = new Bundle();
             bun.putString("email", email);
 
-            TripFragment trp = new TripFragment();
-            trp.setArguments(bun);
+            CelebiFragment celi = new CelebiFragment();
+            celi.setArguments(bun);
 
-            getSupportFragmentManager().beginTransaction().replace(R.id.containerFragment, trp).commit();
-
-        } else if (id == R.id.nav_settings) {
-            fragment = new SettingsFragment();
-            getSupportFragmentManager().beginTransaction().replace(R.id.containerFragment, fragment).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.containerFragment, celi).commit();
 
         } else if (id == R.id.nav_logout) {
             signOut();

@@ -38,6 +38,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class RidersActivity extends Fragment implements OnMapReadyCallback {
 
@@ -59,6 +60,13 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
     public static TextView fromLocation;
     public static TextView toLocation;
 
+    Button searchForShit;
+
+
+    String email;
+
+
+
 
 
     @Nullable
@@ -71,6 +79,15 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+
+        if(getArguments() != null){
+            email = getArguments().getString("email");
+            Log.e("homeFragment", email);
+        }else{
+            Log.e("doesn't work", "");
+        }
+
 
         //Database and Context
         con = getContext();
@@ -172,6 +189,24 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
         //TextView
         toLocation = getView().findViewById(R.id.ToLocation);
         fromLocation = getView().findViewById(R.id.YourLocation);
+
+        searchForShit=getView().findViewById(R.id.button);
+
+
+        searchForShit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), SearchResultsActivity.class);
+                intent.putExtra("departure",fromLocation.getText().toString());
+                intent.putExtra("destination",toLocation.getText().toString());
+                intent.putExtra("email",email);
+
+
+                startActivity(intent);
+            }
+        });
+
+
     }
 
     @Override
@@ -196,6 +231,7 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
         mMap.addMarker(markerOptions);
 
     }
+
 
 
     //Get Array List from database and add markers
@@ -238,6 +274,15 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
 
                         Log.d("", "geoLocate: found a location: " + address.toString());
 
+                        int[] pics = {R.drawable.pic1, R.drawable.pic2, R.drawable.pic3,
+                                R.drawable.pic4, R.drawable.pic5, R.drawable.pic6,
+                                R.drawable.pic7, R.drawable.pic8, R.drawable.pic9,
+                                R.drawable.pic10, R.drawable.pic11,};
+
+                        Random r=new Random();
+                        int randomNumber = r.nextInt(pics.length);
+
+
                         //Markers
                         Marker marker;
                         MarkerOptions markerOptions;
@@ -255,7 +300,7 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
                         markerOptions = new MarkerOptions()
                                 .position(pos)
                                 .title(searchString)
-                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker));
+                                .icon(BitmapDescriptorFactory.fromResource(pics[randomNumber]));
 
                         //Add Marker
                         marker = mMap.addMarker(markerOptions);

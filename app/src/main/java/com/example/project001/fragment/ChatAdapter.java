@@ -61,9 +61,11 @@ public class ChatAdapter extends BaseAdapter {
 
         convertView = tripInflater.inflate(R.layout.activity_chat_header, null);
         holder.chatName = convertView.findViewById(R.id.chatName);
+
         convertView.setTag(holder);
 
-        holder.chatName.setText(chets.getPassenger());
+        holder.chatName.setText(chets.getId());
+
         return convertView;
     }
 }

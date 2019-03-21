@@ -5,7 +5,11 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,9 +34,17 @@ import com.scaledrone.lib.Scaledrone;
 
 import org.w3c.dom.Text;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
+
+import static android.Manifest.permission.CALL_PHONE;
 
 public class MainActivity extends AppCompatActivity implements RoomListener {
 
@@ -117,12 +129,25 @@ public class MainActivity extends AppCompatActivity implements RoomListener {
                 sendMessage(v);
             }
         });
+
+
+        //phone call
+        callView = findViewById(R.id.callView);
+        callView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callPhone();
+            }
+        });
+
+
     }
 
     // Successfully connected to Scaledrone room
     @Override
     public void onOpen(Room room) {
         System.out.println("Connected to room");
+        readFromFile(this);
     }
 
     // Connecting to Scaledrone room failed
@@ -183,6 +208,19 @@ public class MainActivity extends AppCompatActivity implements RoomListener {
     }
 
 
+    public void sendMessage1(String i) {
+
+
+        if (i.length() > 0) {
+            Log.e("room value inside if", roomName);
+            scaledrone.publish(roomName, i);
+        }
+
+        Log.e("msg", roomName);
+    }
+
+
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -194,15 +232,19 @@ public class MainActivity extends AppCompatActivity implements RoomListener {
 
             if(textView.getChildCount() == 1) {
 
-                history.add(((TextView) textView.getChildAt(0)).getText().toString());
+                history.add(":::US:::"+((TextView) textView.getChildAt(0)).getText().toString());
 
             } else if(textView.getChildCount() == 3) {
 
-                history.add(((TextView) textView.getChildAt(1)).getText().toString()+"/"+((TextView) textView.getChildAt(2)).getText().toString());
+                history.add(":::THEM:::"+((TextView) textView.getChildAt(2)).getText().toString());
 
             }
 
         }
+
+        writeToFile("",this);
+
+
 
 
         for (String s:history){
@@ -228,5 +270,75 @@ public class MainActivity extends AppCompatActivity implements RoomListener {
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         manager.notify(0, builder.build());
     }
+
+
+    private void writeToFile(String data,Context context) {
+        try {
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput(roomName+".txt", Context.MODE_PRIVATE));
+            for (String s : history) {
+                outputStreamWriter.write(s);
+            }
+            outputStreamWriter.close();
+        }
+        catch (IOException e) {
+            Log.e("Exception", "File write failed: " + e.toString());
+        }
+    }
+
+
+    private String readFromFile(Context context) {
+
+        String ret = "";
+
+        try {
+            InputStream inputStream = context.openFileInput(roomName+".txt");
+
+            if ( inputStream != null ) {
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                String receiveString = "";
+                StringBuilder stringBuilder = new StringBuilder();
+
+                while ( (receiveString = bufferedReader.readLine()) != null ) {
+
+                    sendMessage1(receiveString);
+                    Log.e("WHATATDATDAT", receiveString);
+                    stringBuilder.append(receiveString);
+
+                }
+
+                inputStream.close();
+                ret = stringBuilder.toString();
+                Log.e("WHATATDATDAT111", ret);
+            }
+        }
+        catch (FileNotFoundException e) {
+            Log.e("login activity", "File not found: " + e.toString());
+        } catch (IOException e) {
+            Log.e("login activity", "Can not read file: " + e.toString());
+        }
+
+        return ret;
+    }
+
+
+    public void callPhone() {
+
+        Intent intent = new Intent(Intent.ACTION_CALL);
+        intent.setData(Uri.parse("tel:0760704639"));
+
+        if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
+                CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+            startActivity(intent);
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(new String[]{CALL_PHONE}, 1);
+            }
+        }
+
+    }
+
+
+
 
 }
