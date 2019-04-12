@@ -33,7 +33,7 @@ import com.example.project001.fragment.CelebiFragment;
 import com.example.project001.fragment.ChatFragment;
 import com.example.project001.fragment.HomeFragment;
 import com.example.project001.fragment.ProfileFragment;
-import com.example.project001.fragment.SettingsFragment;
+//import com.example.project001.fragment.SettingsFragment;
 import com.example.project001.fragment.TripFragment;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;

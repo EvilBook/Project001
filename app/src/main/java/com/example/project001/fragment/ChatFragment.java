@@ -86,18 +86,11 @@ public class ChatFragment extends Fragment {
 
         //reload content
 
-
-
-
-
-
-
-
-
         chatView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 deleteChat();
+                //some content
 
                 LinearLayout linearLayout = view.findViewById(R.id.chatClick);
                 linearLayout.setBackgroundColor(Color.parseColor("#f93943"));
