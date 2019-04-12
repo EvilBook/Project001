@@ -1,0 +1,9 @@
+configurations {
+    sql
+}
+dependencies {
+    sql 'mysql:mysql-connector-java:7.2.1'
+}
+task buildTravelDatabase << {
+    ant.sql(classpath: configurations.sql.asPath)
+}
