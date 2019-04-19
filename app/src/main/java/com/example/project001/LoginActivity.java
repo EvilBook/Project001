@@ -63,6 +63,7 @@ public class LoginActivity extends AppCompatActivity {
        // Uri uri = Uri.parse("android.resource://"+getPackageName()+"/"+R.raw.lgonscreen);
        // videoview.setVideoURI(uri);
         //videoview.start();
+        //fine I'll do it myself
 
 
     }
