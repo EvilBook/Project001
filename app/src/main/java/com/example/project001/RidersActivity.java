@@ -269,7 +269,7 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
                         Log.e(".", "geoLocate: IOException: " + e.getMessage());
                     }
 
-                    if (list.size() > 0) {
+                    if (list.size() > 0 && l.size()>0) {
                         Address address = l.get(0);
 
                         Log.d("", "geoLocate: found a location: " + address.toString());
