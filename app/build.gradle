@@ -46,6 +46,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:16.1.0'
     implementation 'com.google.firebase:firebase-auth:16.1.0'
     implementation 'com.google.apis:google-api-services-calendar:v3-rev84-1.18.0-rc'
+    implementation 'com.github.bumptech.glide:glide:4.9.0'
 }
 
 apply plugin: 'com.google.gms.google-services'
