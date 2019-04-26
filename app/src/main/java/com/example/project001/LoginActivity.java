@@ -1,6 +1,7 @@
 package com.example.project001;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
@@ -8,9 +9,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.example.project001.database.DBConnection;
+import com.example.project001.sql.DatabaseHelper;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -29,6 +32,9 @@ public class LoginActivity extends AppCompatActivity {
     public GoogleSignInClient mGoogleApiClient;
 
     public static Uri personPhoto;
+
+    DatabaseHelper mydb;
+
 
 
     @Override
@@ -53,6 +59,13 @@ public class LoginActivity extends AppCompatActivity {
         });
 
 
+        mydb = new DatabaseHelper(this);
+
+//        addData("suzannezomer@mgmail.com","suzanne zomer");
+//        returnData();
+
+
+
         //VideoView videoview = (VideoView) findViewById(R.id.videoView);
         //videoview.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
         //    @Override
@@ -71,6 +84,7 @@ public class LoginActivity extends AppCompatActivity {
     private void signIn() {
         Intent signInIntent = mGoogleApiClient.getSignInIntent();
         startActivityForResult(signInIntent,OUR_REQUEST_CODE);
+        
     }
 
 
@@ -100,11 +114,36 @@ public class LoginActivity extends AppCompatActivity {
             personPhoto = account.getPhotoUrl();
 
 
+            addData(account.getEmail(),account.getDisplayName());
+            returnData();
+
             finish();
             startActivity(intent);
 
         } catch (ApiException e) {
             Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
+        }
+    }
+
+
+    public void addData(String entry, String entry2){
+        boolean insertData = (boolean) mydb.addData(entry, entry2);
+
+        if(insertData){
+            toastManager("succes");
+        }else{
+            toastManager("something went wrong");
+        }
+    }
+
+    private void toastManager(String message){
+        Toast.makeText(this,message, Toast.LENGTH_SHORT).show();
+    }
+
+    public void returnData(){
+        Cursor data = mydb.getData();
+        while(data.moveToNext()){
+            System.out.println("DATA: " + data.getString(1) + ", " + data.getString(2));
         }
     }
 }

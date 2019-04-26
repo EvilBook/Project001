@@ -95,6 +95,7 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
         db.getTripsforMap();
 
 
+        Log.e("map", " " + mMap);
 
         //create map
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
@@ -236,6 +237,9 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
 
     //Get Array List from database and add markers
     public void getArrayList(ArrayList<Trip> list) {
+
+        Log.e("map", " " + mMap);
+
 
         MarkerExtraInfo customInfoWindow = new MarkerExtraInfo(getContext());
         mMap.setInfoWindowAdapter(customInfoWindow);
