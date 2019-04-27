@@ -20,21 +20,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TabHost;
 import android.widget.TextView;
 
 import com.example.project001.database.DBConnection;
-import com.example.project001.database.Trip;
-import com.example.project001.fragment.CelebiFragment;
-import com.example.project001.fragment.ChatFragment;
+import com.example.project001.chat.ChatHolderFragment;
+import com.example.project001.fragment.TripHolderFragment;
 import com.example.project001.fragment.HomeFragment;
 import com.example.project001.fragment.ProfileFragment;
 //import com.example.project001.fragment.SettingsFragment;
-import com.example.project001.fragment.TripFragment;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -95,6 +90,9 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
 
         //checks if the profile exists in the database
         dbc.checkIfExists(email, displayName);
+
+        //reg.register(email, displayName, "pass");
+
 
         Bundle bun = new Bundle();
         bun.putString("email", email);
@@ -205,7 +203,7 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
             bun.putString("email", email);
             bun.putString("name", displayName);
 
-            ChatFragment chat = new ChatFragment();
+            ChatHolderFragment chat = new ChatHolderFragment();
             chat.setArguments(bun);
 
             getSupportFragmentManager().beginTransaction().replace(R.id.containerFragment, chat).commit();
@@ -215,7 +213,7 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
             Bundle bun = new Bundle();
             bun.putString("email", email);
 
-            CelebiFragment celi = new CelebiFragment();
+            TripHolderFragment celi = new TripHolderFragment();
             celi.setArguments(bun);
 
             getSupportFragmentManager().beginTransaction().replace(R.id.containerFragment, celi).commit();
