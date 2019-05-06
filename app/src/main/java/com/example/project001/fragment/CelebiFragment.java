@@ -87,7 +87,7 @@ CelebiFragment extends Fragment {
         Bundle bun = new Bundle();
         bun.putString("email", email);
 
-        TripTab tripTab = new TripTab();
+        TripTab2 tripTab = new TripTab2();
         tripTab.setArguments(bun);
 
         getChildFragmentManager()

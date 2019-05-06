@@ -25,6 +25,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
 import com.example.project001.database.DBConnection;
 import com.example.project001.database.Trip;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -35,6 +36,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +58,6 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
     Context con;
 
 
-
     public static TextView fromLocation;
     public static TextView toLocation;
 
@@ -65,8 +66,8 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
 
     String email;
 
-
-
+    //User Location
+    Location loc;
 
 
     @Nullable
@@ -81,10 +82,10 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
         super.onActivityCreated(savedInstanceState);
 
 
-        if(getArguments() != null){
+        if (getArguments() != null) {
             email = getArguments().getString("email");
             Log.e("homeFragment", email);
-        }else{
+        } else {
             Log.e("doesn't work", "");
         }
 
@@ -95,8 +96,6 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
         db.getTripsforMap();
 
 
-        Log.e("map", " " + mMap);
-
         //create map
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
 
@@ -105,8 +104,6 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 mMap = googleMap;
-
-                Log.e("map is ready", "");
 
                 //Location
                 locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
@@ -135,30 +132,50 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
                 //Location
                 if (Build.VERSION.SDK_INT < 23) {
                     if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                        // TODO: Consider calling
-                        //    ActivityCompat#requestPermissions
-                        // here to request the missing permissions, and then overriding
-                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                        //                                          int[] grantResults)
-                        // to handle the case where the user grants the permission. See the documentation
-                        // for ActivityCompat#requestPermissions for more details.
+
                         return;
                     }
                     locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
 
                 } else {
                     if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
                         ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
                     } else {
+
                         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+//                        Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
-                        Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                        if (lastKnownLocation != null) {
 
-                            //SET MARKER TO CURRENT LOCATION
-                            updateMapCurrentLocation(lastKnownLocation);
+
+                        //Find current location of user
+                        locationManager = (LocationManager)con.getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+                        List<String> providers = locationManager.getProviders(true);
+                        Location bestLocation = null;
+                        for (String provider : providers) {
+                            Location l = locationManager.getLastKnownLocation(provider);
+                            if (l == null) {
+                                continue;
+                            }
+                            if (bestLocation == null || l.getAccuracy() < bestLocation.getAccuracy()) {
+                                // Found best last known location: %s", l);
+                                bestLocation = l;
+                            }
+                        }
+
+
+                        Log.e("YOUR LOCATION:", " " + loc);
+
+                        if(bestLocation == null) {
+                            bestLocation.setLatitude(56.0302218);
+                            bestLocation.setLatitude(14.1587892);
 
                         }
+
+                        loc = bestLocation;
+
+                        //SET MARKER TO CURRENT LOCATION
+                        updateMapCurrentLocation(bestLocation);
 
                     }
                 }
@@ -191,16 +208,16 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
         toLocation = getView().findViewById(R.id.ToLocation);
         fromLocation = getView().findViewById(R.id.YourLocation);
 
-        searchForShit=getView().findViewById(R.id.button);
+        searchForShit = getView().findViewById(R.id.button);
 
 
         searchForShit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), SearchResultsActivity.class);
-                intent.putExtra("departure",fromLocation.getText().toString());
-                intent.putExtra("destination",toLocation.getText().toString());
-                intent.putExtra("email",email);
+                intent.putExtra("departure", fromLocation.getText().toString());
+                intent.putExtra("destination", toLocation.getText().toString());
+                intent.putExtra("email", email);
 
 
                 startActivity(intent);
@@ -209,6 +226,8 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
 
 
     }
+
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -219,6 +238,8 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
     //Add marker Current Location & Move camera
     public void updateMapCurrentLocation(Location location) {
         LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
+
+        Log.e("loc: ", userLocation.toString());
 
         mMap.clear();
 
@@ -278,43 +299,52 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
 
                         Log.d("", "geoLocate: found a location: " + address.toString());
 
-                        int[] pics = {R.drawable.pic1, R.drawable.pic2, R.drawable.pic3,
-                                R.drawable.pic4, R.drawable.pic5, R.drawable.pic6,
-                                R.drawable.pic7, R.drawable.pic8, R.drawable.pic9,
-                                R.drawable.pic10, R.drawable.pic11,};
 
-                        Random r=new Random();
-                        int randomNumber = r.nextInt(pics.length);
+                        Location target = new Location("target");
+                        target.setLongitude(address.getLongitude());
+                        target.setLatitude(address.getLatitude());
 
 
-                        //Markers
-                        Marker marker;
-                        MarkerOptions markerOptions;
-                        LatLng pos = new LatLng(address.getLatitude(), address.getLongitude());
+                        //Compare user location to markers
+                        if(loc.distanceTo(target) <  200000) {
 
-                        //Set Marker + Window Info
-                        InfoWindowData info = new InfoWindowData();
-                        info.setDeparture(t.get(i).getDeparture());
-                        info.setDestination(t.get(i).getDestination());
-                        info.setAuthor(t.get(i).getAuthor());
-                        info.setDate(t.get(i).getDate());
-                        info.setPrice(t.get(i).getPrice());
-                        info.setAvailableSeats(t.get(i).getSeats());
+                            int[] pics = {R.drawable.pic1, R.drawable.pic2, R.drawable.pic3,
+                                    R.drawable.pic4, R.drawable.pic5, R.drawable.pic6,
+                                    R.drawable.pic7, R.drawable.pic8, R.drawable.pic9,
+                                    R.drawable.pic10, R.drawable.pic11,};
 
-                        markerOptions = new MarkerOptions()
-                                .position(pos)
-                                .title(searchString)
-                                .icon(BitmapDescriptorFactory.fromResource(pics[randomNumber]));
+                            Random r = new Random();
+                            int randomNumber = r.nextInt(pics.length);
 
-                        //Add Marker
-                        marker = mMap.addMarker(markerOptions);
 
-                        //Add Window
-                        marker.setTag(info);
-                        marker.showInfoWindow();
+                            //Markers
+                            Marker marker;
+                            MarkerOptions markerOptions;
+                            LatLng pos = new LatLng(address.getLatitude(), address.getLongitude());
+
+                            //Set Marker + Window Info
+                            InfoWindowData info = new InfoWindowData();
+                            info.setDeparture(t.get(i).getDeparture());
+                            info.setDestination(t.get(i).getDestination());
+                            info.setAuthor(t.get(i).getAuthor());
+                            info.setDate(t.get(i).getDate());
+                            info.setPrice(t.get(i).getPrice());
+                            info.setAvailableSeats(t.get(i).getSeats());
+
+                            markerOptions = new MarkerOptions()
+                                    .position(pos)
+                                    .title(searchString)
+                                    .icon(BitmapDescriptorFactory.fromResource(pics[randomNumber]));
+
+                            //Add Marker
+                            marker = mMap.addMarker(markerOptions);
+
+                            //Add Window
+                            marker.setTag(info);
+                            marker.showInfoWindow();
+                        }
                     }
                 }
-
 
             }
         }else{

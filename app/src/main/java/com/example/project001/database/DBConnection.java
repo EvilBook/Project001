@@ -29,6 +29,8 @@ public class DBConnection {
     //Variables
     Trip trip;
 
+    public Context context;
+
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     public ArrayList<Trip> trips = new ArrayList<>();
@@ -66,6 +68,7 @@ public class DBConnection {
     //method for checking if the email exists
     public void checkIfExists(final String email, final String name) {
 
+        Log.e("email", " " + email);
         db.collection("person")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -340,10 +343,6 @@ public class DBConnection {
             }
         });
     }
-
-
-    public Context context;
-
 
 
     public void addTripRequestFromSearch(final String driver, final String passenger, final String status,
