@@ -18,6 +18,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.security.AccessControlContext;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -65,7 +71,6 @@ public class DBConnection {
 
     //method for checking if the email exists
     public void checkIfExists(final String email, final String name) {
-
         db.collection("person")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -99,6 +104,7 @@ public class DBConnection {
     //method for getting trips for the map
     public void getTripsforMap() {
 
+
         trips.clear();
 
         db.collection("trip").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -116,6 +122,7 @@ public class DBConnection {
                                 document.get("price").toString(),
                                 document.get("seats").toString(),
                                 document.getString("author"));
+
 
 
                         trips.add(trip);
@@ -496,6 +503,42 @@ public class DBConnection {
                     Log.d(TAG, "Error getting documents: ", task.getException());
                 }
             } }); }
+
+
+            public void addTheNumbers() {
+
+
+
+                /*BufferedReader reader;
+
+                try {
+                    final InputStream file = context.getAssets().open("personnumer.csv");
+                    reader = new BufferedReader(new InputStreamReader(file));
+                    String line = reader.readLine();
+                    while (line != null) {
+                        personnumer n=new personnumer(line, "Martin", "Zannato", "Östra Boulevarden 34", "291 31", "Kristianstad", "false","real.martin.zannato@gmail.com");
+                        db.collection("personalinfo").document(line).set(n).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+
+                            }
+                        });
+                        line = reader.readLine();
+                    }
+                } catch (Exception e) {
+                    System.out.println("please die"+e);
+                    Log.e("fart", e.getMessage());
+                }*/
+
+
+            }
+
+
 
 
 }

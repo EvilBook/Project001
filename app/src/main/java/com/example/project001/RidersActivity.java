@@ -35,6 +35,15 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -64,6 +73,14 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
 
 
     String email;
+
+
+    InfoWindowData info;
+
+
+
+    FirebaseFirestore db1 = FirebaseFirestore.getInstance();
+
 
 
 
@@ -233,11 +250,17 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
     }
 
 
+    MarkerExtraInfo customInfoWindow;
+    Marker marker;
+    MarkerOptions markerOptions;
+
+
+
 
     //Get Array List from database and add markers
     public void getArrayList(ArrayList<Trip> list) {
 
-        MarkerExtraInfo customInfoWindow = new MarkerExtraInfo(getContext());
+        customInfoWindow = new MarkerExtraInfo(getContext());
         mMap.setInfoWindowAdapter(customInfoWindow);
 
         //copy array list
@@ -257,7 +280,7 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
                 }else{
                     //Search for location
                     String s = t.get(i).departure;
-                    String searchString = s.substring(0, 1).toUpperCase() + s.substring(1);
+                    final String searchString = s.substring(0, 1).toUpperCase() + s.substring(1);
                     System.out.println("SEARCH STRING: " + searchString);
 
                     List<Address> l = new ArrayList<>();
@@ -274,40 +297,58 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
 
                         Log.d("", "geoLocate: found a location: " + address.toString());
 
-                        int[] pics = {R.drawable.pic1, R.drawable.pic2, R.drawable.pic3,
+                        final int[] pics = {R.drawable.pic1, R.drawable.pic2, R.drawable.pic3,
                                 R.drawable.pic4, R.drawable.pic5, R.drawable.pic6,
                                 R.drawable.pic7, R.drawable.pic8, R.drawable.pic9,
                                 R.drawable.pic10, R.drawable.pic11,};
 
                         Random r=new Random();
-                        int randomNumber = r.nextInt(pics.length);
+                        final int randomNumber = r.nextInt(pics.length);
 
 
                         //Markers
-                        Marker marker;
-                        MarkerOptions markerOptions;
-                        LatLng pos = new LatLng(address.getLatitude(), address.getLongitude());
+                        final LatLng pos = new LatLng(address.getLatitude(), address.getLongitude());
 
                         //Set Marker + Window Info
-                        InfoWindowData info = new InfoWindowData();
-                        info.setDeparture(t.get(i).getDeparture());
-                        info.setDestination(t.get(i).getDestination());
-                        info.setAuthor(t.get(i).getAuthor());
-                        info.setDate(t.get(i).getDate());
-                        info.setPrice(t.get(i).getPrice());
-                        info.setAvailableSeats(t.get(i).getSeats());
+                        final int finalI = i;
+                        db1.collection("personalinfo")
+                                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                            @Override
+                            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                                    if (document.getString("email").equals(t.get(finalI).getAuthor())) {
+                                        info = new InfoWindowData();
+                                        info.setDeparture(t.get(finalI).getDeparture());
+                                        info.setDestination(t.get(finalI).getDestination());
+                                        info.setAuthor(t.get(finalI).getAuthor());
+                                        info.setDate(t.get(finalI).getDate());
+                                        info.setPrice(t.get(finalI).getPrice());
+                                        info.setAvailableSeats(t.get(finalI).getSeats());
+                                        info.setVerified(document.getString("verified"));
+                                        Log.e("GOD FUCKING DAMN IT", info.getAuthor()+ " "+document.getString("verified")+" "+document.getString("email"));
 
-                        markerOptions = new MarkerOptions()
-                                .position(pos)
-                                .title(searchString)
-                                .icon(BitmapDescriptorFactory.fromResource(pics[randomNumber]));
 
-                        //Add Marker
-                        marker = mMap.addMarker(markerOptions);
+                                        markerOptions = new MarkerOptions()
+                                                .position(pos)
+                                                .title(searchString)
+                                                .icon(BitmapDescriptorFactory.fromResource(pics[randomNumber]));
 
-                        //Add Window
-                        marker.setTag(info);
-                        marker.showInfoWindow();
+                                        //Add Marker
+                                        marker = mMap.addMarker(markerOptions);
+
+                                        //Add Window
+                                        marker.setTag(info);
+                                        marker.showInfoWindow();
+
+                                    }
+                                }
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+
+                            }
+                        });
                     }
                 }
 
