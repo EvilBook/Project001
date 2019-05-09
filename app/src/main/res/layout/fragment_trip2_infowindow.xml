@@ -30,7 +30,7 @@
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constr1"
         android:layout_width="match_parent"
-        android:layout_height="110dp"
+        android:layout_height="130dp"
         app:layout_constraintTop_toTopOf="parent"
         android:background="@color/colorPrimaryDark"
         android:paddingTop="10dp"
@@ -40,38 +40,88 @@
 
         <TextView
             android:id="@+id/fromtext"
-            android:layout_width="wrap_content"
+            android:layout_width="260dp"
             android:layout_height="wrap_content"
+            android:maxHeight="23dp"
 
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
 
-            android:textSize="17dp"
+            android:textColor="@color/white"
+            android:textSize="18dp"
+            android:textStyle="bold"
             android:text="From: Kristianstad"/>
 
         <TextView
             android:id="@+id/totext"
-            android:layout_width="wrap_content"
+            android:layout_width="260dp"
             android:layout_height="wrap_content"
+            android:maxHeight="23dp"
 
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/fromtext"
 
+            android:textColor="@color/white"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:text="To: Malmö hdi dehid edh e dei he dhedi ehdie dhei"/>
+
+        <TextView
+            android:id="@+id/datetext"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/totext"
+            android:paddingLeft="15dp"
+            android:paddingTop="5dp"
+
             android:textSize="17dp"
-            android:text="To: Malmö"/>
+            android:text="5 July 2019" />
+
+        <TextView
+            android:id="@+id/seattext"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toRightOf="@id/fromtext"
+            app:layout_constraintRight_toLeftOf="@id/deleteImg"
+            app:layout_constraintTop_toTopOf="parent"
+
+            android:textSize="17dp"
+            android:text="4 Seats"
+            android:textAlignment="textEnd"/>
+
+
+        <TextView
+            android:id="@+id/pricetext"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toRightOf="@id/fromtext"
+            app:layout_constraintRight_toLeftOf="@id/deleteImg"
+            app:layout_constraintTop_toBottomOf="@id/seattext"
+            android:textSize="17dp"
+            android:text="200 Kr"
+            android:textAlignment="textEnd"/>
+
 
 
         <ImageView
             android:id="@+id/deleteImg"
-            android:layout_width="42dp"
-            android:layout_height="42dp"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:paddingRight="10dp"
-            android:paddingBottom="6dp"
-            />
+            android:paddingRight="8dp"
+            android:paddingTop="8dp"/>
 
+        <View
+            android:id="@+id/devLine"
+            android:layout_width="match_parent"
+            android:layout_height="22dp"
+            android:background="@color/colorPrimary"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -79,10 +129,10 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:textSize="20dp"
-            android:textStyle="italic|bold"
-            android:text="Requests:"
-            android:layout_marginLeft="5dp"/>
-
+            android:textStyle="italic"
+            android:layout_marginLeft="5dp"
+            android:textColor="@color/black"
+            android:text="Pending Requests:" />
 
     </android.support.constraint.ConstraintLayout>
 
@@ -100,6 +150,20 @@
         android:background="@color/colorPrimaryDark"
         android:paddingBottom="10dp" />
 
+    <TextView
+        android:id="@+id/infotxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/constr1"
+        android:textStyle="italic"
+        android:textSize="15dp"
+        android:text="No Incoming Request.."
+        android:textAlignment="center"
+        android:visibility="invisible"
+        android:paddingBottom="2dp"/>
+
+
+
 
 
 
@@ -107,13 +171,13 @@
     <Button
         android:id="@+id/startButton"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="37dp"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
 
         android:text="Start Trip"
-        android:background="@color/colorPrimary" />
+        android:background="@color/transparent" />
 
 
 

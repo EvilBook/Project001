@@ -2,12 +2,22 @@
 <resources>
     <color name="colorPrimaryDark">#3E5483</color>
     <color name="colorPrimary">#7CB1E2</color>
+    <color name="colorPrimaryTransparent">#C97CB1E2</color>
+
+
     <color name="colorAccent">#7CB1E2</color>
+
+
+    <color name="transparent">#00FFFFFF</color>
     <color name="white">#ffffff</color>
+    <color name="whiteTransparent">#CEFFFFFF</color>
+    <color name="black">#000000</color>
+
 
 
     <color name="tabs">#3E5483</color>
     <color name="backgroundHome">#DFDFDF</color>
+    <color name="backgroundHomeTransparent">#A9DFDFDF</color>
 
 
 </resources>

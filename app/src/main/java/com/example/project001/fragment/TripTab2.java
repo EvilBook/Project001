@@ -37,6 +37,14 @@ public class TripTab2 extends Fragment {
     private Trip trip;
     private String tripId;
 
+    private String departure;
+    private String destination;
+    private String time;
+    private String date;
+    private String price;
+    private String seats;
+
+
 
     ArrayList<Trip> trips = new ArrayList<>();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -83,6 +91,18 @@ public class TripTab2 extends Fragment {
 
                 Intent intent = new Intent(getView().getContext(), TripTab2_InfoWindow.class);
                 intent.putExtra("id", tripId);
+
+                for(Trip t : trips) {
+                    if(t.tripId.equals(tripId)){
+                        intent.putExtra("destination", t.destination);
+                        intent.putExtra("departure", t.departure);
+                        intent.putExtra("time", t.time);
+                        intent.putExtra("price", t.price);
+                        intent.putExtra("seats", t.seats);
+                        intent.putExtra("date", t.date);
+                    }
+                }
+
                 startActivity(intent);
 
             }
@@ -113,7 +133,13 @@ public class TripTab2 extends Fragment {
                                     trip.tripId = document.getId();
                                     //tripAdapter.buffer.add(document.getId());
                                     trips.add(trip);
-                                    Log.e("trip departure: ", "" + trip.departure);
+
+//                                    departure = trip.departure;
+//                                    destination = trip.destination;
+//                                    time = trip.time;
+//                                    date = trip.date;
+//                                    seats = trip.seats;
+//                                    price = trip.price;
                                 }
                             }
 
@@ -129,7 +155,6 @@ public class TripTab2 extends Fragment {
                     }
                 });
     }
-
 
 
 }

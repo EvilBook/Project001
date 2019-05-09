@@ -1,7 +1,12 @@
 package com.example.project001.fragment;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -24,6 +29,9 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -33,10 +41,11 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.type.LatLng;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.google.android.gms.wearable.DataMap.TAG;
@@ -45,6 +54,21 @@ public class TripTab2_InfoWindow extends AppCompatActivity implements OnMapReady
 
     //variables
     private String tripId;
+    private String destination;
+    private String departure;
+    private String date;
+    private String seats;
+    private String price;
+    private String time;
+
+    private TextView dest;
+    private TextView dep;
+    private TextView dat;
+    private TextView sea;
+    private TextView pric;
+    private TextView tim;
+    private TextView infotxt;
+
     private ListView requestView;
     private Request request;
     private String id;
@@ -74,14 +98,45 @@ public class TripTab2_InfoWindow extends AppCompatActivity implements OnMapReady
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync((OnMapReadyCallback) this);
 
-
         deleteImg = findViewById(R.id.deleteImg);
         deleteImg.setImageResource(R.drawable.delete);
-
+        deleteImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteTrip();
+            }
+        });
 
         //get id from prev activity
         Intent intent1 = getIntent();
         id = intent1.getStringExtra("id");
+        destination = intent1.getStringExtra("destination");
+        destination = intent1.getStringExtra("destination");
+        departure = intent1.getStringExtra("departure");
+        time = intent1.getStringExtra("time");
+        price = intent1.getStringExtra("price");
+        seats = intent1.getStringExtra("seats");
+        date = intent1.getStringExtra("date");
+
+
+        dest = findViewById(R.id.totext);
+        dep = findViewById(R.id.fromtext);
+        dat = findViewById(R.id.datetext);
+        pric = findViewById(R.id.pricetext);
+        sea = findViewById(R.id.seattext);
+//        tim = findViewById(R.id.timetext);
+        infotxt = findViewById(R.id.infotxt);
+
+
+
+        dest.setText("To: " + destination);
+        dep.setText("From: " + departure);
+        dat.setText(date);
+        pric.setText(price + " Kr");
+        sea.setText(seats + " Seats");
+
+
+        Log.e("destination", " " + destination);
 
 
         //requests
@@ -95,6 +150,69 @@ public class TripTab2_InfoWindow extends AppCompatActivity implements OnMapReady
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
+
+        addMarkers();
+    }
+
+    public void addMarkers(){
+        com.google.android.gms.maps.model.LatLng userLocation = new LatLng(56.031200, 14.154950);
+
+
+        map.clear();
+
+        //move camera
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 7));
+
+        //add marker for current location
+        MarkerOptions markerOptions = new MarkerOptions().position(userLocation)
+                .title("Your Location")
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.location));
+        map.addMarker(markerOptions);
+
+
+        //Search for location
+        Geocoder geocoder = new Geocoder(this);
+
+        ArrayList<String> list = new ArrayList<>();
+        list.add(departure);
+        list.add(destination);
+
+
+        for (int i=0; i < 2; i++) {
+            String s = list.get(i);
+            String searchString = s.substring(0, 1).toUpperCase() + s.substring(1);
+            System.out.println("SEARCH STRING: " + searchString);
+
+            List<Address> l = new ArrayList<>();
+
+            try {
+                l = geocoder.getFromLocationName(searchString, 1);
+
+            } catch (IOException e) {
+                Log.e(".", "geoLocate: IOException: " + e.getMessage());
+            }
+
+            if (list.size() > 0 && l.size() > 0) {
+                Address address = l.get(0);
+
+                Log.d("", "geoLocate: found a location: " + address.toString());
+
+
+                Location target = new Location("target");
+                target.setLongitude(address.getLongitude());
+                target.setLatitude(address.getLatitude());
+
+
+                //Markers
+                LatLng pos = new LatLng(address.getLatitude(), address.getLongitude());
+                MarkerOptions opt = new MarkerOptions()
+                        .position(pos)
+                        .title(searchString)
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker));
+                Marker marker = map.addMarker(opt);
+            }
+        }
+
     }
 
 
@@ -192,6 +310,10 @@ public class TripTab2_InfoWindow extends AppCompatActivity implements OnMapReady
                                 }
                             }
 
+                            if(voyages1.isEmpty()){
+                                infotxt.setVisibility(View.VISIBLE);
+                            }
+
                             for (Request T : voyages1) {
                                 requestAdapter.add(T);
                                 requestView.setSelection(requestView.getCount() - 1);
@@ -265,6 +387,41 @@ public class TripTab2_InfoWindow extends AppCompatActivity implements OnMapReady
                 Log.w(TAG, "Error updating document", e);
             }
         });
+    }
+
+    public void deleteTrip() {
+
+        android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(this).create();
+        alertDialog.setTitle("Confirm");
+        alertDialog.setMessage("Are you sure you want to delete the trip?");
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "DELETE",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        db.collection("trip").document(tripId)
+                                .delete()
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Log.d(TAG, "DocumentSnapshot successfully deleted!");
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.w(TAG, "Error deleting document", e);
+                                    }
+                                });
+                        dialog.dismiss();
+                        finish();
+                    }
+                });
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "CANCEL",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        alertDialog.show();
     }
 
 }

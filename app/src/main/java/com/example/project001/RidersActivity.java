@@ -151,7 +151,7 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
                         //Find current location of user
                         locationManager = (LocationManager)con.getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
                         List<String> providers = locationManager.getProviders(true);
-                        Location bestLocation = null;
+                        Location bestLocation = new Location("");
                         for (String provider : providers) {
                             Location l = locationManager.getLastKnownLocation(provider);
                             if (l == null) {
@@ -164,13 +164,7 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
                         }
 
 
-                        Log.e("YOUR LOCATION:", " " + loc);
-
-                        if(bestLocation == null) {
-                            bestLocation.setLatitude(56.0302218);
-                            bestLocation.setLatitude(14.1587892);
-
-                        }
+                        Log.e("YOUR LOCATION:", " " + bestLocation);
 
                         loc = bestLocation;
 
@@ -237,9 +231,16 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
 
     //Add marker Current Location & Move camera
     public void updateMapCurrentLocation(Location location) {
+
+        if(location.getLatitude() < 1 && location.getLongitude() > -1) {
+            location.setLatitude(56.031200);
+            location.setLongitude(14.154950);
+        }
+
         LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
 
-        Log.e("loc: ", userLocation.toString());
+//        Log.e("loc: ", userLocation.toString());
+
 
         mMap.clear();
 
@@ -306,7 +307,7 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
 
 
                         //Compare user location to markers
-                        if(loc.distanceTo(target) <  200000) {
+                        if(loc.distanceTo(target) <  300000) {
 
                             int[] pics = {R.drawable.pic1, R.drawable.pic2, R.drawable.pic3,
                                     R.drawable.pic4, R.drawable.pic5, R.drawable.pic6,
