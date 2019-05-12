@@ -9,12 +9,14 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -68,6 +70,10 @@ public class TripTab2_InfoWindow extends AppCompatActivity implements OnMapReady
     private TextView pric;
     private TextView tim;
     private TextView infotxt;
+    private Button startButton;
+    private Button backButton;
+    private ConstraintLayout constr1;
+    private ConstraintLayout constr2;
 
     private ListView requestView;
     private Request request;
@@ -86,6 +92,11 @@ public class TripTab2_InfoWindow extends AppCompatActivity implements OnMapReady
     private GoogleMap map;
 
     ImageView deleteImg;
+    ImageView returnImg;
+
+    boolean checkButton = true;
+    boolean checkButton2 = true;
+    boolean emptyRequests;
 
 
     @Override
@@ -98,6 +109,8 @@ public class TripTab2_InfoWindow extends AppCompatActivity implements OnMapReady
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync((OnMapReadyCallback) this);
 
+
+        //Images
         deleteImg = findViewById(R.id.deleteImg);
         deleteImg.setImageResource(R.drawable.delete);
         deleteImg.setOnClickListener(new View.OnClickListener() {
@@ -106,6 +119,16 @@ public class TripTab2_InfoWindow extends AppCompatActivity implements OnMapReady
                 deleteTrip();
             }
         });
+
+        returnImg = findViewById(R.id.returnImg);
+        returnImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+
 
         //get id from prev activity
         Intent intent1 = getIntent();
@@ -126,8 +149,10 @@ public class TripTab2_InfoWindow extends AppCompatActivity implements OnMapReady
         sea = findViewById(R.id.seattext);
 //        tim = findViewById(R.id.timetext);
         infotxt = findViewById(R.id.infotxt);
-
-
+        startButton = findViewById(R.id.startButton);
+        backButton = findViewById(R.id.backButton);
+        constr1 = findViewById(R.id.constr1);
+        constr2 = findViewById(R.id.constr2);
 
         dest.setText("To: " + destination);
         dep.setText("From: " + departure);
@@ -135,8 +160,91 @@ public class TripTab2_InfoWindow extends AppCompatActivity implements OnMapReady
         pric.setText(price + " Kr");
         sea.setText(seats + " Seats");
 
-
         Log.e("destination", " " + destination);
+
+
+        startButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                if(checkButton2) {
+
+                    android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(TripTab2_InfoWindow.this).create();
+                    alertDialog.setTitle("Confirm");
+                    alertDialog.setMessage("Are you sure you want to start the trip?");
+                    alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "CANCEL",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "START TRIP",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    constr2.setVisibility(View.INVISIBLE);
+                                    requestView.setVisibility(View.INVISIBLE);
+                                    infotxt.setVisibility(View.INVISIBLE);
+                                    deleteImg.setVisibility(View.INVISIBLE);
+                                    returnImg.setVisibility(View.VISIBLE);
+
+                                    startButton.setText("Trip Completed");
+                                    checkButton = false;
+                                    checkButton2 = false;
+
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog.show();
+
+                }else{
+
+                    checkButton2 = true;
+                }
+
+            }
+        });
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(checkButton) {
+                    finish();
+                }else {
+
+                    android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(TripTab2_InfoWindow.this).create();
+                    alertDialog.setTitle("Confirm");
+                    alertDialog.setMessage("Are you sure you want to end the trip?");
+                    alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "CANCEL",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "END TRIP",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    if(emptyRequests)
+                                        infotxt.setVisibility(View.VISIBLE);
+                                    constr2.setVisibility(View.VISIBLE);
+                                    requestView.setVisibility(View.VISIBLE);
+                                    deleteImg.setVisibility(View.VISIBLE);
+                                    returnImg.setVisibility(View.INVISIBLE);
+
+                                    startButton.setText("Start Trip");
+                                    checkButton = true;
+
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog.show();
+
+                }
+            }
+        });
 
 
         //requests
@@ -311,6 +419,7 @@ public class TripTab2_InfoWindow extends AppCompatActivity implements OnMapReady
                             }
 
                             if(voyages1.isEmpty()){
+                                emptyRequests = true;
                                 infotxt.setVisibility(View.VISIBLE);
                             }
 

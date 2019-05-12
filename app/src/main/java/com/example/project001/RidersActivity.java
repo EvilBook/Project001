@@ -2,6 +2,7 @@ package com.example.project001;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -40,6 +41,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 public class RidersActivity extends Fragment implements OnMapReadyCallback {
@@ -61,7 +63,8 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
     public static TextView fromLocation;
     public static TextView toLocation;
 
-    Button searchForShit;
+    private Button searchForShit;
+    private ConstraintLayout constraint1;
 
 
     String email;
@@ -89,12 +92,12 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
             Log.e("doesn't work", "");
         }
 
-
         //Database and Context
         con = getContext();
         db.r = this;
         db.getTripsforMap();
 
+        constraint1 = getView().findViewById(R.id.constraint1);
 
         //create map
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
@@ -104,6 +107,7 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 mMap = googleMap;
+
 
                 //Location
                 locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
@@ -174,6 +178,7 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
                     }
                 }
 
+
                 mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
                     @Override
                     public void onInfoWindowClick(Marker marker) {
@@ -192,10 +197,24 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
                                 infoWindowData.getDeparture(), infoWindowData.getDestination(), infoWindowData.getDate());
                     }
                 });
+
+                mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+
+                    @Override
+                    public void onMapClick(LatLng point) {
+                        Log.d("Map","Map clicked");
+
+                        if(constraint1.getVisibility() == View.VISIBLE) {
+                            constraint1.setVisibility(View.INVISIBLE);
+                        }else{
+                            constraint1.setVisibility(View.VISIBLE);
+
+                        }
+                    }
+                });
+
             }
         });
-
-
 
 
         //TextView

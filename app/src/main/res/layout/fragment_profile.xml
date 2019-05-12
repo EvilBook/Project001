@@ -27,7 +27,7 @@
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginTop="110dp"
         android:text="Your Profile Information"
-        android:textSize="25dp"
+        android:textSize="20dp"
         android:textStyle="italic"
         android:elevation="10dp"
         android:textColor="@color/colorPrimaryDark"/>
@@ -55,11 +55,10 @@
             android:id="@+id/view1"
             android:layout_width="80dp"
             android:layout_height="30dp"
-            android:layout_marginLeft="20dp"
             android:layout_marginTop="30dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/devLine"
-            android:textSize="20dp"
+            android:textSize="17dp"
             android:text="Name: "
             android:textColor="#000000"
             android:gravity="right"/>
@@ -70,7 +69,7 @@
             android:layout_marginTop="30dp"
             app:layout_constraintLeft_toRightOf="@id/view1"
             app:layout_constraintTop_toBottomOf="@id/devLine"
-            android:textSize="20dp"
+            android:textSize="17dp"
             android:text="Sample Name Here"
             android:textColor="#707070"
             android:layout_marginLeft="10dp"/>
@@ -80,10 +79,9 @@
             android:id="@+id/view2"
             android:layout_width="80dp"
             android:layout_height="30dp"
-            android:layout_marginLeft="20dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/view1"
-            android:textSize="20dp"
+            android:textSize="17dp"
             android:text="Email: "
             android:textColor="#000000"
             android:gravity="right"/>
@@ -93,7 +91,7 @@
             android:layout_height="30dp"
             app:layout_constraintLeft_toRightOf="@id/view2"
             app:layout_constraintTop_toBottomOf="@id/nameTextView"
-            android:textSize="20dp"
+            android:textSize="17dp"
             android:text="example@gmail.com"
             android:textColor="#707070"
             android:layout_marginLeft="10dp"/>
@@ -102,10 +100,9 @@
             android:id="@+id/view3"
             android:layout_width="80dp"
             android:layout_height="30dp"
-            android:layout_marginLeft="20dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/view2"
-            android:textSize="20dp"
+            android:textSize="17dp"
             android:text="Phone: "
             android:textColor="#000000"
             android:gravity="right"/>
@@ -115,7 +112,7 @@
             android:layout_height="30dp"
             app:layout_constraintLeft_toRightOf="@id/view3"
             app:layout_constraintTop_toBottomOf="@id/emailTextView"
-            android:textSize="20dp"
+            android:textSize="17dp"
             android:text="063831233"
             android:textColor="#707070"
             android:layout_marginLeft="10dp"/>

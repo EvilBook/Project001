@@ -12,6 +12,9 @@
     <color name="white">#ffffff</color>
     <color name="whiteTransparent">#CEFFFFFF</color>
     <color name="black">#000000</color>
+    <color name="whiteGray">#D8D6D6D6</color>
+    <color name="gray">#D8C7C7C7</color>
+
 
 
 
