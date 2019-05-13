@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
@@ -97,6 +98,8 @@ public class TripTab2_InfoWindow extends AppCompatActivity implements OnMapReady
     boolean checkButton = true;
     boolean checkButton2 = true;
     boolean emptyRequests;
+
+    private ArrayList<LatLng> markers = new ArrayList<>();
 
 
     @Override
@@ -201,6 +204,14 @@ public class TripTab2_InfoWindow extends AppCompatActivity implements OnMapReady
                 }else{
 
                     checkButton2 = true;
+
+
+                    System.out.println(getUrl(markers.get(0), markers.get(1), "driving"));
+
+                    //Code to open google maps with navigation
+//                    final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://maps.google.com/maps?" + "saddr="+ 55.604980 + "," + 13.003822 + "&daddr=" + 57.696991 + "," + 11.986500));
+//                    intent.setClassName("com.google.android.apps.maps","com.google.android.maps.MapsActivity");
+//                    startActivity(intent);
                 }
 
             }
@@ -318,6 +329,9 @@ public class TripTab2_InfoWindow extends AppCompatActivity implements OnMapReady
                         .title(searchString)
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker));
                 Marker marker = map.addMarker(opt);
+
+                markers.add(pos);
+
             }
         }
 
@@ -531,6 +545,23 @@ public class TripTab2_InfoWindow extends AppCompatActivity implements OnMapReady
                     }
                 });
         alertDialog.show();
+    }
+
+
+    private String getUrl(LatLng origin, LatLng dest, String directionMode) {
+        // Origin of route
+        String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
+        // Destination of route
+        String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
+        // Mode
+        String mode = "mode=" + directionMode;
+        // Building the parameters to the web service
+        String parameters = str_origin + "&" + str_dest + "&" + mode;
+        // Output format
+        String output = "json";
+        // Building the url to the web service
+        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters + "&key=" + getString(R.string.google_maps_key);
+        return url;
     }
 
 }
