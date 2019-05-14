@@ -1,26 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/user_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:padding="10dp">
 
     <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/profile_image"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:id="@+id/profile_image"
-        android:src="@mipmap/ic_launcher_round"/>
+        android:src="@mipmap/ic_launcher_round" />
 
     <TextView
+        android:id="@+id/usernameChat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="username"
-        android:id="@+id/username"
-        android:layout_toRightOf="@+id/profile_image"
-        android:layout_toEndOf="@+id/profile_image"
+        android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"
-        android:layout_centerVertical="false"
-        android:textSize="18sp"
-        />
+        android:layout_toEndOf="@+id/profile_image"
+        android:layout_toRightOf="@+id/profile_image"
+        android:text="username"
+        android:textSize="18sp" />
 
 </RelativeLayout>

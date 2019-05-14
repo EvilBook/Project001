@@ -17,8 +17,7 @@ import com.example.project001.PlanTrip;
 import com.example.project001.R;
 import com.example.project001.RidersActivity;
 
-public class
-HomeFragment extends Fragment {
+public class HomeFragment extends Fragment {
 
     //Tabs
     LinearLayout linearLayout;
@@ -103,7 +102,7 @@ HomeFragment extends Fragment {
         ft.commit();
 
 
-        for(int i=0; i<linearLayout.getChildCount(); i++){
+        for(int i=0; i < linearLayout.getChildCount(); i++){
 
             Log.e("oneone", linearLayout.getChildAt(i).toString());
 

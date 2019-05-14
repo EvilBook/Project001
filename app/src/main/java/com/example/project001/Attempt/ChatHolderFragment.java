@@ -1,4 +1,4 @@
-package com.example.project001.chat;
+package com.example.project001.Attempt;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,8 +10,13 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.TextView;
-
 import com.example.project001.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 
 public class ChatHolderFragment extends Fragment {
 
@@ -21,8 +26,10 @@ public class ChatHolderFragment extends Fragment {
     TabHost frameLayout;
     LinearLayout triliniarLayout;
 
-    //Add trips
-    String email;
+    FirebaseUser firebaseUser;
+    DatabaseReference databaseReference;
+
+
 
     @Nullable
     @Override
@@ -73,14 +80,13 @@ public class ChatHolderFragment extends Fragment {
     public void chatTab() {
 
         Bundle bun = new Bundle();
-        bun.putString("email", email);
 
-        ChatteFragment chatte = new ChatteFragment();
-        chatte.setArguments(bun);
+        ChatsFragment chatsFragment = new ChatsFragment();
+        chatsFragment.setArguments(bun);
 
         getChildFragmentManager()
                 .beginTransaction()
-                .replace(linearLayout.getId(), chatte)
+                .replace(linearLayout.getId(), chatsFragment)
                 .commit();
     }
 
@@ -88,14 +94,13 @@ public class ChatHolderFragment extends Fragment {
     public void userTab() {
 
         Bundle bun = new Bundle();
-        bun.putString("email", email);
 
-        UserFragment user = new UserFragment();
-        user.setArguments(bun);
+        UsersFragment usersFragment = new UsersFragment();
+        usersFragment.setArguments(bun);
 
         getChildFragmentManager()
                 .beginTransaction()
-                .replace(triliniarLayout.getId(), user)
+                .replace(triliniarLayout.getId(), usersFragment)
                 .commit();
     }
 

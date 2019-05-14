@@ -43,6 +43,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services:7.3.0'
     implementation 'com.scaledrone:scaledrone-java:0.3.0'
 
+
     implementation 'com.google.android.gms:play-services-auth:16.0.1'
     implementation 'com.google.android.gms:play-services-maps:16.1.0'
     implementation 'com.google.firebase:firebase-auth:16.1.0'

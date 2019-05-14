@@ -1,25 +1,28 @@
-package com.example.project001.chat;
+package com.example.project001.Attempt;
 
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.example.project001.R;
+import android.widget.Toast;
 
-public class UserFragment extends Fragment {
+import com.example.project001.R;
+import com.google.firebase.database.FirebaseDatabase;
+
+public class MainFragment extends Fragment {
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_user, container, false);
+        return inflater.inflate(R.layout.fragment_main, container, false);
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
+
 
 }

@@ -31,9 +31,11 @@ public class LoginActivity extends AppCompatActivity {
     private static final int OUR_REQUEST_CODE = 49404;
     public GoogleSignInClient mGoogleApiClient;
     public static Uri personPhoto;
+
     FirebaseAuth auth;
     DatabaseReference reference;
     FirebaseUser currentUser;
+
 
 
 
@@ -57,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        auth = FirebaseAuth.getInstance();
+        //auth = FirebaseAuth.getInstance();
     }
 
 
@@ -89,7 +91,7 @@ public class LoginActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
-         currentUser = auth.getCurrentUser();
+         //currentUser = auth.getCurrentUser();
         //updateUI(currentUser);
 
     }
@@ -124,7 +126,7 @@ public class LoginActivity extends AppCompatActivity {
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
 
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
-        auth.signInWithCredential(credential)
+        /*auth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -142,69 +144,8 @@ public class LoginActivity extends AppCompatActivity {
 
                         // ...
                     }
-                });
+                });*/
     }
-
-    /*public void register(String email, final String name, String password) {
-
-        auth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()) {
-                            FirebaseUser firebaseUser = auth.getCurrentUser();
-                            assert firebaseUser != null;
-                            String userID = firebaseUser.getUid();
-
-                            reference = FirebaseDatabase.getInstance().getReference("User").child(userID);
-
-                            HashMap<String, String> hashMap = new HashMap<>();
-                            hashMap.put("id", userID);
-                            hashMap.put("user", name);
-                            hashMap.put("imageURL", "default");
-
-                            reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if(task.isSuccessful()) {
-                                        Toast.makeText(LoginActivity.this, "Registered!", Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            });
-
-                        } else {
-                            Toast.makeText(LoginActivity.this, "You can't register", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.w(TAG, "Error creating user", e);
-            }
-        });
-
-    }*/
-
-
-    /*public void login(String email, String password) {
-
-        auth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()) {
-                            Toast.makeText(LoginActivity.this, "Login successful!", Toast.LENGTH_SHORT).show();
-
-                        } else {
-                            register();
-                        }
-                    }
-                });
-
-
-
-    }*/
-
 
 }
 
