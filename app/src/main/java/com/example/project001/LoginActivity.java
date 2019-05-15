@@ -89,6 +89,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
+
             Intent intent = new Intent(this, SideBarActivity.class);
             intent.putExtra("Display",account.getDisplayName());
             intent.putExtra("Email",account.getEmail());

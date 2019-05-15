@@ -178,6 +178,9 @@ public class RateUser extends AppCompatActivity {
                             public void onClick(View view) {
 
                                 UpdateData();
+                                Long value1 = Long.valueOf(choice);
+                                UpdateAverege(value1);
+
 
                                 mSendFeedback.setEnabled(false);
 
@@ -249,11 +252,6 @@ public class RateUser extends AppCompatActivity {
                              System.out.println(ratinggotfromDb);
 
 
-
-
-
-
-
                             }
                         }
                     }
@@ -261,7 +259,8 @@ public class RateUser extends AppCompatActivity {
 
 
 
-        DocumentReference washingtonRef = db.collection("person").document("BcIYP4foz6ENfwfmywj8");
+        DocumentReference washingtonRef = db.collection("person").document(  "luMrG3pcCMlhacwLDQqf");
+
 
         washingtonRef.update("NumberOfRating", FieldValue.increment(1))
                 .addOnSuccessListener(new OnSuccessListener< Void >() {
@@ -278,40 +277,55 @@ public class RateUser extends AppCompatActivity {
 
               });
 
+    }
 
 
+    private void UpdateAverege(Long choi) {
+    
+
+        db.collection("person")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Long ratinggotfromDb = (Long) document.get("NumberOfRating");
+                                System.out.println(ratinggotfromDb);
 
 
+                            }
+                        }
+                    }
+                });
 
 
+        DocumentReference washingtonRef = db.collection("person").document("luMrG3pcCMlhacwLDQqf");
 
 
+        washingtonRef.update("AverageRating", FieldValue.increment(choi))
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
 
+                    @Override
 
-//        DocumentReference profile = db.collection("person").document("BcIYP4foz6ENfwfmywj8");
-//
-//
-//
-//
-//        profile.update("population", FieldValue.increment(1))
-//
-//
-//
-//                .addOnSuccessListener(new OnSuccessListener< Void >() {
-//
-//                    @Override
-//
-//                    public void onSuccess(Void aVoid) {
-//
-//                        Toast.makeText(RateUser.this, "Thanks for your Feedback",
-//
-//                                Toast.LENGTH_SHORT).show();
-//
-//                    }
-//
-//                });
+                    public void onSuccess(Void aVoid) {
+
+                        Toast.makeText(RateUser.this, "Thanks for your Feedback",
+
+                                Toast.LENGTH_SHORT).show();
+
+                    }
+
+                });
 
     }
+
+
+
+
+
+
+
 
 
 
