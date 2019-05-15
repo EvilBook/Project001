@@ -15,16 +15,20 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.InputType;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -37,6 +41,7 @@ import com.example.project001.database.Trip;
 import com.example.project001.database.personnumer;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -54,6 +59,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 import static android.app.Activity.RESULT_OK;
 import static com.google.android.gms.wearable.DataMap.TAG;
@@ -71,6 +78,7 @@ public class ProfileFragment extends Fragment {
     TextView nameTextView, emailTextView, phoneTextView, number;
     Button buttonEditPhone, personnumerButton;
     TextView streetAddress, city, postCode, verifiedText;
+    EditText extraInfo;
 
 
     ImageView verifiedImage;
@@ -123,6 +131,7 @@ public class ProfileFragment extends Fragment {
         nameTextView = getView().findViewById(R.id.nameTextView);
         phoneTextView = getView().findViewById(R.id.phoneTextView);
         number = getView().findViewById(R.id.number);
+        extraInfo=getView().findViewById(R.id.editText2);
 
 
         streetAddress = getView().findViewById(R.id.streetAddressText);
@@ -224,7 +233,44 @@ public class ProfileFragment extends Fragment {
         checkIfVerified();
 
 
+        extraInfo.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        extraInfo.setRawInputType(InputType.TYPE_CLASS_TEXT);
+        extraInfo.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId== EditorInfo.IME_ACTION_DONE){
+                    saveInfo(extraInfo.getText().toString());
+                    Log.e("fuck off", "twice");
+                }
+                return false;
+            }
+        });
 
+
+
+
+
+    }
+
+    private void saveInfo(String toString) {
+
+
+        Map<String, Object> extraInfo1 = new HashMap<>();
+
+        extraInfo1.put("info", toString);
+
+
+        db.collection("userBio").document(email).set(extraInfo1).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+
+                            }
+                        });
 
     }
 

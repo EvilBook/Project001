@@ -36,7 +36,7 @@ public class DBConnection {
     Trip trip;
 
 
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    public FirebaseFirestore db = FirebaseFirestore.getInstance();
     public ArrayList<Trip> trips = new ArrayList<>();
 
     public RidersActivity r;

@@ -2,6 +2,9 @@ package com.example.project001;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.Point;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v4.app.Fragment;
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -20,13 +23,21 @@ import android.support.v4.app.ActivityCompat;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.Display;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import com.example.project001.database.DBConnection;
 import com.example.project001.database.Trip;
+import com.example.project001.fragment.ProfileFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -181,20 +192,149 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
 
                 mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
                     @Override
-                    public void onInfoWindowClick(Marker marker) {
-                        InfoWindowData infoWindowData = (InfoWindowData) marker.getTag();
+                    public void onInfoWindowClick(final Marker marker) {
+                        final InfoWindowData infoWindowData = (InfoWindowData) marker.getTag();
 
-                        String em = SideBarActivity.email;
 
-                        Bundle bun = new Bundle();
-                        bun.putString("email", em);
+
+                        db.db.collection("userBio").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                                              @Override
+                                                                              public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                                                  if (task.isSuccessful()) {
+
+                                                                                      for (final QueryDocumentSnapshot document : task.getResult()) {
+
+
+                                                                                          if(document.getId().equals(infoWindowData.getAuthor())) {
+
+
+                                                                                              db.db.collection("person").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                                                                  @Override
+                                                                                                  public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                                                                      if (task.isSuccessful()) {
+
+                                                                                                          for (QueryDocumentSnapshot document1 : task.getResult()) {
+
+
+                                                                                                              if (document1.getString("email").equals(infoWindowData.getAuthor())) {
+
+
+                                                                                                                  //popup window info
+                                                                                                                  LayoutInflater inflater = (LayoutInflater) RidersActivity.this.getActivity().getSystemService(getContext().LAYOUT_INFLATER_SERVICE);
+                                                                                                                  View layout = inflater.inflate(R.layout.pup_up_detailed_marker, null);
+
+
+                                                                                                                  Button request = layout.findViewById(R.id.requestButton);
+                                                                                                                  Button close = layout.findViewById(R.id.closeButton);
+                                                                                                                  TextView name = layout.findViewById(R.id.name);
+                                                                                                                  TextView address = layout.findViewById(R.id.address);
+                                                                                                                  TextView email = layout.findViewById(R.id.email);
+                                                                                                                  TextView phone = layout.findViewById(R.id.phone);
+                                                                                                                  TextView bio = layout.findViewById(R.id.bio);
+                                                                                                                  ImageView profilePic = layout.findViewById(R.id.imageView);
+                                                                                                                  ImageView carPic1 = layout.findViewById(R.id.imageView3);
+                                                                                                                  ImageView carPic2 = layout.findViewById(R.id.imageView4);
+                                                                                                                  ImageView carPic3 = layout.findViewById(R.id.imageView5);
+
+
+                                                                                                                  LinearLayout linearLayout = layout.findViewById(R.id.verifiedContainer);
+
+                                                                                                                  final String em = SideBarActivity.email;
+
+
+                                                                                                                  float density = RidersActivity.this.getResources().getDisplayMetrics().density;
+
+
+                                                                                                                  Display display = getActivity().getWindowManager().getDefaultDisplay();
+                                                                                                                  Point size = new Point();
+                                                                                                                  display.getSize(size);
+                                                                                                                  int width = (int) (size.x * 0.8);
+                                                                                                                  int height = (int) (size.y * 0.6);
+
+                                                                                                                  final PopupWindow pw = new PopupWindow(layout, (int) width, (int) height, true);
+
+                                                                                                                  //handle touch outside popup window
+                                                                                                                  pw.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                                                                                                                  pw.setTouchInterceptor(new View.OnTouchListener() {
+                                                                                                                      public boolean onTouch(View v, MotionEvent event) {
+                                                                                                                          if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
+                                                                                                                              pw.dismiss();
+                                                                                                                              return true;
+                                                                                                                          }
+                                                                                                                          return false;
+                                                                                                                      }
+                                                                                                                  });
+                                                                                                                  pw.setOutsideTouchable(true);
+
+                                                                                                                  //start pop up window
+                                                                                                                  pw.showAtLocation(layout, Gravity.CENTER, 0, -100);
+
+                                                                                                                  dimBehind(pw);
+
+
+                                                                                                                  request.setOnClickListener(new View.OnClickListener() {
+                                                                                                                      @Override
+                                                                                                                      public void onClick(View v) {
+
+                                                                                                                          Bundle bun = new Bundle();
+                                                                                                                          bun.putString("email", em);
 
 //                        System.out.println("THE VALUES RIDERS ACTIVITY: ");
 //                        System.out.println("Author: " + infoWindowData.getAuthor() + ", passenger: " + em + ", departure: " + infoWindowData.getDeparture()
 //                        + ", destination: " + infoWindowData.getDestination() + ", date: " + infoWindowData.getDate());
 
-                        db.addTripRequest(infoWindowData.getAuthor(), em, "0",
-                                infoWindowData.getDeparture(), infoWindowData.getDestination(), infoWindowData.getDate());
+                                                                                                                          db.addTripRequest(infoWindowData.getAuthor(), em, "0",
+                                                                                                                                  infoWindowData.getDeparture(), infoWindowData.getDestination(), infoWindowData.getDate());
+
+                                                                                                                      }
+                                                                                                                  });
+
+
+                                                                                                                  close.setOnClickListener(new View.OnClickListener() {
+                                                                                                                      @Override
+                                                                                                                      public void onClick(View v) {
+                                                                                                                          pw.dismiss();
+                                                                                                                      }
+                                                                                                                  });
+
+
+                                                                                                                  name.setText(document1.getString("name"));
+                                                                                                                  address.setText("From: "+infoWindowData.getDeparture());
+                                                                                                                  phone.setText("Destination: "+infoWindowData.getDestination());
+                                                                                                                  bio.setText("Personal Bio: \n"+document.getString("info"));
+                                                                                                                  email.setText("Date: "+infoWindowData.getDate());
+
+
+                                                                                                                  if (!infoWindowData.getVerified().equals("true")) {
+
+                                                                                                                      linearLayout.setVisibility(View.INVISIBLE);
+
+                                                                                                                  }
+                                                                                                              }
+
+
+                                                                                                          }
+
+
+                                                                                                      }
+
+
+                                                                                                  }
+
+
+                                                                                              });
+                                                                                          }
+                                                                                      }
+                                                                                          }
+
+
+                                                                                      }
+
+
+                                                                                  });
+
+
+
                     }
                 });
             }
@@ -316,30 +456,32 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
                             @Override
                             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                                 for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                                    if (document.getString("email").equals(t.get(finalI).getAuthor())) {
-                                        info = new InfoWindowData();
-                                        info.setDeparture(t.get(finalI).getDeparture());
-                                        info.setDestination(t.get(finalI).getDestination());
-                                        info.setAuthor(t.get(finalI).getAuthor());
-                                        info.setDate(t.get(finalI).getDate());
-                                        info.setPrice(t.get(finalI).getPrice());
-                                        info.setAvailableSeats(t.get(finalI).getSeats());
-                                        info.setVerified(document.getString("verified"));
-                                        Log.e("GOD FUCKING DAMN IT", info.getAuthor()+ " "+document.getString("verified")+" "+document.getString("email"));
+                                    if (document.getString("email") != null) {
+                                        if (document.getString("email").equals(t.get(finalI).getAuthor())) {
+                                            info = new InfoWindowData();
+                                            info.setDeparture(t.get(finalI).getDeparture());
+                                            info.setDestination(t.get(finalI).getDestination());
+                                            info.setAuthor(t.get(finalI).getAuthor());
+                                            info.setDate(t.get(finalI).getDate());
+                                            info.setPrice(t.get(finalI).getPrice());
+                                            info.setAvailableSeats(t.get(finalI).getSeats());
+                                            info.setVerified(document.getString("verified"));
+                                            Log.e("GOD FUCKING DAMN IT", info.getAuthor() + " " + document.getString("verified") + " " + document.getString("email"));
 
 
-                                        markerOptions = new MarkerOptions()
-                                                .position(pos)
-                                                .title(searchString)
-                                                .icon(BitmapDescriptorFactory.fromResource(pics[randomNumber]));
+                                            markerOptions = new MarkerOptions()
+                                                    .position(pos)
+                                                    .title(searchString)
+                                                    .icon(BitmapDescriptorFactory.fromResource(pics[randomNumber]));
 
-                                        //Add Marker
-                                        marker = mMap.addMarker(markerOptions);
+                                            //Add Marker
+                                            marker = mMap.addMarker(markerOptions);
 
-                                        //Add Window
-                                        marker.setTag(info);
-                                        marker.showInfoWindow();
+                                            //Add Window
+                                            marker.setTag(info);
+                                            marker.showInfoWindow();
 
+                                        }
                                     }
                                 }
                             }
@@ -376,4 +518,29 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         //DON'T ADD ANYTHING HERE, IT DOESN'T WORK.
     }
+
+
+    private void dimBehind(PopupWindow popupWindow) {
+        View container;
+        if (popupWindow.getBackground() == null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                container = (View) popupWindow.getContentView().getParent();
+            } else {
+                container = popupWindow.getContentView();
+            }
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                container = (View) popupWindow.getContentView().getParent().getParent();
+            } else {
+                container = (View) popupWindow.getContentView().getParent();
+            }
+        }
+        Context context = popupWindow.getContentView().getContext();
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        WindowManager.LayoutParams p = (WindowManager.LayoutParams) container.getLayoutParams();
+        p.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+        p.dimAmount = 0.6f;
+        wm.updateViewLayout(container, p);
+    }
+
 }
