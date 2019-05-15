@@ -1,12 +1,10 @@
 package com.example.project001.fragment;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -29,10 +27,6 @@ import com.example.project001.LoginActivity;
 import com.example.project001.R;
 import com.example.project001.SideBarActivity;
 import com.example.project001.database.DBConnection;
-
-import org.w3c.dom.Text;
-
-import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 

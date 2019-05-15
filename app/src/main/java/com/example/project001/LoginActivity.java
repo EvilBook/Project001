@@ -53,16 +53,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
 
-        //VideoView videoview = (VideoView) findViewById(R.id.videoView);
-        //videoview.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-        //    @Override
-         //   public void onPrepared(MediaPlayer mp) {
-         //       mp.setLooping(true);
-         //   }
-       // });
-       // Uri uri = Uri.parse("android.resource://"+getPackageName()+"/"+R.raw.lgonscreen);
-       // videoview.setVideoURI(uri);
-        //videoview.start();
+
 
 
     }
@@ -93,6 +84,11 @@ public class LoginActivity extends AppCompatActivity {
 
             Log.i("Message",account.getDisplayName());
 
+            Intent intent1 = new Intent(this, RateUser.class);
+            intent1.putExtra("Display",account.getDisplayName());
+
+
+
             Intent intent = new Intent(this, SideBarActivity.class);
             intent.putExtra("Display",account.getDisplayName());
             intent.putExtra("Email",account.getEmail());
@@ -102,6 +98,10 @@ public class LoginActivity extends AppCompatActivity {
 
             finish();
             startActivity(intent);
+            finish();
+            startActivity(intent1);
+
+
 
         } catch (ApiException e) {
             Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());

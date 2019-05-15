@@ -94,7 +94,7 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
         profilePic = LoginActivity.personPhoto;
 
         //checks if the profile exists in the database
-        dbc.checkIfExists(email, displayName);
+        dbc.checkIfExists(email, displayName,0,0);
 
         Bundle bun = new Bundle();
         bun.putString("email", email);

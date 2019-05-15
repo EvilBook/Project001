@@ -38,13 +38,15 @@ public class DBConnection {
 
 
     //method for registering the user
-    private void addUserToDB(String email, String name) {
+    private void addUserToDB(String email, String name,int AverageRating,int NumberOfRating) {
 
         // Create a new user with a first and last name
         Map<String, Object> person = new HashMap<>();
 
         person.put("name", name);
         person.put("email", email);
+        person.put("AverageRating",AverageRating);
+        person.put("NumberOfRating",NumberOfRating);
 
         // Add a new document with a generated ID
         db.collection("person")
@@ -64,7 +66,7 @@ public class DBConnection {
     }
 
     //method for checking if the email exists
-    public void checkIfExists(final String email, final String name) {
+    public void checkIfExists(final String email, final String name,final int AverageRating,final int NumberOfRating) {
 
         db.collection("person")
                 .get()
@@ -81,7 +83,7 @@ public class DBConnection {
                                 }
                             }
                             //if doesn't exist
-                            addUserToDB(email, name);
+                            addUserToDB(email, name,AverageRating,NumberOfRating);
 
                         } else {
                             Log.e("data", "inserting");
