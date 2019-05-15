@@ -281,7 +281,7 @@ public class RateUser extends AppCompatActivity {
 
 
     private void UpdateAverege(Long choi) {
-    
+
 
         db.collection("person")
                 .get()
