@@ -26,10 +26,10 @@
         <activity android:name=".Attempt.ChatActivity"
         android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".Attempt.UsersFragment"/>
+        <activity android:name=".Attempt.ChatHolderFragment"/>
         <activity android:name=".Attempt.ChatsFragment"/>
         <activity android:name=".Attempt.ChatHolder"/>
         <activity android:name=".Attempt.LoginFragment"/>
-        <activity android:name=".Attempt.MainFragment"/>
         <activity android:name=".Attempt.RegisterFragment"/>
         <activity android:name=".Attempt.StartFragment"/>
         <activity android:name=".SearchResultsActivity"/>

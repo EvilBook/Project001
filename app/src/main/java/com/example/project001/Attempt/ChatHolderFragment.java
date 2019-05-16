@@ -17,6 +17,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.HashMap;
+
 
 public class ChatHolderFragment extends Fragment {
 
@@ -41,6 +43,8 @@ public class ChatHolderFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
 
 
@@ -105,5 +109,25 @@ public class ChatHolderFragment extends Fragment {
     }
 
 
+    private void status(String status) {
+        databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid() );
 
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("status", status);
+
+        databaseReference.updateChildren(hashMap);
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        status("online");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        status("offline");
+    }
 }

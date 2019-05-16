@@ -3,7 +3,6 @@ package com.example.project001.Attempt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.project001.R;
-import com.example.project001.database.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -74,7 +72,7 @@ public class UsersFragment extends Fragment {
 
                 }
 
-                userAdapter = new UserAdapter(getContext(), mUsers);
+                userAdapter = new UserAdapter(getContext(), mUsers, true);
                 recyclerView.setAdapter(userAdapter);
             }
 

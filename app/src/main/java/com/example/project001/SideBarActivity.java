@@ -10,8 +10,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -27,9 +25,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.project001.Attempt.ChatHolderFragment;
-import com.example.project001.Attempt.LoginFragment;
-import com.example.project001.Attempt.MainFragment;
-import com.example.project001.Attempt.RegisterFragment;
 import com.example.project001.database.DBConnection;
 import com.example.project001.fragment.TripHolderFragment;
 import com.example.project001.fragment.HomeFragment;
@@ -49,8 +44,6 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
-
-import static com.google.android.gms.wearable.DataMap.TAG;
 
 public class SideBarActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -129,11 +122,6 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
                             hashMap.put("id", userID);
                             hashMap.put("username", displayName);
                             hashMap.put("imageURL", "default");
-
-                            Log.e("name: ", displayName);
-                            Log.e("email: ", email);
-                            Log.e("pass: ", password);
-                            Log.e("id: ", userID);
 
                             reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override

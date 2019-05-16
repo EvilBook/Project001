@@ -76,18 +76,9 @@ public class LoginFragment extends Fragment {
                         public void onComplete(@NonNull Task<AuthResult> task) {
 
                             if(task.isSuccessful()) {
-                                FragmentManager fragmentManager = getChildFragmentManager();
-                                FragmentTransaction fragmentTransaction = fragmentManager
-                                        .beginTransaction();
 
-                                MainFragment mainFragment = new MainFragment();
-                                fragmentTransaction.replace(R.id.fragment_login, mainFragment);
 
-                                //provide the fragment ID of your first fragment which you have given in
-                                //fragment_layout_example.xml file in place of first argument
 
-                                fragmentTransaction.addToBackStack(null);
-                                fragmentTransaction.commit();
 
                             } else {
                                 Toast.makeText(getActivity(), "Login Failed!", Toast.LENGTH_SHORT).show();
