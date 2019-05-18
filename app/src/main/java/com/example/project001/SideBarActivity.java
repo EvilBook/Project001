@@ -57,6 +57,8 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
     DrawerLayout drawerLayout;
     public static String email;
 
+    public TextView rating;
+
     //DB
     DBConnection dbc = new DBConnection();
 
@@ -71,6 +73,8 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
         setSupportActionBar(toolbar);
 
         drawerLayout = findViewById(R.id.drawer_layout);
+
+        rating = findViewById(R.id.RateText);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
