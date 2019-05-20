@@ -23,6 +23,15 @@
           }
         },
         {
+          "client_id": "59913011189-5796bjpso6daen5v3ho21jckptitksn3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.project001",
+            "certificate_hash": "6eff9048cf6a23e0a2ac8095ab46956cbba0d983"
+          }
+        },
+        {
+
           "client_id": "59913011189-tjp8sbitm30g0cfkfcerkuvob7f2fokk.apps.googleusercontent.com",
           "client_type": 3
         }

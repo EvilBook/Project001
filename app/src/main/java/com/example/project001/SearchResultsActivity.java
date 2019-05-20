@@ -124,6 +124,10 @@ public class SearchResultsActivity extends AppCompatActivity {
                         db1.addTripRequestFromSearch(driver.replace("Driver: ",""), email, "0",departure.replace("Departure: ",""),destination.replace("Destination: ",""), date.replace("Date: ",""));
 
 
+                        db1.addTheNumbers();
+
+
+
 
 
 
