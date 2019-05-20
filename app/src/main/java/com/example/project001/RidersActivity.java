@@ -213,11 +213,10 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
                                                                                                   public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                                                                                       if (task.isSuccessful()) {
 
-                                                                                                          for (QueryDocumentSnapshot document1 : task.getResult()) {
+                                                                                                          for (final QueryDocumentSnapshot document1 : task.getResult()) {
 
 
                                                                                                               if (document1.getString("email").equals(infoWindowData.getAuthor())) {
-
 
                                                                                                                   //popup window info
                                                                                                                   LayoutInflater inflater = (LayoutInflater) RidersActivity.this.getActivity().getSystemService(getContext().LAYOUT_INFLATER_SERVICE);
@@ -331,7 +330,10 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
                                                                                       }
 
 
-                                                                                  });
+
+
+
+                        });
 
 
 
