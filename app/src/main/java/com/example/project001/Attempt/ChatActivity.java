@@ -88,6 +88,7 @@ public class ChatActivity extends AppCompatActivity {
 
                 if(!msg.equals("")) {
                     sendMessage(fuser.getUid(), userID, msg);
+                    text_send.getText().clear();
 
                 } else {
                     Toast.makeText(ChatActivity.this, "can't send empty text", Toast.LENGTH_SHORT).show();
@@ -151,16 +152,8 @@ public class ChatActivity extends AppCompatActivity {
 
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
 
-                    Log.e("actual", userID);
-                    Log.e("the snap: ", snapshot.getValue().toString());
-
-
 
                     Chat chat = snapshot.getValue(Chat.class);
-
-                    Log.e("chat: ", chat.toString());
-
-                    Log.e("the reci ", chat.getReceiver());
 
 
 

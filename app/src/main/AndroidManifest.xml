@@ -21,10 +21,8 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".Attempt.MessageActivity">
-        </activity>
         <activity android:name=".Attempt.ChatActivity"
-        android:theme="@style/AppTheme.NoActionBar"/>
+                  android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".Attempt.UsersFragment"/>
         <activity android:name=".Attempt.ChatHolderFragment"/>
         <activity android:name=".Attempt.ChatsFragment"/>
