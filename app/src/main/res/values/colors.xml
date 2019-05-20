@@ -4,10 +4,11 @@
     <color name="colorPrimary">#7CB1E2</color>
     <color name="colorAccent">#7CB1E2</color>
     <color name="white">#ffffff</color>
-
-
     <color name="tabs">#3E5483</color>
     <color name="backgroundHome">#DFDFDF</color>
+
+    <color name="img_on">#05DF29</color>
+    <color name="img_off">#BFBFBF</color>
 
 
 </resources>

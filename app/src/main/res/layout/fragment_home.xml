@@ -38,7 +38,7 @@
                     android:layout_height="match_parent">
 
                     <LinearLayout
-                        android:id="@+id/tab1"
+                        android:id="@+id/chats"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@color/backgroundHome"
@@ -46,7 +46,7 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/tab2"
+                        android:id="@+id/users"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@color/backgroundHome"

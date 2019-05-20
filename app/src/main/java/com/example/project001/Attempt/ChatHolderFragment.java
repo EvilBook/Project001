@@ -1,38 +1,42 @@
-package com.example.project001.fragment;
+package com.example.project001.Attempt;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.TextView;
-
-import com.example.project001.PlanTrip;
 import com.example.project001.R;
-import com.example.project001.RidersActivity;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
-public class
-CelebiFragment extends Fragment {
+import java.util.HashMap;
+
+
+public class ChatHolderFragment extends Fragment {
+
 
     //Tabs
     LinearLayout linearLayout;
     TabHost frameLayout;
     LinearLayout triliniarLayout;
 
-    //Add trips
-    String email;
+    FirebaseUser firebaseUser;
+    DatabaseReference databaseReference;
+
 
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_celebi, container, false);
+        return inflater.inflate(R.layout.fragment_chat_holder, container, false);
     }
 
     //ON CREATE
@@ -40,13 +44,8 @@ CelebiFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        if(getArguments() != null){
-            email = getArguments().getString("email");
-            Log.e("homeFragment", email);
-        }else{
-            Log.e("doesn't work", "");
-        }
 
 
         //Tabs
@@ -56,8 +55,8 @@ CelebiFragment extends Fragment {
 
         //Tab 1
         TabHost.TabSpec spec = host.newTabSpec("Tab One");
-        spec.setContent(R.id.tab1);
-        spec.setIndicator("Trips");
+        spec.setContent(R.id.chats);
+        spec.setIndicator("Chat");
         host.addTab(spec);
 
         //set text color tab 1
@@ -66,49 +65,69 @@ CelebiFragment extends Fragment {
 
         //Tab 2
         spec = host.newTabSpec("Tab Two");
-        spec.setContent(R.id.tab2);
-        spec.setIndicator("Requests");
+        spec.setContent(R.id.users);
+        spec.setIndicator("User");
         host.addTab(spec);
 
         //set text color tab 2
         TextView tv2 = host.getTabWidget().getChildAt(1).findViewById(android.R.id.title);
         tv2.setTextColor(getResources().getColor(R.color.white));
 
-        linearLayout = getView().findViewById(R.id.tab1);
-        triliniarLayout = getView().findViewById(R.id.tab2);
+        linearLayout = getView().findViewById(R.id.chats);
+        triliniarLayout = getView().findViewById(R.id.users);
 
-        tripTab();
-        requestTab();
+        chatTab();
+        userTab();
     }
 
 
-    public void tripTab() {
+    public void chatTab() {
 
         Bundle bun = new Bundle();
-        bun.putString("email", email);
 
-        TripTab tripTab = new TripTab();
-        tripTab.setArguments(bun);
+        ChatsFragment chatsFragment = new ChatsFragment();
+        chatsFragment.setArguments(bun);
 
         getChildFragmentManager()
                 .beginTransaction()
-                .replace(linearLayout.getId(), tripTab)
+                .replace(linearLayout.getId(), chatsFragment)
                 .commit();
     }
 
 
-    public void requestTab() {
+    public void userTab() {
 
         Bundle bun = new Bundle();
-        bun.putString("email", email);
 
-        RequestTab requestTab = new RequestTab();
-        requestTab.setArguments(bun);
+        UsersFragment usersFragment = new UsersFragment();
+        usersFragment.setArguments(bun);
 
         getChildFragmentManager()
                 .beginTransaction()
-                .replace(triliniarLayout.getId(), requestTab)
+                .replace(triliniarLayout.getId(), usersFragment)
                 .commit();
     }
 
+
+    private void status(String status) {
+        databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid() );
+
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("status", status);
+
+        databaseReference.updateChildren(hashMap);
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        status("online");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        status("offline");
+    }
 }
