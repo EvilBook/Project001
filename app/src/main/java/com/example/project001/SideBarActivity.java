@@ -20,30 +20,30 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TabHost;
 import android.widget.TextView;
-
+import android.widget.Toast;
+import com.example.project001.Attempt.ChatHolderFragment;
 import com.example.project001.database.DBConnection;
-import com.example.project001.database.Trip;
-import com.example.project001.fragment.CelebiFragment;
-import com.example.project001.fragment.ChatFragment;
+import com.example.project001.fragment.TripHolderFragment;
 import com.example.project001.fragment.HomeFragment;
 import com.example.project001.fragment.ProfileFragment;
-//import com.example.project001.fragment.SettingsFragment;
-import com.example.project001.fragment.TripFragment;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
 
 public class SideBarActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -52,13 +52,21 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
     String displayName;
     Uri profilePic;
     URL url;
-    String Email;
+    String userID;
+
+    FirebaseAuth auth;
+    DatabaseReference reference;
+    FirebaseUser firebaseUser;
+    String password = "password1";
+
     GoogleSignInClient googleApiClient;
     DrawerLayout drawerLayout;
     public static String email;
 
+
     //DB
     DBConnection dbc = new DBConnection();
+    HashMap<String, String> hashMap = new HashMap<>();
 
 
     @Override
@@ -69,6 +77,9 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
         setContentView(R.layout.activity_sidebar);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        //Firebase login stugg
+        auth = FirebaseAuth.getInstance();
 
         drawerLayout = findViewById(R.id.drawer_layout);
 
@@ -95,6 +106,41 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
 
         //checks if the profile exists in the database
         dbc.checkIfExists(email, displayName);
+
+        //register
+        auth.createUserWithEmailAndPassword(email, password).
+                addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+
+                        if(task.isSuccessful()) {
+                            firebaseUser = auth.getCurrentUser();
+                            userID = firebaseUser.getUid();
+
+                            reference = FirebaseDatabase.getInstance().getReference("Users").child(userID);
+
+                            hashMap.put("id", userID);
+                            hashMap.put("username", displayName);
+                            hashMap.put("imageURL", "default");
+
+                            reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if(task.isSuccessful()) {
+
+                                        Toast.makeText(SideBarActivity.this, "registred", Toast.LENGTH_SHORT).show();
+
+                                    }
+                                }
+                            });
+
+                        } else {
+                            Toast.makeText(SideBarActivity.this, "You can't register", Toast.LENGTH_SHORT).show();
+
+                        }
+                    }
+                });
+
 
         Bundle bun = new Bundle();
         bun.putString("email", email);
@@ -199,23 +245,37 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
 
         //Handle buttons
         if (id == R.id.nav_messages) {
-            System.out.println("messages");
 
-            Bundle bun = new Bundle();
-            bun.putString("email", email);
-            bun.putString("name", displayName);
+            auth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
 
-            ChatFragment chat = new ChatFragment();
-            chat.setArguments(bun);
+                            if(task.isSuccessful()) {
+                                Bundle bun = new Bundle();
+                                bun.putString("email", email);
 
-            getSupportFragmentManager().beginTransaction().replace(R.id.containerFragment, chat).commit();
+                                ChatHolderFragment chatHolderFragment = new ChatHolderFragment();
+                                chatHolderFragment.setArguments(bun);
+
+                                getSupportFragmentManager().beginTransaction().replace(R.id.containerFragment, chatHolderFragment).commit();
+
+                            } else {
+                                Toast.makeText(SideBarActivity.this, "Login Failed!", Toast.LENGTH_SHORT).show();
+                            }
+
+                        }
+                    });
+
+
+
         } else if (id == R.id.nav_trips) {
 
 
             Bundle bun = new Bundle();
             bun.putString("email", email);
 
-            CelebiFragment celi = new CelebiFragment();
+            TripHolderFragment celi = new TripHolderFragment();
             celi.setArguments(bun);
 
             getSupportFragmentManager().beginTransaction().replace(R.id.containerFragment, celi).commit();
