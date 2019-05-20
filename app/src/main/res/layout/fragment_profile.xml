@@ -1,149 +1,280 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:elevation="4dp">
-
-
-    <ImageView
-        android:id="@+id/ProfilePic2"
-        android:layout_width="160dp"
-        android:layout_height="160dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginTop="80dp"
-        android:layout_marginLeft="30dp"
-        app:srcCompat="@mipmap/ic_launcher_round" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:maxWidth="150dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toRightOf="@id/ProfilePic2"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="110dp"
-        android:text="Your Profile Information"
-        android:textSize="25dp"
-        android:textStyle="italic"
-        android:elevation="10dp"
-        android:textColor="@color/colorPrimaryDark"/>
-
+    android:paddingTop="60dp">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="20dp"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        app:layout_constraintTop_toBottomOf="@id/ProfilePic2">
+        android:background="#F7F7F7">
 
-        <View
-            android:id="@+id/devLine"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/black"
+
+        <ImageView
+            android:id="@+id/ProfilePic2"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:layout_marginLeft="30dp"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
+            app:srcCompat="@mipmap/ic_launcher_round" />
+
+        <TextView
+            android:id="@+id/verified"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:elevation="11dp"
+            android:maxWidth="150dp"
+            android:text="Your profile is not verified"
+            android:textAlignment="center"
+            android:textColor="#BE2F2F"
+            android:textSize="24sp"
+            android:textStyle="italic"
+            app:layout_constraintLeft_toRightOf="@id/ProfilePic2"
             app:layout_constraintRight_toRightOf="parent"
-            android:textColor="#000000" />
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <ImageView
+            android:id="@+id/verifiedImage"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:elevation="14dp"
+            app:layout_constraintBottom_toTopOf="@+id/detailedInfo"
+            app:layout_constraintLeft_toRightOf="@+id/ProfilePic2"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/verified"
+            app:srcCompat="@drawable/not_verified"
+            tools:srcCompat="@drawable/not_verified" />
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/detailedInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20dp"
+            android:paddingTop="20dp"
+            android:paddingRight="20dp"
+            app:layout_constraintTop_toBottomOf="@id/ProfilePic2">
+
+            <View
+                android:id="@+id/devLine"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/black"
+                android:textColor="#000000"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/view1"
+                android:layout_width="80dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="30dp"
+                android:gravity="right"
+                android:text="Name: "
+                android:textColor="#000000"
+                android:textSize="20dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/devLine" />
+
+            <TextView
+                android:id="@+id/nameTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="30dp"
+                android:text="Sample Name Here"
+                android:textColor="#707070"
+                android:textSize="20dp"
+                app:layout_constraintLeft_toRightOf="@id/view1"
+                app:layout_constraintTop_toBottomOf="@id/devLine" />
+
+
+            <TextView
+                android:id="@+id/view2"
+                android:layout_width="80dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="20dp"
+                android:gravity="right"
+                android:text="Email: "
+                android:textColor="#000000"
+                android:textSize="20dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/view1" />
+
+            <TextView
+                android:id="@+id/emailTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginLeft="10dp"
+                android:text="example@gmail.com"
+                android:textColor="#707070"
+                android:textSize="20dp"
+                app:layout_constraintLeft_toRightOf="@id/view2"
+                app:layout_constraintTop_toBottomOf="@id/nameTextView" />
+
+            <TextView
+                android:id="@+id/view3"
+                android:layout_width="80dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="20dp"
+                android:gravity="right"
+                android:text="Phone: "
+                android:textColor="#000000"
+                android:textSize="20dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/view2" />
+
+            <TextView
+                android:id="@+id/phoneTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginLeft="10dp"
+                android:text="063831233"
+                android:textColor="#707070"
+                android:textSize="20dp"
+                app:layout_constraintLeft_toRightOf="@id/view3"
+                app:layout_constraintTop_toBottomOf="@id/emailTextView" />
+
+
+        </android.support.constraint.ConstraintLayout>
+
 
         <TextView
-            android:id="@+id/view1"
-            android:layout_width="80dp"
+            android:id="@+id/personnumer"
+            android:layout_width="0dp"
             android:layout_height="30dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="30dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/devLine"
-            android:textSize="20dp"
-            android:text="Name: "
+            android:gravity="right"
+            android:text="Personnumer:"
             android:textColor="#000000"
-            android:gravity="right"/>
-        <TextView
-            android:id="@+id/nameTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_marginTop="30dp"
-            app:layout_constraintLeft_toRightOf="@id/view1"
-            app:layout_constraintTop_toBottomOf="@id/devLine"
             android:textSize="20dp"
-            android:text="Sample Name Here"
-            android:textColor="#707070"
-            android:layout_marginLeft="10dp"/>
-
-
-        <TextView
-            android:id="@+id/view2"
-            android:layout_width="80dp"
-            android:layout_height="30dp"
-            android:layout_marginLeft="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/streetAddressName"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/view1"
-            android:textSize="20dp"
-            android:text="Email: "
-            android:textColor="#000000"
-            android:gravity="right"/>
-        <TextView
-            android:id="@+id/emailTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            app:layout_constraintLeft_toRightOf="@id/view2"
-            app:layout_constraintTop_toBottomOf="@id/nameTextView"
-            android:textSize="20dp"
-            android:text="example@gmail.com"
-            android:textColor="#707070"
-            android:layout_marginLeft="10dp"/>
+            app:layout_constraintTop_toBottomOf="@+id/detailedInfo" />
 
         <TextView
-            android:id="@+id/view3"
-            android:layout_width="80dp"
+            android:id="@+id/streetAddressName"
+            android:layout_width="0dp"
             android:layout_height="30dp"
-            android:layout_marginLeft="20dp"
+            android:gravity="right"
+            android:text="Street Address:"
+            android:textColor="#000000"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/cityName"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/view2"
-            android:textSize="20dp"
-            android:text="Phone: "
-            android:textColor="#000000"
-            android:gravity="right"/>
+            app:layout_constraintTop_toBottomOf="@+id/personnumer" />
+
         <TextView
-            android:id="@+id/phoneTextView"
-            android:layout_width="wrap_content"
+            android:id="@+id/cityName"
+            android:layout_width="0dp"
             android:layout_height="30dp"
-            app:layout_constraintLeft_toRightOf="@id/view3"
-            app:layout_constraintTop_toBottomOf="@id/emailTextView"
+            android:gravity="right"
+            android:text="City:"
+            android:textColor="#000000"
             android:textSize="20dp"
-            android:text="063831233"
+            app:layout_constraintBottom_toTopOf="@+id/postCodeName"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/streetAddressName" />
+
+        <TextView
+            android:id="@+id/postCodeName"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:gravity="right"
+            android:text="Post Code:"
+            android:textColor="#000000"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/buttonEditPhone"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cityName" />
+
+        <TextView
+            android:id="@+id/number"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="11dp"
+            android:text="199212107552"
             android:textColor="#707070"
-            android:layout_marginLeft="10dp"/>
+            android:textSize="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/streetAddressText"
+            app:layout_constraintLeft_toRightOf="@+id/personnumer"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/detailedInfo" />
 
+        <TextView
+            android:id="@+id/postCodeText"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="11dp"
+            android:text="No post @android:string/fingerprint_icon_content_description"
+            android:textColor="#707070"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/buttonEditPhone"
+            app:layout_constraintLeft_toRightOf="@+id/postCodeName"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cityText" />
 
+        <TextView
+            android:id="@+id/cityText"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="11dp"
+            android:text="No where"
+            android:textColor="#707070"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/postCodeText"
+            app:layout_constraintLeft_toRightOf="@+id/cityName"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/streetAddressText" />
 
+        <TextView
+            android:id="@+id/streetAddressText"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="11dp"
+            android:text="No Address"
+            android:textColor="#707070"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/cityText"
+            app:layout_constraintLeft_toRightOf="@+id/streetAddressName"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/number" />
+
+        <Button
+            android:id="@+id/buttonEditPhone"
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:background="@color/colorPrimary"
+            android:text="Change Phone Number"
+            app:layout_constraintBottom_toTopOf="@+id/personnumerButton"
+            tools:layout_editor_absoluteX="5dp" />
+
+        <Button
+            android:id="@+id/personnumerButton"
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:background="#AC3030"
+            android:text="Enter Personnumer"
+            android:textColor="#ffffff"
+            app:layout_constraintBottom_toTopOf="@+id/editText2" />
+
+        <EditText
+            android:id="@+id/editText2"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:background="#ffffff"
+            android:ems="11"
+            android:inputType="textMultiLine"
+            android:singleLine="true"
+            android:imeOptions="actionDone"
+            android:maxLength="180"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
-
-
-    <Button
-        android:id="@+id/buttonEditPhone"
-        android:layout_width="match_parent"
-        android:layout_height="38dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:text="Change Phone Number"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="5dp"
-        android:background="@color/colorPrimary" />
-
-    <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/buttonEditPhone"
-        app:srcCompat="@drawable/destination"
-        android:layout_marginBottom="20dp" />
-
-</android.support.constraint.ConstraintLayout>
+</ScrollView>
