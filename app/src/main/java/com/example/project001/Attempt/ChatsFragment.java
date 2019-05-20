@@ -16,7 +16,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.*;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ChatsFragment extends Fragment {
 
@@ -85,11 +87,14 @@ public class ChatsFragment extends Fragment {
     private void readChats() {
         mUsers = new ArrayList<>();
 
+
+
         reference = FirebaseDatabase.getInstance().getReference("Users");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 mUsers.clear();
+                Iterator<User> iter = mUsers.iterator();
 
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     User user = snapshot.getValue(User.class);
@@ -106,9 +111,16 @@ public class ChatsFragment extends Fragment {
 
                             if(mUsers.size() != 0) {
 
-                                for(User user1 :mUsers) {
+                                /*for(User user1 : mUsers) {
 
                                     if(!user.getId().equals(user1.getId())) {
+                                        mUsers.add(user);
+                                    }
+                                }*/
+
+                                while(iter.hasNext()){
+                                    User usr = iter.next();
+                                    if(!user.getId().equals(usr.getId())) {
                                         mUsers.add(user);
                                     }
                                 }
