@@ -24,16 +24,12 @@ import android.widget.PopupWindow;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.example.project001.fragment.ProfileFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
@@ -53,14 +49,6 @@ public class RateUser extends AppCompatActivity {
     public String L;
 
     public static Long finalAverage;
-
-
-
-
-
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,9 +90,12 @@ public class RateUser extends AppCompatActivity {
                                         System.out.println(path);
                                         User_List.add(user);
                                         arrayAdapter.notifyDataSetChanged();
+                                        btn.setEnabled(false);
 
                                     } } }}
                                     );
+
+
 
 
                 lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -227,21 +218,11 @@ public class RateUser extends AppCompatActivity {
 
 
                                                         pw.setOutsideTouchable(true);
-                                                        //start pop up window
+
                                                         pw.showAtLocation(layout, Gravity.CENTER, 0, -100);
                                                         dimBehind(pw);
                                                     } } } }});
-
-
-
-
-
-
-
-
-
-
-                                                    }
+                        }
 
 
                                                 } }); }}
@@ -318,13 +299,10 @@ public class RateUser extends AppCompatActivity {
 
                 });
 
-
     }
 
 
-
-
-    private void getaveragefromdb(final String name,final String Path){
+                private void getaveragefromdb(final String name,final String Path){
 
         db.collection("person")
                 .get()
@@ -341,19 +319,9 @@ public class RateUser extends AppCompatActivity {
                                     long getAverage = document.getLong("AverageRating");
 
                                     System.out.println(getAverage + "  <---/---> " +getNumberOfRating);
-
-
-
                                     finalAverage = getAverage / getNumberOfRating;
 
                                     System.out.println(finalAverage);
-
-
-
-
-
-
-
                                     DocumentReference Ref = db.collection("person").document(Path);
 
 

@@ -326,9 +326,7 @@ public class DBConnection {
 
                         if(document.getString("email").equals(userEmail)){
 
-//                            System.out.println("MATCH FOUND" +
-//                                    "\nuseremail: " + userEmail +
-//                                    "\nname: " + document.getString("name"));
+//
 
                             p.setValues(userEmail, document.getString("name"), "0677773842");
                             break;
