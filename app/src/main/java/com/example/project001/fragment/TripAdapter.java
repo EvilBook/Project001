@@ -2,6 +2,7 @@ package com.example.project001.fragment;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.NonNull;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.project001.R;
+import com.example.project001.RateUser;
 import com.example.project001.database.Request;
 import com.example.project001.database.Trip;
 import com.example.project001.message.MessageAdapter;
@@ -117,12 +119,24 @@ public class TripAdapter extends BaseAdapter {
         holder.author = convertView.findViewById(R.id.author);
         holder.requestsWindow = convertView.findViewById(R.id.requestWindow);
         holder.tripClick = convertView.findViewById(R.id.tripClick);
-        //holder.tripClick.setBackgroundColor(Color.parseColor(treps.getColour()));
         convertView.setTag(holder);
+        TextView rateus = convertView.findViewById(R.id.RateUs);
+
 
         holder.departure.setText(treps.getDeparture());
         holder.destination.setText(treps.getDestination());
         holder.author.setText(treps.tripId);
+
+
+        final View finalConvertView = convertView;
+        rateus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(finalConvertView.getContext(),RateUser.class);
+                context.startActivity(intent);
+
+            }
+        });
 
         return convertView;
     }

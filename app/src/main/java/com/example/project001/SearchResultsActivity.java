@@ -19,20 +19,14 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.example.project001.database.Chat;
 import com.example.project001.database.DBConnection;
-import com.example.project001.database.Request;
 import com.example.project001.database.SearchResult;
-import com.example.project001.fragment.ChatAdapter;
-import com.example.project001.fragment.ProfileFragment;
 import com.example.project001.fragment.SearchAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-
 import java.util.ArrayList;
 
 import static com.google.android.gms.wearable.DataMap.TAG;
@@ -76,8 +70,8 @@ public class SearchResultsActivity extends AppCompatActivity {
 
 
 
-        Intent intent=getIntent();
 
+        Intent intent=getIntent();
         departure=intent.getStringExtra("departure");
         destination=intent.getStringExtra("destination");
         email=intent.getStringExtra("email");
@@ -97,10 +91,6 @@ public class SearchResultsActivity extends AppCompatActivity {
                 final String date=((TextView)((RelativeLayout)view).getChildAt(5)).getText().toString();
 
 
-
-
-
-
                 //popup window info
                 LayoutInflater inflater = (LayoutInflater) SearchResultsActivity.this.getSystemService(LAYOUT_INFLATER_SERVICE);
                 View layout = inflater.inflate(R.layout.popup_search,null);
@@ -117,9 +107,6 @@ public class SearchResultsActivity extends AppCompatActivity {
                 editPhoneButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
-
-
 
                         db1.addTripRequestFromSearch(driver.replace("Driver: ",""), email, "0",departure.replace("Departure: ",""),destination.replace("Destination: ",""), date.replace("Date: ",""));
 
