@@ -84,7 +84,7 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
 
         drawerLayout = findViewById(R.id.drawer_layout);
 
-        rating = findViewById(R.id.RateText);
+        //rating = findViewById(R.id.RateText);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -143,6 +143,9 @@ public class SideBarActivity extends AppCompatActivity implements NavigationView
                         }
                     }
                 });
+
+
+
 
 
         Bundle bun = new Bundle();

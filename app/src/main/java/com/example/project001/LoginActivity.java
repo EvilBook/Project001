@@ -1,6 +1,7 @@
 package com.example.project001;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +10,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 
+import android.widget.Toast;
+import com.example.project001.sql.DatabaseHelper;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -22,6 +25,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import static com.google.android.gms.wearable.DataMap.TAG;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -37,11 +45,23 @@ public class LoginActivity extends AppCompatActivity {
     FirebaseUser currentUser;
 
 
+    public FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+
+    DatabaseHelper mydb;
+
+
+
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+        mydb = new DatabaseHelper(this);
+
         setContentView(R.layout.activity_login);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -58,6 +78,25 @@ public class LoginActivity extends AppCompatActivity {
                 signIn();
             }
         });
+
+        db.collection("personalinfo")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+
+                                //if exists break
+                            }
+
+                        } else {
+                            Log.e("data", "inserting");
+                            Log.w(TAG, "Error getting documents.", task.getException());
+                        }
+                    }
+                });
+
 
     }
 
@@ -114,12 +153,17 @@ public class LoginActivity extends AppCompatActivity {
             personPhoto = account.getPhotoUrl();
 
 
+            addData(account.getEmail(),account.getDisplayName());
+            returnData();
+
+
+
 
 
             finish();
             startActivity(intent);
-            finish();
-            startActivity(intent1);
+            //finish();
+            //startActivity(intent1);
 
 
 
@@ -155,6 +199,31 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });*/
     }
+
+
+
+
+    public void addData(String entry, String entry2){
+        boolean insertData = (boolean) mydb.addData(entry, entry2);
+
+        if(insertData){
+            toastManager("succes");
+        }else{
+            toastManager("something went wrong");
+        }
+    }
+
+    private void toastManager(String message){
+        Toast.makeText(this,message, Toast.LENGTH_SHORT).show();
+    }
+
+    public void returnData(){
+        Cursor data = mydb.getData();
+        while(data.moveToNext()){
+            System.out.println("DATA: " + data.getString(1) + ", " + data.getString(2));
+        }
+    }
+
 
 }
 

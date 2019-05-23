@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -93,6 +94,14 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
     FirebaseFirestore db1 = FirebaseFirestore.getInstance();
 
 
+    Location loc;
+
+
+    private ConstraintLayout constraint1;
+
+
+
+
 
 
 
@@ -107,6 +116,10 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+
+        constraint1 = getView().findViewById(R.id.constraint1);
+
 
 
         if(getArguments() != null){
@@ -179,21 +192,57 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
                     } else {
                         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
 
-                        Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                        if (lastKnownLocation != null) {
 
-                            //SET MARKER TO CURRENT LOCATION
-                            updateMapCurrentLocation(lastKnownLocation);
-
+                        //Find current location of user
+                        locationManager = (LocationManager)con.getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+                        List<String> providers = locationManager.getProviders(true);
+                        Location bestLocation = new Location("");
+                        for (String provider : providers) {
+                            Location l = locationManager.getLastKnownLocation(provider);
+                            if (l == null) {
+                                continue;
+                            }
+                            if (bestLocation == null || l.getAccuracy() < bestLocation.getAccuracy()) {
+                                // Found best last known location: %s", l);
+                                bestLocation = l;
+                            }
                         }
+
+
+                        loc = bestLocation;
+
+                        //SET MARKER TO CURRENT LOCATION
+                        updateMapCurrentLocation(bestLocation);
+
 
                     }
                 }
+
+
+                mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+
+                    @Override
+                    public void onMapClick(LatLng point) {
+                        Log.d("Map","Map clicked");
+
+                        if(constraint1.getVisibility() == View.VISIBLE) {
+                            constraint1.setVisibility(View.INVISIBLE);
+                        }else{
+                            constraint1.setVisibility(View.VISIBLE);
+
+                        }
+                    }
+                });
+
 
                 mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
                     @Override
                     public void onInfoWindowClick(final Marker marker) {
                         final InfoWindowData infoWindowData = (InfoWindowData) marker.getTag();
+
+
+
+
 
 
 
@@ -374,6 +423,13 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
 
     //Add marker Current Location & Move camera
     public void updateMapCurrentLocation(Location location) {
+
+
+        if(location.getLatitude() < 1 && location.getLongitude() > -1) {
+            location.setLatitude(56.031200);
+            location.setLongitude(14.154950);
+        }
+
         LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
 
         mMap.clear();
@@ -437,60 +493,69 @@ public class RidersActivity extends Fragment implements OnMapReadyCallback {
 
                         Log.d("", "geoLocate: found a location: " + address.toString());
 
-                        final int[] pics = {R.drawable.pic1, R.drawable.pic2, R.drawable.pic3,
-                                R.drawable.pic4, R.drawable.pic5, R.drawable.pic6,
-                                R.drawable.pic7, R.drawable.pic8, R.drawable.pic9,
-                                R.drawable.pic10, R.drawable.pic11,};
 
-                        Random r=new Random();
-                        final int randomNumber = r.nextInt(pics.length);
+                        Location target = new Location("target");
+                        target.setLongitude(address.getLongitude());
+                        target.setLatitude(address.getLatitude());
 
 
-                        //Markers
-                        final LatLng pos = new LatLng(address.getLatitude(), address.getLongitude());
+                        //Compare user location to markers
+                        if (loc.distanceTo(target) < 300000) {
+                            final int[] pics = {R.drawable.pic1, R.drawable.pic2, R.drawable.pic3,
+                                    R.drawable.pic4, R.drawable.pic5, R.drawable.pic6,
+                                    R.drawable.pic7, R.drawable.pic8, R.drawable.pic9,
+                                    R.drawable.pic10, R.drawable.pic11,};
 
-                        //Set Marker + Window Info
-                        final int finalI = i;
-                        db1.collection("personalinfo")
-                                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                            @Override
-                            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                                for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                                    if (document.getString("email") != null) {
-                                        if (document.getString("email").equals(t.get(finalI).getAuthor())) {
-                                            info = new InfoWindowData();
-                                            info.setDeparture(t.get(finalI).getDeparture());
-                                            info.setDestination(t.get(finalI).getDestination());
-                                            info.setAuthor(t.get(finalI).getAuthor());
-                                            info.setDate(t.get(finalI).getDate());
-                                            info.setPrice(t.get(finalI).getPrice());
-                                            info.setAvailableSeats(t.get(finalI).getSeats());
-                                            info.setVerified(document.getString("verified"));
-                                            Log.e("GOD FUCKING DAMN IT", info.getAuthor() + " " + document.getString("verified") + " " + document.getString("email"));
+                            Random r = new Random();
+                            final int randomNumber = r.nextInt(pics.length);
 
 
-                                            markerOptions = new MarkerOptions()
-                                                    .position(pos)
-                                                    .title(searchString)
-                                                    .icon(BitmapDescriptorFactory.fromResource(pics[randomNumber]));
+                            //Markers
+                            final LatLng pos = new LatLng(address.getLatitude(), address.getLongitude());
 
-                                            //Add Marker
-                                            marker = mMap.addMarker(markerOptions);
+                            //Set Marker + Window Info
+                            final int finalI = i;
+                            db1.collection("personalinfo")
+                                    .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                @Override
+                                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                                        if (document.getString("email") != null) {
+                                            if (document.getString("email").equals(t.get(finalI).getAuthor())) {
+                                                info = new InfoWindowData();
+                                                info.setDeparture(t.get(finalI).getDeparture());
+                                                info.setDestination(t.get(finalI).getDestination());
+                                                info.setAuthor(t.get(finalI).getAuthor());
+                                                info.setDate(t.get(finalI).getDate());
+                                                info.setPrice(t.get(finalI).getPrice());
+                                                info.setAvailableSeats(t.get(finalI).getSeats());
+                                                info.setVerified(document.getString("verified"));
+                                                Log.e("GOD FUCKING DAMN IT", info.getAuthor() + " " + document.getString("verified") + " " + document.getString("email"));
 
-                                            //Add Window
-                                            marker.setTag(info);
-                                            marker.showInfoWindow();
 
+                                                markerOptions = new MarkerOptions()
+                                                        .position(pos)
+                                                        .title(searchString)
+                                                        .icon(BitmapDescriptorFactory.fromResource(pics[randomNumber]));
+
+                                                //Add Marker
+                                                marker = mMap.addMarker(markerOptions);
+
+                                                //Add Window
+                                                marker.setTag(info);
+                                                marker.showInfoWindow();
+
+                                            }
                                         }
                                     }
                                 }
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
 
-                            }
-                        });
+                                }
+                            });
+                        }
                     }
                 }
 

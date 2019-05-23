@@ -38,6 +38,11 @@
         <activity android:name=".Attempt.RegisterFragment"/>
         <activity android:name=".Attempt.StartFragment"/>
         <activity android:name=".SearchResultsActivity"/>
+        <activity android:name=".RateUser"/>
+
+
+        <activity android:name=".fragment.TripTab2_InfoWindow"/>
+
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").

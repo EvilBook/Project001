@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                             xmlns:tools="http://schemas.android.com/tools"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="match_parent"
+                                             xmlns:app="http://schemas.android.com/apk/res-auto"
+                                             android:background="@color/colorPrimaryDark">
+
+
+    <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="90dp"
+            android:background="@color/colorPrimaryDark">
+
+        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+                  xmlns:tools="http://schemas.android.com/tools"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  app:layout_constraintBottom_toBottomOf="parent"
+                  app:layout_constraintTop_toTopOf="parent"
+                  android:id="@+id/map"
+                  tools:context=".fragment.TripTab2_InfoWindow"
+                  android:name="com.google.android.gms.maps.SupportMapFragment" />
+
+
+    </android.support.constraint.ConstraintLayout>
+
+
+
+
+    <android.support.constraint.ConstraintLayout
+            android:id="@+id/constr1"
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@color/colorPrimaryDark"
+            android:paddingTop="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="4dp">
+
+        <TextView
+                android:id="@+id/fromtext"
+                android:layout_width="230dp"
+                android:layout_height="wrap_content"
+                android:maxHeight="23dp"
+
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+
+                android:textColor="@color/white"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:text="From: Kristianstad"/>
+
+        <TextView
+                android:id="@+id/totext"
+                android:layout_width="230dp"
+                android:layout_height="wrap_content"
+                android:maxHeight="23dp"
+
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/fromtext"
+
+                android:textColor="@color/white"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:text="To: Malmö hdi dehid edh e dei he dhedi ehdie dhei"/>
+
+        <TextView
+                android:id="@+id/datetext"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/totext"
+                android:paddingLeft="15dp"
+                android:paddingTop="5dp"
+
+                android:textSize="15dp"
+                android:text="5 July 2019" />
+
+        <TextView
+                android:id="@+id/seattext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toRightOf="@id/fromtext"
+                app:layout_constraintRight_toLeftOf="@id/deleteImg"
+                app:layout_constraintTop_toTopOf="parent"
+
+                android:textSize="15dp"
+                android:text="4 Seats"
+                android:layout_marginTop="8dp"
+                android:textAlignment="textEnd"/>
+
+
+        <TextView
+                android:id="@+id/pricetext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toRightOf="@id/fromtext"
+                app:layout_constraintRight_toLeftOf="@id/deleteImg"
+                app:layout_constraintTop_toBottomOf="@id/seattext"
+                android:textSize="15dp"
+                android:text="200 Kr"
+                android:textAlignment="textEnd"/>
+
+
+
+        <ImageView
+                android:id="@+id/deleteImg"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:paddingRight="8dp"
+                android:paddingTop="8dp"/>
+
+        <ImageView
+                android:id="@+id/returnImg"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:paddingRight="8dp"
+                android:paddingTop="8dp"
+                android:src="@drawable/returning"
+                android:visibility="invisible"/>
+
+
+
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+            android:id="@+id/constr2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/constr1"
+            android:background="@color/colorPrimary">
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:textSize="18dp"
+                android:textStyle="italic"
+                android:layout_marginLeft="5dp"
+                android:textColor="@color/black"
+                android:text="Pending Requests:" />
+
+    </android.support.constraint.ConstraintLayout>
+
+
+
+    <ListView
+            android:id="@+id/requestList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/constr2"
+
+            android:background="@color/colorPrimaryDark"
+            android:paddingBottom="10dp" />
+
+    <TextView
+            android:id="@+id/infotxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/constr2"
+            android:textStyle="italic"
+            android:textSize="15dp"
+            android:text="No Incoming Request.."
+            android:textAlignment="center"
+            android:visibility="invisible"
+            android:paddingBottom="2dp"
+            android:background="@color/colorPrimaryDark"
+            android:textColor="@color/white"/>
+
+
+
+
+
+
+
+    <Button
+            android:id="@+id/startButton"
+            android:layout_width="170dp"
+            android:layout_height="37dp"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+
+            android:text="Start Trip"
+            android:background="@color/transparent" />
+
+
+    <Button
+            android:id="@+id/backButton"
+            android:layout_width="wrap_content"
+            android:layout_height="37dp"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:text="Return"
+            android:background="@color/transparent" />
+
+
+
+</android.support.constraint.ConstraintLayout>
+
+
+
+
+

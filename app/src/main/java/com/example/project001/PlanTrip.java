@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -13,12 +14,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
+import android.view.*;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -137,8 +133,16 @@ public class PlanTrip extends Fragment implements AdapterView.OnItemClickListene
 
 
 
+
+                Display display = getActivity().getWindowManager().getDefaultDisplay();
+                Point size = new Point();
+                display. getSize(size);
+                int width = (int)(size.x*0.7);
+                int height = (int)(size.y*0.6);
+
+
                 float density=PlanTrip.this.getResources().getDisplayMetrics().density;
-                final PopupWindow pw = new PopupWindow(layout, (int)density*350, (int)density*460, true);
+                final PopupWindow pw = new PopupWindow(layout, width, height, true);
 
 
                 buttonCalendar.setOnClickListener(new View.OnClickListener() {
@@ -187,8 +191,16 @@ public class PlanTrip extends Fragment implements AdapterView.OnItemClickListene
                 final TimePicker timePicker = layout.findViewById(R.id.time);
 
 
+                Display display = getActivity().getWindowManager().getDefaultDisplay();
+                Point size = new Point();
+                display. getSize(size);
+                int width = (int)(size.x*0.7);
+                int height = (int)(size.y*0.6);
+
+
+
                 float density=PlanTrip.this.getResources().getDisplayMetrics().density;
-                final PopupWindow pw = new PopupWindow(layout, (int)density*350, (int)density*460, true);
+                final PopupWindow pw = new PopupWindow(layout, width, height, true);
 
                 buttonClock.setOnClickListener(new View.OnClickListener() {
                     @Override

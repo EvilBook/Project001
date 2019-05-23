@@ -399,7 +399,7 @@ public class ProfileFragment extends Fragment {
     }
 
 
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
+   // FirebaseFirestore db = FirebaseFirestore.getInstance();
 
 
     personnumer n;
