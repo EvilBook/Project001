@@ -45,7 +45,14 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -172,6 +179,7 @@ public class TripTab2_InfoWindow extends AppCompatActivity implements OnMapReady
 
 
                 if(checkButton2) {
+                    //Start trip
 
                     android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(TripTab2_InfoWindow.this).create();
                     alertDialog.setTitle("Confirm");
@@ -192,26 +200,42 @@ public class TripTab2_InfoWindow extends AppCompatActivity implements OnMapReady
                                     deleteImg.setVisibility(View.INVISIBLE);
                                     returnImg.setVisibility(View.VISIBLE);
 
-                                    startButton.setText("Trip Completed");
+//                                    startButton.setText("Trip Completed");
+                                    startButton.setVisibility(View.INVISIBLE);
                                     checkButton = false;
                                     checkButton2 = false;
+
+                                    // Code to open google maps with navigation
+                                    final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://maps.google.com/maps?" + "saddr="+ markers.get(0).latitude + "," + markers.get(0).longitude + "&daddr=" + markers.get(1).latitude + "," + markers.get(1).longitude));
+                                    intent.setClassName("com.google.android.apps.maps","com.google.android.maps.MapsActivity");
+                                    startActivity(intent);
 
                                     dialog.dismiss();
                                 }
                             });
                     alertDialog.show();
 
+
                 }else{
+                    //trip completed
 
                     checkButton2 = true;
 
 
                     System.out.println(getUrl(markers.get(0), markers.get(1), "driving"));
 
-                    //Code to open google maps with navigation
-//                    final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://maps.google.com/maps?" + "saddr="+ 55.604980 + "," + 13.003822 + "&daddr=" + 57.696991 + "," + 11.986500));
-//                    intent.setClassName("com.google.android.apps.maps","com.google.android.maps.MapsActivity");
-//                    startActivity(intent);
+
+//                    String link = getUrl(markers.get(0), markers.get(1), "driving");
+
+
+//                    try {
+//                        JSONObject response = getJSONObjectFromURL(link); // calls method to get JSON object
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+
                 }
 
             }
@@ -224,6 +248,7 @@ public class TripTab2_InfoWindow extends AppCompatActivity implements OnMapReady
                 if(checkButton) {
                     finish();
                 }else {
+                    //End trip
 
                     android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(TripTab2_InfoWindow.this).create();
                     alertDialog.setTitle("Confirm");
@@ -245,6 +270,7 @@ public class TripTab2_InfoWindow extends AppCompatActivity implements OnMapReady
                                     deleteImg.setVisibility(View.VISIBLE);
                                     returnImg.setVisibility(View.INVISIBLE);
 
+                                    startButton.setVisibility(View.VISIBLE);
                                     startButton.setText("Start Trip");
                                     checkButton = true;
 
@@ -286,7 +312,7 @@ public class TripTab2_InfoWindow extends AppCompatActivity implements OnMapReady
         MarkerOptions markerOptions = new MarkerOptions().position(userLocation)
                 .title("Your Location")
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.location));
-        map.addMarker(markerOptions);
+//        map.addMarker(markerOptions);
 
 
         //Search for location
@@ -562,6 +588,44 @@ public class TripTab2_InfoWindow extends AppCompatActivity implements OnMapReady
         // Building the url to the web service
         String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters + "&key=" + getString(R.string.google_maps_key);
         return url;
+    }
+
+
+    public static JSONObject getJSONObjectFromURL(String urlString) throws IOException, JSONException {
+
+        HttpURLConnection urlConnection = null;
+
+        URL url = new URL(urlString);
+
+        urlConnection = (HttpURLConnection) url.openConnection();
+
+        urlConnection.setRequestMethod("GET");
+        urlConnection.setReadTimeout(10000 /* milliseconds */);
+        urlConnection.setConnectTimeout(15000 /* milliseconds */);
+
+        urlConnection.setDoOutput(true);
+
+        urlConnection.connect();
+
+        BufferedReader br=new BufferedReader(new InputStreamReader(url.openStream()));
+
+        char[] buffer = new char[1024];
+
+        String jsonString = new String();
+
+        StringBuilder sb = new StringBuilder();
+        String line;
+        while ((line = br.readLine()) != null) {
+            sb.append(line+"\n");
+        }
+        br.close();
+
+        jsonString = sb.toString();
+
+        System.out.println("JSON: " + jsonString);
+        urlConnection.disconnect();
+
+        return new JSONObject(jsonString);
     }
 
 }
