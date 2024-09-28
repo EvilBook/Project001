@@ -275,7 +275,7 @@ public class ProfileFragment extends Fragment {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId== EditorInfo.IME_ACTION_DONE){
                     saveInfo(extraInfo.getText().toString());
-                    Log.e("fuck off", "twice");
+                    Log.e("butterfly off", "twice");
                 }
                 return false;
             }
